@@ -12,44 +12,52 @@
         .header { padding: 20px; font-weight: bold; font-size: 1.2rem; text-align: center; border-bottom: 1px solid #ccc; }
         body.dark-mode .header { border-bottom: 1px solid #333; }
 
-        .page { display: none; padding: 20px; }
+        .page { display: none; padding: 20px; box-sizing: border-box; }
         #page-chats { display: block; } /* صفحه پیش‌فرض */
 
-        /* بخش گفتگوها (لیست کشویی افقی با هر ۷ کاربر) */
+        /* بخش گفتگوها */
         .user-list { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; white-space: nowrap; -webkit-overflow-scrolling: touch; }
         .user-list::-webkit-scrollbar { display: none; }
         .user-item { text-align: center; cursor: pointer; width: 70px; flex-shrink: 0; }
         .avatar { width: 70px; height: 70px; border-radius: 50%; background-color: #ddd; border: 2px solid #555; margin-bottom: 5px; }
         
-        /* بخش تنظیمات عمومی */
-        .menu-item { padding: 20px; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        body.dark-mode .menu-item { border-bottom: 1px solid #333; }
-        .menu-item:active { opacity: 0.8; }
+        /* ساختار دسته‌بندی منظم به سبک تلگرام */
+        .section-title { font-size: 0.85rem; color: #007bff; font-weight: bold; margin: 25px 10px 10px 10px; text-align: right; }
+        body.dark-mode .section-title { color: #52a4ff; }
+        .menu-group { background: #f8f9fa; border-radius: 12px; overflow: hidden; border: 1px solid #eaeaea; margin-bottom: 15px; }
+        body.dark-mode .menu-group { background: #222; border-color: #2d2d2d; }
+
+        .menu-item { padding: 16px 20px; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        body.dark-mode .menu-item { border-bottom: 1px solid #2d2d2d; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:active { background-color: #f1f1f1; }
+        body.dark-mode .menu-item:active { background-color: #2a2a2a; }
+        
+        .menu-right-side { display: flex; align-items: center; gap: 12px; }
         .menu-left-info { font-size: 0.85rem; color: #777; }
         body.dark-mode .menu-left-info { color: #aaa; }
 
-        /* بخش پروفایل جدید */
-        .profile-container { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 360px; margin: 0 auto; }
-        
-        /* پروفایل دایره‌ای با قابلیت کلیک */
-        .profile-avatar-wrapper { position: relative; width: 100px; height: 100px; margin-bottom: 10px; cursor: pointer; }
+        /* بخش پروفایل حرفه‌ای و مرتب */
+        .profile-container { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 380px; margin: 0 auto; }
+        .profile-avatar-wrapper { position: relative; width: 110px; height: 110px; margin-bottom: 12px; cursor: pointer; }
         .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background-color: #333; border: 2px solid #555; display: flex; align-items: center; justify-content: center; color: white; }
+        .profile-name { font-size: 1.25rem; font-weight: bold; margin-bottom: 20px; }
         
-        .profile-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; }
-        
-        /* چیدمان دکمه‌های کپسولی ظریف و حرفه‌ای */
-        .profile-buttons { display: flex; gap: 8px; width: 100%; max-width: 340px; margin-bottom: 25px; justify-content: center; }
-        .action-btn { flex: 1; padding: 8px 4px; border: none; border-radius: 20px; background: #f0f2f5; display: flex; align-items: center; justify-content: center; gap: 4px; cursor: pointer; font-weight: bold; font-size: 0.75rem; color: #333; transition: 0.2s; box-sizing: border-box; }
+        .profile-buttons { display: flex; gap: 10px; width: 100%; margin-bottom: 10px; justify-content: center; }
+        .action-btn { flex: 1; padding: 10px 6px; border: none; border-radius: 20px; background: #f0f2f5; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; color: #333; transition: 0.2s; box-sizing: border-box; }
         body.dark-mode .action-btn { background: #2a2a2a; color: #eee; }
-        .action-btn:active { transform: scale(0.97); opacity: 0.9; }
-        .action-btn span { font-size: 1rem; }
+        .action-btn:active { transform: scale(0.97); }
 
-        /* کادرهای اطلاعات کاربری ظریف و تمیز */
-        .info-box { width: 100%; background: #f1f3f5; border-radius: 10px; padding: 12px 15px; margin-bottom: 10px; text-align: right; box-sizing: border-box; cursor: pointer; transition: 0.2s; }
-        body.dark-mode .info-box { background: #252525; }
-        .info-box:active { opacity: 0.8; }
-        .info-label { font-size: 0.75rem; color: #666; margin-bottom: 3px; font-weight: bold; }
-        body.dark-mode .info-label { color: #aaa; }
+        /* کادرهای اطلاعات کاربری استایل تلگرامی */
+        .info-group { width: 100%; background: #f8f9fa; border-radius: 12px; border: 1px solid #eaeaea; overflow: hidden; margin-top: 15px; }
+        body.dark-mode .info-group { background: #222; border-color: #2d2d2d; }
+        .info-box { padding: 14px 20px; text-align: right; box-sizing: border-box; cursor: pointer; border-bottom: 1px solid #eee; transition: background 0.2s; }
+        body.dark-mode .info-box { border-bottom: 1px solid #2d2d2d; }
+        .info-box:last-child { border-bottom: none; }
+        .info-box:active { background-color: #f1f1f1; }
+        body.dark-mode .info-box:active { background-color: #2a2a2a; }
+        .info-label { font-size: 0.75rem; color: #007bff; margin-bottom: 4px; font-weight: bold; }
+        body.dark-mode .info-label { color: #52a4ff; }
         .info-value { font-size: 0.95rem; min-height: 20px; word-break: break-all; }
 
         /* نوار ناوبری ثابت پایین صفحه */
@@ -60,7 +68,7 @@
         .nav-item.active { color: #007bff; font-weight: bold; }
         .nav-item span { font-size: 1.4rem; }
 
-        /* استایل صفحات مجزا و اختصاصی برای ویرایش اطلاعات و زیرمنوها (Modals) */
+        /* استایل مودال‌های تمام صفحه اختصاصی */
         .edit-page-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 3000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
         body.dark-mode .edit-page-modal { background: #1a1a1a; }
         .modal-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; text-align: center; }
@@ -73,29 +81,36 @@
         .btn-save { background: #007bff; color: white; }
         .btn-cancel { background: #dc3545; color: white; }
 
-        /* سوئیچ‌های روشن/خاموش ظریف */
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        /* اصلاح کامل ساختار سوئیچ دکمه روشن/خاموش دقیق و بدون نقص */
+        .switch { position: relative; display: inline-block; width: 46px; height: 24px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
         input:checked + .slider { background-color: #007bff; }
-        input:checked + .slider:before { transform: translateX(-20px); }
+        
+        /* جهت جابجایی دکمه بر اساس حالت راست‌چین و چپ‌چین استاندارد */
+        html[dir="rtl"] input:checked + .slider:before { transform: translateX(-20px); }
+        html[dir="ltr"] input:checked + .slider:before { transform: translateX(20px); }
         body.dark-mode .slider { background-color: #444; }
 
-        /* بخش پیش‌نمایش یا اسلایدر در تنظیمات گفتگو */
+        /* اسلایدر اندازه متن */
         .range-slider { width: 100%; margin: 15px 0; }
-        .preview-box { padding: 15px; border-radius: 8px; background: #f0f2f5; margin-bottom: 20px; text-align: right; border: 1px dashed #bbb; }
+        .preview-box { padding: 15px; border-radius: 8px; background: #f0f2f5; margin-bottom: 20px; text-align: right; border: 1px dashed #bbb; line-height: 1.6; }
         body.dark-mode .preview-box { background: #252525; border-color: #555; }
 
-        /* انتخاب گزینه‌های رادیویی برای حریم خصوصی */
-        .radio-option { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid #eee; }
-        body.dark-mode .radio-option { border-bottom: 1px solid #333; }
-        .radio-option input { width: 18px; height: 18px; cursor: pointer; }
+        /* انتخاب گزینه‌های رادیویی */
+        .radio-option { display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px solid #eee; cursor: pointer; }
+        body.dark-mode .radio-option { border-bottom: 1px solid #2d2d2d; }
+        .radio-option input { width: 18px; height: 18px; cursor: pointer; margin: 0; }
+
+        /* استایل‌های جهت زبان انگلیسی تغییر کل جهت قالب */
+        html[dir="ltr"] body { text-align: left; }
+        html[dir="ltr"] .info-box, html[dir="ltr"] .preview-box, html[dir="ltr"] .section-title { text-align: left; }
     </style>
 </head>
 <body>
 
-    <div class="header">دوست‌یابی</div>
+    <div class="header" id="main-header">دوست‌یابی</div>
 
     <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="loadPhoto(event)">
     <input type="file" id="chatBgInput" accept="image/*" style="display: none;" onchange="loadChatBackground(event)">
@@ -110,37 +125,43 @@
             <div class="user-item" onclick="openChat('سارا')"><div class="avatar"></div><div>سارا</div></div>
             <div class="user-item" onclick="openChat('امیر')"><div class="avatar"></div><div>امیر</div></div>
         </div>
-        <p style="text-align: center; margin-top: 60px; color: #777; font-size: 0.95rem; line-height: 1.6;">
+        <p id="no-chats-msg" style="text-align: center; margin-top: 60px; color: #777; font-size: 0.95rem; line-height: 1.6;">
             هنوز با کسی چت نکردی. به کاربران آنلاین پیام بده و لیست گفتگوهای خودت رو اینجا ببین.
         </p>
     </div>
 
     <div id="page-settings" class="page">
-        <h2>تنظیمات</h2>
+        <h2 id="title-settings">تنظیمات</h2>
         
-        <div class="menu-item" onclick="openModal('sub-account')">
-            <span>👤 حساب کاربری</span>
-            <span class="menu-left-info" id="settings-acc-name">مشاهده</span>
+        <div class="section-title" id="sec-account">تنظیمات کاربری</div>
+        <div class="menu-group">
+            <div class="menu-item" onclick="openModal('sub-account')">
+                <span id="opt-account">👤 حساب کاربری</span>
+                <span class="menu-left-info" id="settings-acc-name">مشاهده</span>
+            </div>
         </div>
         
-        <div class="menu-item" onclick="openModal('sub-privacy')">
-            <span>🔒 حریم خصوصی و امنیت</span>
-            <span class="menu-left-info">تنظیمات اصلی</span>
-        </div>
-        
-        <div class="menu-item" onclick="openModal('sub-notifications')">
-            <span>🔔 اعلان‌ها و صداها</span>
-            <span class="menu-left-info">گفتگوها، گروه‌ها...</span>
-        </div>
+        <div class="section-title" id="sec-app-settings">تنظیمات اپلیکیشن</div>
+        <div class="menu-group">
+            <div class="menu-item" onclick="openModal('sub-privacy')">
+                <span id="opt-privacy">🔒 حریم خصوصی و امنیت</span>
+                <span class="menu-left-info" id="lbl-privacy-sub">تنظیمات اصلی</span>
+            </div>
+            
+            <div class="menu-item" onclick="openModal('sub-notifications')">
+                <span id="opt-notif">🔔 اعلان‌ها و صداها</span>
+                <span class="menu-left-info" id="lbl-notif-sub">گفتگوها، گروه‌ها...</span>
+            </div>
 
-        <div class="menu-item" onclick="openModal('sub-chat-settings')">
-            <span>💬 تنظیمات گفتگو</span>
-            <span class="menu-left-info">پوسته، متن، پس‌زمینه</span>
-        </div>
+            <div class="menu-item" onclick="openModal('sub-chat-settings')">
+                <span id="opt-chat-settings">💬 تنظیمات گفتگو</span>
+                <span class="menu-left-info" id="lbl-chat-sub">پوسته، متن، پس‌زمینه</span>
+            </div>
 
-        <div class="menu-item" onclick="openModal('sub-language')">
-            <span>🌐 زبان / Language</span>
-            <span class="menu-left-info" id="display-current-lang">فارسی</span>
+            <div class="menu-item" onclick="openModal('sub-language')">
+                <span id="opt-lang">🌐 زبان / Language</span>
+                <span class="menu-left-info" id="display-current-lang">فارسی</span>
+            </div>
         </div>
     </div>
 
@@ -154,233 +175,479 @@
             
             <div class="profile-buttons">
                 <button class="action-btn" onclick="triggerPhotoUpload()">
-                    <span>📷</span>تنظیم عکس
+                    <span id="btn-lbl-photo-icon">📷</span><span id="btn-lbl-photo">تنظیم عکس</span>
                 </button>
                 <button class="action-btn" onclick="openModal('modal-name-edit')">
-                    <span>✏️</span>ویرایش اطلاعات
+                    <span id="btn-lbl-edit-icon">✏️</span><span id="btn-lbl-edit">ویرایش اطلاعات</span>
                 </button>
                 <button class="action-btn" onclick="showPage('settings', document.querySelector('.bottom-nav .nav-item:nth-child(2)'))">
-                    <span>⚙️</span>تنظیمات
+                    <span id="btn-lbl-set-icon">⚙️</span><span id="btn-lbl-set">تنظیمات</span>
                 </button>
             </div>
 
-            <div class="info-box" onclick="openModal('modal-username')">
-                <div class="info-label">نام کاربری</div>
-                <div id="display-username" class="info-value" style="color: #888;">تنظیم نشده</div>
-            </div>
-            
-            <div class="info-box" onclick="openModal('modal-phone')">
-                <div class="info-label">شماره تلفن</div>
-                <div id="display-phone" class="info-value" style="color: #888;">تنظیم نشده</div>
-            </div>
+            <div class="info-group">
+                <div class="info-box" onclick="openModal('modal-username')">
+                    <div class="info-label" id="lbl-username">نام کاربری</div>
+                    <div id="display-username" class="info-value" style="color: #888;">تنظیم نشده</div>
+                </div>
+                
+                <div class="info-box" onclick="openModal('modal-phone')">
+                    <div class="info-label" id="lbl-phone">شماره تلفن</div>
+                    <div id="display-phone" class="info-value" style="color: #888;">تنظیم نشده</div>
+                </div>
 
-            <div class="info-box" onclick="openModal('modal-bio')">
-                <div class="info-label">بیوگرافی</div>
-                <div id="display-bio" class="info-value" style="color: #888;">هنوز بیوگرافی اضافه نشده است...</div>
+                <div class="info-box" onclick="openModal('modal-bio')">
+                    <div class="info-label" id="lbl-bio">بیوگرافی</div>
+                    <div id="display-bio" class="info-value" style="color: #888;">هنوز بیوگرافی اضافه نشده است...</div>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="sub-account" class="edit-page-modal">
-        <div class="modal-header">حساب کاربری</div>
-        <div class="info-box" onclick="openModal('modal-name-edit')">
-            <div class="info-label">نام و نام خانوادگی شما</div>
-            <div id="sub-acc-display-name" class="info-value">کاربر جدید</div>
-        </div>
-        <div class="info-box" onclick="openModal('modal-bio')">
-            <div class="info-label">کادر بیوگرافی پروفایل شما</div>
-            <div id="sub-acc-display-bio" class="info-value" style="color: #888;">هنوز بیوگرافی اضافه نشده است...</div>
+        <div class="modal-header" id="head-sub-acc">حساب کاربری</div>
+        <div class="info-group">
+            <div class="info-box" onclick="openModal('modal-name-edit')">
+                <div class="info-label" id="sub-lbl-fullname">نام و نام خانوادگی شما</div>
+                <div id="sub-acc-display-name" class="info-value">کاربر جدید</div>
+            </div>
+            <div class="info-box" onclick="openModal('modal-bio')">
+                <div class="info-label" id="sub-lbl-bio">کادر بیوگرافی پروفایل شما</div>
+                <div id="sub-acc-display-bio" class="info-value" style="color: #888;">هنوز بیوگرافی اضافه نشده است...</div>
+            </div>
         </div>
         <div class="modal-btn-group">
-            <button class="modal-btn btn-cancel" onclick="closeModal('sub-account')">بازگشت</button>
+            <button class="modal-btn btn-cancel back-btn-text" onclick="closeModal('sub-account')">بازگشت</button>
         </div>
     </div>
 
     <div id="sub-privacy" class="edit-page-modal">
-        <div class="modal-header">حریم خصوصی</div>
+        <div class="modal-header" id="head-sub-priv">حریم خصوصی</div>
         
-        <div class="menu-item" onclick="openPrivacySetting('phone_privacy', 'حریم خصوصی شماره تلفن')">
-            <span>شماره تلفن</span>
-            <span class="menu-left-info" id="status-privacy-phone">همه</span>
-        </div>
-        <div class="menu-item" onclick="openPrivacySetting('lastseen_privacy', 'آخرین بازدید و آنلاین بودن')">
-            <span>آخرین بازدید و آنلاین بودن</span>
-            <span class="menu-left-info" id="status-privacy-lastseen">همه</span>
-        </div>
-        <div class="menu-item" onclick="openPrivacySetting('avatar_privacy', 'عکس‌های پروفایل')">
-            <span>عکس‌های پروفایل</span>
-            <span class="menu-left-info" id="status-privacy-avatar">همه</span>
-        </div>
-        <div class="menu-item" onclick="openPrivacySetting('calls_privacy', 'تماس‌ها')">
-            <span>تماس‌ها</span>
-            <span class="menu-left-info" id="status-privacy-calls">همه</span>
-        </div>
-        <div class="menu-item" onclick="openPrivacySetting('bio_privacy', 'بیوگرافی')">
-            <span>بیوگرافی</span>
-            <span class="menu-left-info" id="status-privacy-bio">همه</span>
+        <div class="menu-group">
+            <div class="menu-item" onclick="openPrivacySetting('phone_privacy', 'حریم خصوصی شماره تلفن', 'phone')">
+                <span id="priv-item-phone">شماره تلفن</span>
+                <span class="menu-left-info privacy-status-value" id="status-privacy-phone">همه</span>
+            </div>
+            <div class="menu-item" onclick="openPrivacySetting('lastseen_privacy', 'آخرین بازدید و آنلاین بودن', 'lastseen')">
+                <span id="priv-item-status">آخرین بازدید و آنلاین بودن</span>
+                <span class="menu-left-info privacy-status-value" id="status-privacy-lastseen">همه</span>
+            </div>
+            <div class="menu-item" onclick="openPrivacySetting('avatar_privacy', 'عکس‌های پروفایل', 'avatar')">
+                <span id="priv-item-avatar">عکس‌های پروفایل</span>
+                <span class="menu-left-info privacy-status-value" id="status-privacy-avatar">همه</span>
+            </div>
+            <div class="menu-item" onclick="openPrivacySetting('calls_privacy', 'تماس‌ها', 'calls')">
+                <span id="priv-item-calls">تماس‌ها</span>
+                <span class="menu-left-info privacy-status-value" id="status-privacy-calls">همه</span>
+            </div>
+            <div class="menu-item" onclick="openPrivacySetting('bio_privacy', 'بیوگرافی', 'bio')">
+                <span id="priv-item-bio">بیوگرافی</span>
+                <span class="menu-left-info privacy-status-value" id="status-privacy-bio">همه</span>
+            </div>
         </div>
 
         <div class="modal-btn-group">
-            <button class="modal-btn btn-cancel" onclick="closeModal('sub-privacy')">بازگشت</button>
+            <button class="modal-btn btn-cancel back-btn-text" onclick="closeModal('sub-privacy')">بازگشت</button>
         </div>
     </div>
 
     <div id="modal-privacy-options" class="edit-page-modal" style="z-index: 3500;">
         <div class="modal-header" id="privacy-option-title">تنظیمات حریم خصوصی</div>
-        <p style="padding: 0 15px; color: #666; font-size: 0.85rem;">چه کسانی می‌توانند این مورد را مشاهده کنند یا دسترسی داشته باشند؟</p>
+        <p id="privacy-option-desc" style="padding: 0 15px; color: #666; font-size: 0.85rem;">چه کسانی می‌توانند این مورد را مشاهده کنند یا دسترسی داشته باشند؟</p>
         
-        <div class="radio-option">
-            <span>همه کاربران</span>
-            <input type="radio" name="privacy-choice" value="همه" checked>
-        </div>
-        <div class="radio-option">
-            <span>مخاطبان من</span>
-            <input type="radio" name="privacy-choice" value="مخاطبان من">
-        </div>
-        <div class="radio-option">
-            <span>هیچ‌کس</span>
-            <input type="radio" name="privacy-choice" value="هیچ‌کس">
+        <div class="menu-group">
+            <div class="radio-option" onclick="document.getElementById('rad-all').click()">
+                <span class="rad-lbl-all">همه کاربران</span>
+                <input type="radio" id="rad-all" name="privacy-choice" value="همه" checked>
+            </div>
+            <div class="radio-option" onclick="document.getElementById('rad-contacts').click()">
+                <span class="rad-lbl-contacts">مخاطبان من</span>
+                <input type="radio" id="rad-contacts" name="privacy-choice" value="مخاطبان من">
+            </div>
+            <div class="radio-option" onclick="document.getElementById('rad-nobody').click()">
+                <span class="rad-lbl-nobody">هیچ‌کس</span>
+                <input type="radio" id="rad-nobody" name="privacy-choice" value="هیچ‌کس">
+            </div>
         </div>
 
         <div class="modal-btn-group">
-            <button class="modal-btn btn-save" onclick="savePrivacyChoice()">ذخیره تنظیمات</button>
-            <button class="modal-btn btn-cancel" onclick="closeModal('modal-privacy-options')">انصراف</button>
+            <button class="modal-btn btn-save save-btn-text" onclick="savePrivacyChoice()">ذخیره تنظیمات</button>
+            <button class="modal-btn btn-cancel cancel-btn-text" onclick="closeModal('modal-privacy-options')">انصراف</button>
         </div>
     </div>
 
     <div id="sub-notifications" class="edit-page-modal">
-        <div class="modal-header">اعلان‌ها و صداها</div>
-        <h3 style="font-size: 1rem; margin-top: 20px; padding-bottom: 5px; border-bottom: 1px solid #ddd;">اعلان‌های گفتگوها</h3>
+        <div class="modal-header" id="head-sub-notif">اعلان‌ها و صداها</div>
+        <div class="section-title" id="sec-notif-chats">اعلان‌های گفتگوها</div>
         
-        <div class="menu-item">
-            <span>گفتگوهای خصوصی</span>
-            <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="menu-item">
-            <span>گروه‌ها</span>
-            <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="menu-item">
-            <span>کانال‌ها</span>
-            <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="menu-item">
-            <span>واکنش‌ها (Reactions)</span>
-            <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
+        <div class="menu-group">
+            <div class="menu-item">
+                <span id="notif-item-pv">گفتگوهای خصوصی</span>
+                <label class="switch">
+                    <input type="checkbox" checked onchange="handleNotificationToggle('pv', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="menu-item">
+                <span id="notif-item-group">گروه‌ها</span>
+                <label class="switch">
+                    <input type="checkbox" checked onchange="handleNotificationToggle('group', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="menu-item">
+                <span id="notif-item-channel">کانال‌ها</span>
+                <label class="switch">
+                    <input type="checkbox" checked onchange="handleNotificationToggle('channel', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="menu-item">
+                <span id="notif-item-react">واکنش‌ها (Reactions)</span>
+                <label class="switch">
+                    <input type="checkbox" checked onchange="handleNotificationToggle('react', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
 
         <div class="modal-btn-group">
-            <button class="modal-btn btn-cancel" onclick="closeModal('sub-notifications')">بازگشت</button>
+            <button class="modal-btn btn-cancel back-btn-text" onclick="closeModal('sub-notifications')">بازگشت</button>
         </div>
     </div>
 
     <div id="sub-chat-settings" class="edit-page-modal">
-        <div class="modal-header">تنظیمات گفتگو</div>
+        <div class="modal-header" id="head-sub-chat">تنظیمات گفتگو</div>
         
-        <div>
-            <label style="font-weight: bold; font-size: 0.9rem;">اندازه متن پیام‌ها</label>
-            <div class="preview-box" id="text-preview" style="font-size: 15px;">
-                پیام پیش‌فرض: متن گفتگوها به این اندازه نمایش داده می‌شود.
-            </div>
+        <div class="section-title" id="sec-text-size">اندازه متن پیام‌ها</div>
+        <div class="preview-box" id="text-preview" style="font-size: 15px;">
+            پیام پیش‌فرض: متن گفتگوها به این اندازه نمایش داده می‌شود.
+        </div>
+        <div style="padding: 0 10px;">
             <input type="range" min="12" max="24" value="15" class="range-slider" id="text-size-range" oninput="changeTextSize(this.value)">
         </div>
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-
-        <div class="menu-item" onclick="triggerChatBgUpload()">
-            <span>🖼️ تغییر پس‌زمینه گفتگو</span>
-            <span class="menu-left-info" id="bg-status-label">پیش‌فرض</span>
+        <div class="section-title" id="sec-chat-bg">تصویر پس‌زمینه</div>
+        <div class="menu-group">
+            <div class="menu-item" onclick="triggerChatBgUpload()">
+                <span id="opt-change-bg">🖼️ تغییر پس‌زمینه گفتگو</span>
+                <span class="menu-left-info" id="bg-status-label">پیش‌فرض</span>
+            </div>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-
-        <div class="menu-item">
-            <span>🌙 تغییر به حالت شب (تم تاریک)</span>
-            <label class="switch">
-                <input type="checkbox" id="dark-mode-toggle" onchange="toggleGlobalDarkMode(this)">
-                <span class="slider"></span>
-            </label>
+        <div class="section-title" id="sec-chat-theme">پوسته ظاهری</div>
+        <div class="menu-group">
+            <div class="menu-item" style="padding: 14px 20px;">
+                <span id="opt-dark-mode">🌙 تغییر به حالت شب (تم تاریک)</span>
+                <label class="switch">
+                    <input type="checkbox" id="dark-mode-toggle" onchange="toggleGlobalDarkMode(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
 
         <div class="modal-btn-group">
-            <button class="modal-btn btn-cancel" onclick="closeModal('sub-chat-settings')">بازگشت</button>
+            <button class="modal-btn btn-cancel back-btn-text" onclick="closeModal('sub-chat-settings')">بازگشت</button>
         </div>
     </div>
 
     <div id="sub-language" class="edit-page-modal">
-        <div class="modal-header">انتخاب زبان / Language</div>
-        <div class="radio-option" onclick="setLanguage('فارسی')">
-            <span>فارسی</span>
-            <input type="radio" name="lang-choice" id="lang-fa" checked>
-        </div>
-        <div class="radio-option" onclick="setLanguage('English')">
-            <span>English</span>
-            <input type="radio" name="lang-choice" id="lang-en">
+        <div class="modal-header" id="head-sub-lang">انتخاب زبان / Language</div>
+        <div class="menu-group">
+            <div class="radio-option" onclick="setLanguage('فارسی')">
+                <span>فارسی</span>
+                <input type="radio" name="lang-choice" id="lang-fa" checked>
+            </div>
+            <div class="radio-option" onclick="setLanguage('English')">
+                <span>English</span>
+                <input type="radio" name="lang-choice" id="lang-en">
+            </div>
         </div>
         <div class="modal-btn-group">
-            <button class="modal-btn btn-cancel" onclick="closeModal('sub-language')">بازگشت</button>
+            <button class="modal-btn btn-cancel back-btn-text" onclick="closeModal('sub-language')">بازگشت</button>
         </div>
     </div>
 
     <div id="modal-name-edit" class="edit-page-modal">
-        <div class="modal-header">تغییر نام اصلی</div>
+        <div class="modal-header" id="head-edit-name">تغییر نام اصلی</div>
         <input type="text" id="input-name" class="modal-input" placeholder="نام جدید خود را وارد کنید...">
         <div class="modal-btn-group">
-            <button class="modal-btn btn-save" onclick="saveField('name')">ذخیره نام</button>
-            <button class="modal-btn btn-cancel" onclick="closeModal('modal-name-edit')">انصراف</button>
+            <button class="modal-btn btn-save save-btn-text" onclick="saveField('name')">ذخیره نام</button>
+            <button class="modal-btn btn-cancel cancel-btn-text" onclick="closeModal('modal-name-edit')">انصراف</button>
         </div>
     </div>
 
     <div id="modal-username" class="edit-page-modal">
-        <div class="modal-header">تنظیم نام کاربری</div>
+        <div class="modal-header" id="head-edit-user">تنظیم نام کاربری</div>
         <input type="text" id="input-username" class="modal-input" placeholder="نام کاربری جدید را اینجا بنویسید...">
         <div class="modal-btn-group">
-            <button class="modal-btn btn-save" onclick="saveField('username')">ثبت نام کاربری</button>
-            <button class="modal-btn btn-cancel" onclick="closeModal('modal-username')">انصراف</button>
+            <button class="modal-btn btn-save save-btn-text" onclick="saveField('username')">ثبت نام کاربری</button>
+            <button class="modal-btn btn-cancel cancel-btn-text" onclick="closeModal('modal-username')">انصراف</button>
         </div>
     </div>
 
     <div id="modal-phone" class="edit-page-modal">
-        <div class="modal-header">تنظیم شماره تلفن</div>
+        <div class="modal-header" id="head-edit-phone">تنظیم شماره تلفن</div>
         <input type="tel" id="input-phone" class="modal-input" placeholder="شماره تلفن خود را وارد کنید...">
         <div class="modal-btn-group">
-            <button class="modal-btn btn-save" onclick="saveField('phone')">ثبت شماره</button>
-            <button class="modal-btn btn-cancel" onclick="closeModal('modal-phone')">انصراف</button>
+            <button class="modal-btn btn-save save-btn-text" onclick="saveField('phone')">ثبت شماره</button>
+            <button class="modal-btn btn-cancel cancel-btn-text" onclick="closeModal('modal-phone')">انصراف</button>
         </div>
     </div>
 
     <div id="modal-bio" class="edit-page-modal">
-        <div class="modal-header">ویرایش بیوگرافی</div>
+        <div class="modal-header" id="head-edit-bio">ویرایش بیوگرافی</div>
         <textarea id="input-bio" class="modal-textarea" placeholder="درباره خودتان اینجا بنویسید..."></textarea>
         <div class="modal-btn-group">
-            <button class="modal-btn btn-save" onclick="saveField('bio')">ذخیره بیوگرافی</button>
-            <button class="modal-btn btn-cancel" onclick="closeModal('modal-bio')">انصراف</button>
+            <button class="modal-btn btn-save save-btn-text" onclick="saveField('bio')">ذخیره بیوگرافی</button>
+            <button class="modal-btn btn-cancel cancel-btn-text" onclick="closeModal('modal-bio')">انصراف</button>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('chats', this)"><span>💬</span>گفتگوها</div>
-        <div class="nav-item" onclick="showPage('settings', this)"><span>⚙️</span>تنظیمات</div>
-        <div class="nav-item" onclick="showPage('profile', this)"><span>👤</span>پروفایل</div>
+        <div class="nav-item active" onclick="showPage('chats', this)"><span id="nav-idx-chats">💬</span><span id="nav-lbl-chats">گفتگوها</span></div>
+        <div class="nav-item" onclick="showPage('settings', this)"><span id="nav-idx-set">⚙️</span><span id="nav-lbl-set">تنظیمات</span></div>
+        <div class="nav-item" onclick="showPage('profile', this)"><span id="nav-idx-prof">👤</span><span id="nav-lbl-prof">پروفایل</span></div>
     </div>
 
     <script>
-        // مدیریت حریم خصوصی سراسری دکمه‌ها
         let activePrivacyKey = '';
+        let activePrivacyType = '';
+        let currentLanguage = 'فارسی';
 
-        // منطق حرکت بین صفحات اصلی بدون اختلال
+        // دیکشنری کامل ترجمه برنامه برای سوئیچ کامل زبان
+        const translations = {
+            'فارسی': {
+                dir: 'rtl',
+                mainHeader: 'دوست‌یابی',
+                noChats: 'هنوز با کسی چت نکردی. به کاربران آنلاین پیام بده و لیست گفتگوهای خودت رو اینجا ببین.',
+                titleSettings: 'تنظیمات',
+                secAccount: 'تنظیمات کاربری',
+                optAccount: '👤 حساب کاربری',
+                secAppSettings: 'تنظیمات اپلیکیشن',
+                optPrivacy: '🔒 حریم خصوصی و امنیت',
+                lblPrivacySub: 'تنظیمات اصلی',
+                optNotif: '🔔 اعلان‌ها و صداها',
+                lblNotifSub: 'گفتگوها، گروه‌ها...',
+                optChatSettings: '💬 تنظیمات گفتگو',
+                lblChatSub: 'پوسته، متن، پس‌زمینه',
+                optLang: '🌐 زبان / Language',
+                btnLblPhoto: 'تنظیم عکس',
+                btnLblEdit: 'ویرایش اطلاعات',
+                btnLblSet: 'تنظیمات',
+                lblUsername: 'نام کاربری',
+                lblPhone: 'شماره تلفن',
+                lblBio: 'بیوگرافی',
+                notSet: 'تنظیم نشده',
+                noBio: 'هنوز بیوگرافی اضافه نشده است...',
+                navChats: 'گفتگوها',
+                navSet: 'تنظیمات',
+                navProf: 'پروفایل',
+                headSubAcc: 'حساب کاربری',
+                subLblFullname: 'نام و نام خانوادگی شما',
+                subLblBio: 'کادر بیوگرافی پروفایل شما',
+                headSubPriv: 'حریم خصوصی',
+                privPhone: 'شماره تلفن',
+                privStatus: 'آخرین بازدید و آنلاین بودن',
+                privAvatar: 'عکس‌های پروفایل',
+                privCalls: 'تماس‌ها',
+                privBio: 'بیوگرافی',
+                headSubNotif: 'اعلان‌ها و صداها',
+                secNotifChats: 'اعلان‌های گفتگوها',
+                notifPv: 'گفتگوهای خصوصی',
+                notifGroup: 'گروه‌ها',
+                notifChannel: 'کانال‌ها',
+                notifReact: 'واکنش‌ها (Reactions)',
+                headSubChat: 'تنظیمات گفتگو',
+                secTextSize: 'اندازه متن پیام‌ها',
+                previewText: 'پیام پیش‌فرض: متن گفتگوها به این اندازه نمایش داده می‌شود.',
+                secChatBg: 'تصویر پس‌زمینه',
+                optChangeBg: '🖼️ تغییر پس‌زمینه گفتگو',
+                secChatTheme: 'پوسته ظاهری',
+                optDarkMode: '🌙 تغییر به حالت شب (تم تاریک)',
+                backBtn: 'بازگشت',
+                saveBtn: 'ذخیره تنظیمات',
+                cancelBtn: 'انصراف',
+                allUsers: 'همه کاربران',
+                myContacts: 'مخاطبان من',
+                nobody: 'هیچ‌کس',
+                all: 'همه',
+                contacts: 'مخاطبان من',
+                none: 'هیچ‌کس',
+                headEditName: 'تغییر نام اصلی',
+                headEditUser: 'تنظیم نام کاربری',
+                headEditPhone: 'تنظیم شماره تلفن',
+                headEditBio: 'ویرایش بیوگرافی'
+            },
+            'English': {
+                dir: 'ltr',
+                mainHeader: 'Dating App',
+                noChats: 'You haven\'t chatted with anyone yet. Message online users and see your chat list here.',
+                titleSettings: 'Settings',
+                secAccount: 'User Settings',
+                optAccount: '👤 Account',
+                secAppSettings: 'App Settings',
+                optPrivacy: '🔒 Privacy and Security',
+                lblPrivacySub: 'Main settings',
+                optNotif: '🔔 Notifications and Sounds',
+                lblNotifSub: 'Chats, groups...',
+                optChatSettings: '💬 Chat Settings',
+                lblChatSub: 'Theme, text, background',
+                optLang: '🌐 Language / زبان',
+                btnLblPhoto: 'Set Photo',
+                btnLblEdit: 'Edit Info',
+                btnLblSet: 'Settings',
+                lblUsername: 'Username',
+                lblPhone: 'Phone Number',
+                lblBio: 'Biography',
+                notSet: 'Not set',
+                noBio: 'No bio added yet...',
+                navChats: 'Chats',
+                navSet: 'Settings',
+                navProf: 'Profile',
+                headSubAcc: 'Account Info',
+                subLblFullname: 'Your Full Name',
+                subLblBio: 'Your Profile Biography Box',
+                headSubPriv: 'Privacy',
+                privPhone: 'Phone Number',
+                privStatus: 'Last Seen & Online',
+                privAvatar: 'Profile Photos',
+                privCalls: 'Calls',
+                privBio: 'Biography',
+                headSubNotif: 'Notifications & Sounds',
+                secNotifChats: 'Chat Notifications',
+                notifPv: 'Private Chats',
+                notifGroup: 'Groups',
+                notifChannel: 'Channels',
+                notifReact: 'Reactions',
+                headSubChat: 'Chat Settings',
+                secTextSize: 'Message Text Size',
+                previewText: 'Default message: Chat text will look like this.',
+                secChatBg: 'Background Image',
+                optChangeBg: '🖼️ Change Chat Background',
+                secChatTheme: 'Visual Theme',
+                optDarkMode: '🌙 Switch to Night Mode (Dark)',
+                backBtn: 'Back',
+                saveBtn: 'Save Settings',
+                cancelBtn: 'Cancel',
+                allUsers: 'Everybody',
+                myContacts: 'My Contacts',
+                nobody: 'Nobody',
+                all: 'Everybody',
+                contacts: 'My Contacts',
+                none: 'Nobody',
+                headEditName: 'Change Main Name',
+                headEditUser: 'Set Username',
+                headEditPhone: 'Set Phone Number',
+                headEditBio: 'Edit Biography'
+            }
+        };
+
+        // تغییر کامل زبان برنامه با بازنویسی متن‌ها
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('display-current-lang').innerText = lang;
+            
+            const data = translations[lang];
+            document.documentElement.setAttribute('dir', data.dir);
+            
+            if(lang === 'فارسی') {
+                document.getElementById('lang-fa').checked = true;
+            } else {
+                document.getElementById('lang-en').checked = true;
+            }
+
+            // اعمال لغات به‌روز شده به تمام تگ‌های شناسه دار برنامه
+            document.getElementById('main-header').innerText = data.mainHeader;
+            document.getElementById('no-chats-msg').innerText = data.noChats;
+            document.getElementById('title-settings').innerText = data.titleSettings;
+            document.getElementById('sec-account').innerText = data.secAccount;
+            document.getElementById('opt-account').innerText = data.optAccount;
+            document.getElementById('sec-app-settings').innerText = data.secAppSettings;
+            document.getElementById('opt-privacy').innerText = data.optPrivacy;
+            document.getElementById('lbl-privacy-sub').innerText = data.lblPrivacySub;
+            document.getElementById('opt-notif').innerText = data.optNotif;
+            document.getElementById('lbl-notif-sub').innerText = data.lblNotifSub;
+            document.getElementById('opt-chat-settings').innerText = data.optChatSettings;
+            document.getElementById('lbl-chat-sub').innerText = data.lblChatSub;
+            document.getElementById('opt-lang').innerText = data.optLang;
+            document.getElementById('btn-lbl-photo').innerText = data.btnLblPhoto;
+            document.getElementById('btn-lbl-edit').innerText = data.btnLblEdit;
+            document.getElementById('btn-lbl-set').innerText = data.btnLblSet;
+            document.getElementById('lbl-username').innerText = data.lblUsername;
+            document.getElementById('lbl-phone').innerText = data.lblPhone;
+            document.getElementById('lbl-bio').innerText = data.lblBio;
+            
+            document.getElementById('nav-lbl-chats').innerText = data.navChats;
+            document.getElementById('nav-lbl-set').innerText = data.navSet;
+            document.getElementById('nav-lbl-prof').innerText = data.navProf;
+
+            document.getElementById('head-sub-acc').innerText = data.headSubAcc;
+            document.getElementById('sub-lbl-fullname').innerText = data.subLblFullname;
+            document.getElementById('sub-lbl-bio').innerText = data.subLblBio;
+            document.getElementById('head-sub-priv').innerText = data.headSubPriv;
+            
+            document.getElementById('priv-item-phone').innerText = data.privPhone;
+            document.getElementById('priv-item-status').innerText = data.privStatus;
+            document.getElementById('priv-item-avatar').innerText = data.privAvatar;
+            document.getElementById('priv-item-calls').innerText = data.privCalls;
+            document.getElementById('priv-item-bio').innerText = data.privBio;
+
+            document.getElementById('head-sub-notif').innerText = data.headSubNotif;
+            document.getElementById('sec-notif-chats').innerText = data.secNotifChats;
+            document.getElementById('notif-item-pv').innerText = data.notifPv;
+            document.getElementById('notif-item-group').innerText = data.notifGroup;
+            document.getElementById('notif-item-channel').innerText = data.notifChannel;
+            document.getElementById('notif-item-react').innerText = data.notifReact;
+
+            document.getElementById('head-sub-chat').innerText = data.headSubChat;
+            document.getElementById('sec-text-size').innerText = data.secTextSize;
+            document.getElementById('text-preview').innerText = data.previewText;
+            document.getElementById('sec-chat-bg').innerText = data.secChatBg;
+            document.getElementById('opt-change-bg').innerText = data.optChangeBg;
+            document.getElementById('sec-chat-theme').innerText = data.secChatTheme;
+            document.getElementById('opt-dark-mode').innerText = data.optDarkMode;
+
+            document.getElementById('head-edit-name').innerText = data.headEditName;
+            document.getElementById('head-edit-user').innerText = data.headEditUser;
+            document.getElementById('head-edit-phone').innerText = data.headEditPhone;
+            document.getElementById('head-edit-bio').innerText = data.headEditBio;
+
+            document.querySelectorAll('.back-btn-text').forEach(b => b.innerText = data.backBtn);
+            document.querySelectorAll('.save-btn-text').forEach(b => b.innerText = data.saveBtn);
+            document.querySelectorAll('.cancel-btn-text').forEach(b => b.innerText = data.cancelBtn);
+
+            document.querySelector('.rad-lbl-all').innerText = data.allUsers;
+            document.querySelector('.rad-lbl-contacts').innerText = data.myContacts;
+            document.querySelector('.rad-lbl-nobody').innerText = data.nobody;
+
+            // به‌روزرسانی فیلدهای خالی بر اساس زبان جدید
+            checkEmptyFieldsDefaultTexts(data);
+
+            closeModal('sub-language');
+        }
+
+        function checkEmptyFieldsDefaultTexts(data) {
+            let uName = document.getElementById('display-username');
+            if(uName.innerText === 'تنظیم نشده' || uName.innerText === 'Not set') uName.innerText = data.notSet;
+            let uPhone = document.getElementById('display-phone');
+            if(uPhone.innerText === 'تنظیم نشده' || uPhone.innerText === 'Not set') uPhone.innerText = data.notSet;
+            let uBio = document.getElementById('display-bio');
+            if(uBio.innerText.includes('بیوگرافی اضافه نشده') || uBio.innerText.includes('No bio added')) {
+                uBio.innerText = data.noBio;
+                document.getElementById('sub-acc-display-bio').innerText = data.noBio;
+            }
+            
+            // بازگرداندن وضعیت حریم خصوصی ترجمه شده
+            document.querySelectorAll('.privacy-status-value').forEach(s => {
+                if(s.innerText === 'همه' || s.innerText === 'Everybody') s.innerText = data.all;
+                if(s.innerText === 'مخاطبان من' || s.innerText === 'My Contacts') s.innerText = data.contacts;
+                if(s.innerText === 'هیچ‌کس' || s.innerText === 'Nobody') s.innerText = data.none;
+            });
+        }
+
+        // حرکت راحت و بی نقص بین صفحات اصلی
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
             document.getElementById('page-' + pageId).style.display = 'block';
@@ -388,17 +655,14 @@
             element.classList.add('active');
         }
 
-        // عملکرد کلیک روی لیست کاربران
         function openChat(name) {
-            alert('ورود به محیط گفتگو با ' + name);
+            alert(currentLanguage === 'فارسی' ? 'ورود به محیط گفتگو با ' + name : 'Entering chat room with ' + name);
         }
 
-        // فعال‌سازی منوی گالری گوشی/سیستم برای پروفایل
         function triggerPhotoUpload() {
             document.getElementById('fileInput').click();
         }
 
-        // پردازش و نمایش عکس انتخابی روی دایره پروفایل
         function loadPhoto(event) {
             const reader = new FileReader();
             reader.onload = function() {
@@ -411,25 +675,28 @@
             }
         }
 
-        // فعال‌سازی آپلود پس‌زمینه گفتگو
         function triggerChatBgUpload() {
             document.getElementById('chatBgInput').click();
         }
 
-        // شبیه‌سازی دریافت تصویر پس‌زمینه گفتگو
         function loadChatBackground(event) {
             if(event.target.files[0]) {
-                document.getElementById('bg-status-label').innerText = 'عکس سفارشی انتخاب شد';
-                alert('پس‌زمینه چت با موفقیت تغییر کرد.');
+                document.getElementById('bg-status-label').innerText = currentLanguage === 'فارسی' ? 'عکس انتخاب شد' : 'Custom image set';
+                alert(currentLanguage === 'فارسی' ? 'پس‌زمینه چت تغییر کرد.' : 'Chat background successfully changed.');
             }
         }
 
-        // اسلایدر تغییر سایز متن پیش‌نمایش گفتگو
+        // اسلایدر تغییر سایز پیش‌نمایش گفتگو
         function changeTextSize(size) {
             document.getElementById('text-preview').style.fontSize = size + 'px';
         }
 
-        // سوئیچ تم کل برنامه (روز/شب) به همراه فعال ماندن چک‌باکس داخل منو
+        // عملکرد کلیدهای روشن/خاموش اعلان به درخواست شما
+        function handleNotificationToggle(type, isEnabled) {
+            console.log("Notification trigger for: " + type + " -> Enabled: " + isEnabled);
+        }
+
+        // عملکرد کامل کلید تم روز و شب با قابلیت سینک کامل دکمه
         function toggleGlobalDarkMode(checkbox) {
             if(checkbox.checked) {
                 document.body.classList.add('dark-mode');
@@ -438,18 +705,7 @@
             }
         }
 
-        // تنظیم مدیریت گزینه‌های زبان
-        function setLanguage(lang) {
-            document.getElementById('display-current-lang').innerText = lang;
-            if(lang === 'فارسی') {
-                document.getElementById('lang-fa').checked = true;
-            } else {
-                document.getElementById('lang-en').checked = true;
-            }
-            closeModal('sub-language');
-        }
-
-        // توابع باز و بسته کردن صفحات اختصاصی ویرایش داده‌ها
+        // مدیریت باز و بسته شدن مودال‌ها
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
             if(modalId === 'modal-name-edit') {
@@ -461,28 +717,26 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // باز کردن گزینه‌های حریم خصوصی خاص
-        function openPrivacySetting(privacyKey, titleText) {
+        // تنظیمات فیلدهای فرعی حریم خصوصی
+        function openPrivacySetting(privacyKey, titleText, type) {
             activePrivacyKey = privacyKey;
+            activePrivacyType = type;
             document.getElementById('privacy-option-title').innerText = titleText;
             
-            // پیدا کردن استاتوس فعلی و ست کردن روی رادیوباتن‌ها
-            let currentStatus = '';
-            if(privacyKey === 'phone_privacy') currentStatus = document.getElementById('status-privacy-phone').innerText;
-            if(privacyKey === 'lastseen_privacy') currentStatus = document.getElementById('status-privacy-lastseen').innerText;
-            if(privacyKey === 'avatar_privacy') currentStatus = document.getElementById('status-privacy-avatar').innerText;
-            if(privacyKey === 'calls_privacy') currentStatus = document.getElementById('status-privacy-calls').innerText;
-            if(privacyKey === 'bio_privacy') currentStatus = document.getElementById('status-privacy-bio').innerText;
-
+            let currentStatus = document.getElementById('status-privacy-' + type).innerText;
             let radios = document.getElementsByName('privacy-choice');
-            for(let radio of radios) {
-                if(radio.value === currentStatus) radio.checked = true;
-            }
+            
+            const data = translations[currentLanguage];
+            let checkValue = "همه"; 
+            if(currentStatus === data.myContacts || currentStatus === "مخاطبان من") checkValue = "مخاطبان من";
+            if(currentStatus === data.nobody || currentStatus === "هیچ‌کس") checkValue = "هیچ‌کس";
 
+            for(let radio of radios) {
+                if(radio.value === checkValue) radio.checked = true;
+            }
             openModal('modal-privacy-options');
         }
 
-        // ثبت انتخاب گزینه حریم خصوصی
         function savePrivacyChoice() {
             let selectedValue = 'همه';
             let radios = document.getElementsByName('privacy-choice');
@@ -490,17 +744,18 @@
                 if(radio.checked) selectedValue = radio.value;
             }
 
-            if(activePrivacyKey === 'phone_privacy') document.getElementById('status-privacy-phone').innerText = selectedValue;
-            if(activePrivacyKey === 'lastseen_privacy') document.getElementById('status-privacy-lastseen').innerText = selectedValue;
-            if(activePrivacyKey === 'avatar_privacy') document.getElementById('status-privacy-avatar').innerText = selectedValue;
-            if(activePrivacyKey === 'calls_privacy') document.getElementById('status-privacy-calls').innerText = selectedValue;
-            if(activePrivacyKey === 'bio_privacy') document.getElementById('status-privacy-bio').innerText = selectedValue;
+            const data = translations[currentLanguage];
+            let displayText = data.all;
+            if(selectedValue === "مخاطبان من") displayText = data.contacts;
+            if(selectedValue === "هیچ‌کس") displayText = data.none;
 
+            document.getElementById('status-privacy-' + activePrivacyType).innerText = displayText;
             closeModal('modal-privacy-options');
         }
 
-        // ذخیره تغییرات هر فیلد به صورت جداگانه در تمام کادرهای مربوطه (بدون اختلال یا حذف کدهای قبلی)
+        // ذخیره فیلدهای متنی پروفایل بدون هیچ افت کیفیت یا خرابی کدها
         function saveField(type) {
+            const data = translations[currentLanguage];
             if (type === 'name') {
                 let val = document.getElementById('input-name').value;
                 if(val.trim() !== "") {
