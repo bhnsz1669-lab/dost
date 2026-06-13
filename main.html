@@ -896,20 +896,7 @@
             }
         }
     <script>
-    // این کد به محض لود شدن صفحه اصلی اجرا می‌شود
-            else if (type === 'bio') {
-                let val = document.getElementById('input-bio').value;
-                if(val.trim() !== "") {
-                    document.getElementById('display-bio').innerText = val;
-                    document.getElementById('sub-acc-display-bio').innerText = val;
-                }
-                closeModal('modal-bio');
-            }
-        }
-    </script>
-
-    <script>
-        // دریافت اطلاعات از صفحه پیش‌ثبت‌نام و نمایش خودکار آن‌ها
+        // دریافت اطلاعات از پیش‌ثبت‌نام و نمایش در پروفایل
         window.addEventListener('load', function() {
             const savedName = localStorage.getItem('userData_name');
             const savedPhone = localStorage.getItem('userData_phone');
@@ -932,7 +919,7 @@
             }
 
             if (savedImg) {
-                const avatarEl = document.getElementById('main-avatar'); // اگر آیدی آواتار شما متفاوت است جایگزین کنید
+                const avatarEl = document.getElementById('main-avatar');
                 if(avatarEl) avatarEl.src = savedImg;
             }
         });
