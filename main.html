@@ -897,28 +897,45 @@
         }
     <script>
     // این کد به محض لود شدن صفحه اصلی اجرا می‌شود
-    window.onload = function() {
-        const savedName = localStorage.getItem('userData_name');
-        const savedPhone = localStorage.getItem('userData_phone');
-
-        // جایگذاری نام در بخش‌های مختلف پروفایل سایت اصلی
-        if (savedName) {
-            const nameElements = [
-                document.getElementById('display-name'), 
-                document.getElementById('sub-acc-display-name'), 
-                document.getElementById('settings-acc-name')
-            ];
-            nameElements.forEach(el => { 
-                if(el) el.innerText = savedName; 
-            });
+            else if (type === 'bio') {
+                let val = document.getElementById('input-bio').value;
+                if(val.trim() !== "") {
+                    document.getElementById('display-bio').innerText = val;
+                    document.getElementById('sub-acc-display-bio').innerText = val;
+                }
+                closeModal('modal-bio');
+            }
         }
+    </script>
 
-        // جایگذاری شماره تلفن در بخش پروفایل سایت اصلی
-        if (savedPhone) {
-            const phoneEl = document.getElementById('display-phone');
-            if(phoneEl) phoneEl.innerText = savedPhone;
-        }
-    };
-</script>
+    <script>
+        // دریافت اطلاعات از صفحه پیش‌ثبت‌نام و نمایش خودکار آن‌ها
+        window.addEventListener('load', function() {
+            const savedName = localStorage.getItem('userData_name');
+            const savedPhone = localStorage.getItem('userData_phone');
+            const savedImg = localStorage.getItem('userData_img');
+
+            if (savedName) {
+                const nameElements = [
+                    document.getElementById('display-name'), 
+                    document.getElementById('sub-acc-display-name'), 
+                    document.getElementById('settings-acc-name')
+                ];
+                nameElements.forEach(el => { 
+                    if(el) el.innerText = savedName; 
+                });
+            }
+
+            if (savedPhone) {
+                const phoneEl = document.getElementById('display-phone');
+                if(phoneEl) phoneEl.innerText = savedPhone;
+            }
+
+            if (savedImg) {
+                const avatarEl = document.getElementById('main-avatar'); // اگر آیدی آواتار شما متفاوت است جایگزین کنید
+                if(avatarEl) avatarEl.src = savedImg;
+            }
+        });
+    </script>
 </body>
 </html>
