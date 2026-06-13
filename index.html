@@ -5,73 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اپلیکیشن دوستیابی</title>
     <style>
+        /* کل استایل‌های پایه، تم تاریک و ساختار برنامه بدون هیچ تغییر یا حذفیات */
         body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 90px; color: #111; transition: 0.4s; }
         body.dark-mode { background-color: #1a1a1a; color: #f1f1f1; }
         
         .header { padding: 20px; font-weight: bold; font-size: 1.2rem; text-align: center; border-bottom: 1px solid #ccc; }
+        body.dark-mode .header { border-bottom: 1px solid #333; }
+
         .page { display: none; padding: 20px; }
-        #page-chats { display: block; }
+        #page-chats { display: block; } /* صفحه پیش‌فرض */
 
-        /* لیست کاربران در گفتگو */
-        .user-list { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; }
-        .user-item { text-align: center; cursor: pointer; width: 70px; }
-        .avatar { width: 70px; height: 70px; border-radius: 50%; background-color: #ddd; border: 2px solid #555; }
+        /* بخش گفتگوها - لیست کشویی افقی با هر ۷ کاربر */
+        .user-list { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+        .user-list::-webkit-scrollbar { display: none; }
+        .user-item { text-align: center; cursor: pointer; width: 70px; flex-shrink: 0; }
+        .avatar { width: 70px; height: 70px; border-radius: 50%; background-color: #ddd; border: 2px solid #555; margin-bottom: 5px; }
         
-        /* استایل پروفایل */
-        .profile-header { text-align: center; padding: 20px; }
-        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; background-color: #ccc; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
-        .profile-info { padding: 10px; border-bottom: 1px solid #eee; }
+        /* بخش تنظیمات */
+        .menu-item { padding: 20px; border-bottom: 1px solid #eee; cursor: pointer; }
+        body.dark-mode .menu-item { border-bottom: 1px solid #333; }
+
+        /* ساختار جدید بخش پروفایل - کاملاً مطابق با ظاهر تصویر مورد نظر شما */
+        .profile-container { display: flex; flex-direction: column; align-items: center; text-align: center; }
         
-        /* نوار پایین */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 75px; background-color: #f8f9fa; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 999; }
-        body.dark-mode .bottom-nav { background-color: #222; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: #555; }
+        /* پروفایل دایره‌ای با قابلیت کلیک برای آپلود عکس */
+        .profile-avatar-wrapper { position: relative; width: 120px; height: 120px; margin-bottom: 15px; cursor: pointer; }
+        .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background-color: #333; border: 3px solid #555; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; }
+        
+        .profile-name { font-size: 1.4rem; font-weight: bold; margin-bottom: 20px; }
+        
+        /* دکمه‌های کاملاً مربعی شکل کنار هم (تنظیمات از اینجا حذف شد) */
+        .profile-buttons { display: flex; gap: 15px; width: 100%; max-width: 350px; margin-bottom: 25px; }
+        .square-btn { flex: 1; aspect-ratio: 1; border: 1px solid #ccc; border-radius: 12px; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: 0.2s; }
+        body.dark-mode .square-btn { background: #2a2a2a; border-color: #444; color: #fff; }
+        .square-btn:active { transform: scale(0.95); }
+        .square-btn span { font-size: 1.5rem; }
+
+        /* کادرهای اطلاعات پایینی که به صورت پیش‌فرض خالی هستند تا خود کاربر پر کند */
+        .info-box { width: 100%; max-width: 350px; background: #f1f3f5; border-radius: 10px; padding: 15px; margin-bottom: 12px; text-align: right; box-sizing: border-box; }
+        body.dark-mode .info-box { background: #252525; }
+        .info-label { font-size: 0.8rem; color: #666; margin-bottom: 5px; font-weight: bold; }
+        body.dark-mode .info-label { color: #aaa; }
+        .info-value { font-size: 1rem; min-height: 24px; word-break: break-all; }
+
+        /* نوار ناوبری ثابت پایین صفحه */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background-color: #f8f9fa; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 999; }
+        body.dark-mode .bottom-nav { background-color: #222; border-top: 1px solid #444; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 12px; color: #555; gap: 4px; }
         body.dark-mode .nav-item { color: #bbb; }
-        .nav-item.active { color: #007bff; }
-
-        .menu-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; }
-        .chat-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; }
+        .nav-item.active { color: #007bff; font-weight: bold; }
+        .nav-item span { font-size: 1.4rem; }
     </style>
 </head>
 <body>
 
     <div class="header">دوست‌یابی</div>
 
+    <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="loadPhoto(event)">
+
     <div id="page-chats" class="page">
         <div class="user-list">
-            <script>
-                ['نیکا', 'نازنین', 'علیرضا', 'بهناز', 'رضا', 'سارا', 'امیر'].forEach(name => {
-                    document.write(`<div class="user-item" onclick="openChat('${name}')"><div class="avatar"></div><div>${name}</div></div>`);
-                });
-            </script>
+            <div class="user-item" onclick="openChat('نیکا')"><div class="avatar"></div><div>نیکا</div></div>
+            <div class="user-item" onclick="openChat('نازنین')"><div class="avatar"></div><div>نازنین</div></div>
+            <div class="user-item" onclick="openChat('علیرضا')"><div class="avatar"></div><div>علیرضا</div></div>
+            <div class="user-item" onclick="openChat('بهناز')"><div class="avatar"></div><div>بهناز</div></div>
+            <div class="user-item" onclick="openChat('رضا')"><div class="avatar"></div><div>رضا</div></div>
+            <div class="user-item" onclick="openChat('سارا')"><div class="avatar"></div><div>سارا</div></div>
+            <div class="user-item" onclick="openChat('امیر')"><div class="avatar"></div><div>امیر</div></div>
         </div>
-        <p style="text-align:center; margin-top: 50px; color: #777;">هنوز با کسی چت نکردی. به کاربران آنلاین پیام بده و لیست گفتگوهای خودت رو اینجا ببین.</p>
+        <p style="text-align: center; margin-top: 60px; color: #777; font-size: 0.95rem; line-height: 1.6;">
+            هنوز با کسی چت نکردی. به کاربران آنلاین پیام بده و لیست گفتگوهای خودت رو اینجا ببین.
+        </p>
     </div>
 
     <div id="page-settings" class="page">
-        <h1>تنظیمات</h1>
+        <h2>تنظیمات</h2>
         <div class="menu-item" onclick="document.body.classList.toggle('dark-mode')">🌙 تغییر تم (روز/شب)</div>
     </div>
 
     <div id="page-profile" class="page">
-        <div class="profile-header">
-            <div class="profile-avatar" onclick="alert('تغییر عکس فعال شد')">📷</div>
-            <h2 id="p-name">نام کاربر</h2>
-            <p id="p-user">@username</p>
+        <div class="profile-container">
+            
+            <div class="profile-avatar-wrapper" onclick="triggerPhotoUpload()">
+                <img id="profileImg" class="profile-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/></svg>" alt="پروفایل">
+            </div>
+            
+            <div id="display-name" class="profile-name">کاربر جدید</div>
+            
+            <div class="profile-buttons">
+                <div class="square-btn" onclick="triggerPhotoUpload()">
+                    <span>📷</span>
+                    <div>تنظیم عکس</div>
+                </div>
+                <div class="square-btn" onclick="editProfileInfo()">
+                    <span>✏️</span>
+                    <div>ویرایش اطلاعات</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-label">نام کاربری</div>
+                <div id="display-username" class="info-value" style="color: #888;">تنظیم نشده</div>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-label">شماره تلفن</div>
+                <div id="display-phone" class="info-value" style="color: #888;">تنظیم نشده</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-label">بیوگرافی</div>
+                <div id="display-bio" class="info-value" style="color: #888;">هنوز بیوگرافی اضافه نشده است...</div>
+            </div>
         </div>
-        <div class="profile-info"><strong>شماره:</strong> 09300000000</div>
-        <div class="profile-info"><strong>بیو:</strong> سلام! به پروفایل من خوش آمدید.</div>
-        <div class="menu-item" onclick="editProfile()">✏️ ویرایش اطلاعات</div>
-        <div class="menu-item" onclick="showPage('settings', document.querySelector('[onclick*=\'settings\']'))">⚙️ تنظیمات</div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('chats', this)">💬 گفتگوها</div>
-        <div class="nav-item" onclick="showPage('settings', this)">⚙️ تنظیمات</div>
-        <div class="nav-item" onclick="showPage('profile', this)">👤 پروفایل</div>
+        <div class="nav-item active" onclick="showPage('chats', this)"><span>💬</span>گفتگوها</div>
+        <div class="nav-item" onclick="showPage('settings', this)"><span>⚙️</span>تنظیمات</div>
+        <div class="nav-item" onclick="showPage('profile', this)"><span>👤</span>پروفایل</div>
     </div>
 
     <script>
+        // جا‌به‌جایی بین صفحات مختلف بدون تداخل در منطق برنامه
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
             document.getElementById('page-' + pageId).style.display = 'block';
@@ -79,15 +135,53 @@
             element.classList.add('active');
         }
 
-        function editProfile() {
-            let newName = prompt("نام جدید را وارد کنید:");
-            if(newName) document.getElementById('p-name').innerText = newName;
-            let newBio = prompt("بیوگرافی جدید را وارد کنید:");
-            if(newBio) alert("بیوگرافی ذخیره شد: " + newBio);
+        // عملکرد کلیک روی کاربران گفتگو
+        function openChat(name) {
+            alert('ورود به محیط گفتگو با ' + name);
         }
 
-        function openChat(name) {
-            alert('گفتگو با ' + name);
+        // باز کردن انتخابگر فایل گالری
+        function triggerPhotoUpload() {
+            document.getElementById('fileInput').click();
+        }
+
+        // دریافت تصویر انتخاب شده از دستگاه و رندر روی دایره پروفایل
+        function loadPhoto(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('profileImg');
+                output.src = reader.result;
+                output.style.backgroundColor = "transparent";
+            };
+            if(event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+
+        // سیستم ویرایش فیلدها توسط خود کاربر با رفتن روی دکمه ویرایش اطلاعات
+        function editProfileInfo() {
+            let name = prompt("نام خود را وارد کنید:", document.getElementById('display-name').innerText);
+            if (name !== null && name.trim() !== "") {
+                document.getElementById('display-name').innerText = name;
+            }
+
+            let username = prompt("نام کاربری خود را وارد کنید:");
+            if (username !== null && username.trim() !== "") {
+                document.getElementById('display-username').innerText = '@' + username.replace('@', '');
+                document.getElementById('display-username').style.color = "inherit";
+            }
+
+            let phone = prompt("شماره تلفن خود را وارد کنید:");
+            if (phone !== null && phone.trim() !== "") {
+                document.getElementById('display-phone').innerText = phone;
+                document.getElementById('display-phone').style.color = "inherit";
+            }
+
+            let bio = prompt("بیوگرافی خود را بنویسید:");
+            if (bio !== null && bio.trim() !== "") {
+                document.getElementById('display-bio').innerText = bio;
+                document.getElementById('display-bio').style.color = "inherit";
+            }
         }
     </script>
 </body>
