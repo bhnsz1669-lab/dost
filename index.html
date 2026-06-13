@@ -9,8 +9,41 @@
         body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 110px; color: #111; transition: 0.4s; overflow-x: hidden; }
         body.dark-mode { background-color: #1a1a1a; color: #f1f1f1; }
         
-        .header { padding: 20px; font-weight: bold; font-size: 1.2rem; text-align: center; border-bottom: 1px solid #ccc; }
-        body.dark-mode .header { border-bottom: 1px solid #333; }
+        /* هدر جدید و توسعه‌یافته */
+        .header { 
+            padding: 12px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid #ccc; 
+            background: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background 0.4s, border-color 0.4s;
+        }
+        body.dark-mode .header { border-bottom: 1px solid #333; background: #1a1a1a; }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .header-avatar { 
+            width: 38px; 
+            height: 38px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid #555; 
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 10px;
+        }
+        .header-title { font-weight: bold; font-size: 1.1rem; }
+
+        .header-left { display: flex; align-items: center; gap: 14px; }
+        .header-btn { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+        .header-btn:active { transform: scale(0.9); }
+        .header-btn svg { width: 28px; height: 28px; }
 
         /* سیستم انیمیشن نرم برای جابجایی صفحه‌ها */
         .page { display: none; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.25s ease-in-out; }
@@ -66,30 +99,22 @@
         body.dark-mode .info-label { color: #52a4ff; }
         .info-value { font-size: 0.95rem; min-height: 20px; word-break: break-all; }
 
-        /* سیستم ناوبری هوشمند و هماهنگ با تم روز و شب */
+        /* سیستم ناوبری هوشمند کپسولی */
         .nav-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; height: 74px; z-index: 9999; }
-        
-        /* حالت پیش‌فرض (تم روشن): پس‌زمینه روشن و کپسولی واش‌اوت با سایه نرم */
         .bottom-nav { width: 100%; height: 100%; background-color: rgba(245, 245, 247, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-radius: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.06); box-sizing: border-box; padding: 0 10px; transition: background-color 0.4s, border-color 0.4s, box-shadow 0.4s; }
-        
-        /* حالت فعال (تم تاریک): تغییر رنگ نوار به تیره متالیک تلگرامی */
         body.dark-mode .bottom-nav { background-color: rgba(28, 28, 30, 0.94); border: 1px solid rgba(255,255,255,0.07); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
         
-        /* استایل متون ناوبری هماهنگ با تم */
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; color: #666666; gap: 4px; flex: 1; height: 100%; transition: color 0.3s ease; position: relative; }
         body.dark-mode .nav-item { color: #aaaaaa; }
         
-        /* کپسول بیضی شکل پس‌زمینه برای آیتم فعال */
         .nav-icon-wrapper { display: flex; align-items: center; justify-content: center; width: 64px; height: 36px; border-radius: 20px; transition: background-color 0.3s ease; position: relative; }
         .nav-icon-wrapper svg { width: 24px; height: 24px; transition: transform 0.3s ease; }
 
-        /* استایل‌های هماهنگ با وضعیت فعال (Active) منو در تم روز و شب */
-        .nav-item.active { color: #007bff; font-weight: bold; } /* رنگ متن فعال در روز */
-        body.dark-mode .nav-item.active { color: #ffffff; } /* رنگ متن فعال در شب */
+        .nav-item.active { color: #007bff; font-weight: bold; }
+        body.dark-mode .nav-item.active { color: #ffffff; }
         
-        .nav-item.active .nav-icon-wrapper { background-color: rgba(0, 123, 255, 0.15); } /* رنگ کپسول فعال در روز */
-        body.dark-mode .nav-item.active .nav-icon-wrapper { background-color: rgba(255, 255, 255, 0.12); } /* رنگ کپسول فعال در شب */
-        
+        .nav-item.active .nav-icon-wrapper { background-color: rgba(0, 123, 255, 0.15); }
+        body.dark-mode .nav-item.active .nav-icon-wrapper { background-color: rgba(255, 255, 255, 0.12); }
         .nav-item.active .nav-icon-wrapper svg { transform: scale(1.1); }
 
         /* استایل مودال‌ها */
@@ -104,6 +129,52 @@
         .modal-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; }
         .btn-save { background: #007bff; color: white; }
         .btn-cancel { background: #dc3545; color: white; }
+
+        /* سیستم شیک و کشویی از پایین به بالا (Bottom Sheet) برای خرید اشتراک */
+        .bottom-sheet-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; backdrop-filter: blur(4px); }
+        .bottom-sheet { 
+            position: fixed; 
+            bottom: -100%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 100%; 
+            max-width: 500px; 
+            background: #ffffff; 
+            border-top-left-radius: 24px; 
+            border-top-right-radius: 24px; 
+            padding: 24px; 
+            box-sizing: border-box; 
+            z-index: 10001; 
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); 
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+        }
+        body.dark-mode .bottom-sheet { background: #222222; color: #f1f1f1; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
+        .bottom-sheet.open { bottom: 0; }
+        .bottom-sheet-handle { width: 40px; height: 5px; background: #ccc; border-radius: 3px; margin: -10px auto 20px auto; }
+        body.dark-mode .bottom-sheet-handle { background: #555; }
+        
+        /* باکس پلن‌های خرید اعتبار */
+        .subscription-box { 
+            border: 2px solid #007bff; 
+            background: rgba(0, 123, 255, 0.04); 
+            border-radius: 16px; 
+            padding: 18px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin: 20px 0;
+            box-sizing: border-box;
+        }
+        body.dark-mode .subscription-box { border-color: #52a4ff; background: rgba(82, 164, 255, 0.06); }
+        .sub-box-right { display: flex; align-items: center; gap: 12px; }
+        .sub-box-icon { width: 32px; height: 32px; fill: #007bff; }
+        body.dark-mode .sub-box-icon { fill: #52a4ff; }
+        .sub-box-title { font-weight: bold; font-size: 1.05rem; }
+        .sub-box-price { font-weight: bold; color: #28a745; font-size: 1.1rem; }
+        body.dark-mode .sub-box-price { color: #2cd155; }
+        
+        .btn-payment { width: 100%; padding: 14px; background: #28a745; color: #fff; border: none; border-radius: 14px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn-payment:active { transform: scale(0.98); background: #218838; }
 
         /* سوئیچ دکمه روشن/خاموش */
         .switch { position: relative; display: inline-block; width: 46px; height: 24px; flex-shrink: 0; }
@@ -125,11 +196,33 @@
 
         html[dir="ltr"] body { text-align: left; }
         html[dir="ltr"] .info-box, html[dir="ltr"] .preview-box, html[dir="ltr"] .section-title { text-align: left; }
+        html[dir="ltr"] .header-right { flex-direction: row-reverse; }
     </style>
 </head>
 <body>
 
-    <div class="header" id="main-header">دوست‌یابی</div>
+    <div class="header" id="main-header-container">
+        <div class="header-right">
+            <img id="headerProfileImg" class="header-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z'/></svg>" alt="پروفایل">
+            <div class="header-title" id="main-header">دوست‌یابی</div>
+        </div>
+        <div class="header-left">
+            <button class="header-btn" onclick="openSubscriptionSheet()" title="خرید اشتراک">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="bagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#4facfe" />
+                            <stop offset="100%" stop-color="#00f2fe" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M12,2 A5,5 0 0,0 7,7 L9,7 A3,3 0 0,1 15,7 L17,7 A5,5 0 0,0 12,2 Z" fill="#4facfe" />
+                    <path d="M6,8 L18,8 C19.5,8 20.5,9.2 20.2,10.7 L18.5,19.2 C18.2,20.8 16.8,22 15.2,22 L8.8,22 C7.2,22 5.8,20.8 5.5,19.2 L3.8,10.7 C3.5,9.2 4.5,8 6,8 Z" fill="url(#bagGrad)" />
+                    <circle cx="12" cy="14" r="2" fill="#ffffff" opacity="0.9" />
+                    <path d="M12,16 L12,19" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9" />
+                </svg>
+            </button>
+        </div>
+    </div>
 
     <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="loadPhoto(event)">
     <input type="file" id="chatBgInput" accept="image/*" style="display: none;" onchange="loadChatBackground(event)">
@@ -472,6 +565,26 @@
         </div>
     </div>
 
+    <div id="subscription-backdrop" class="bottom-sheet-backdrop" onclick="closeSubscriptionSheet()"></div>
+    <div id="subscription-sheet" class="bottom-sheet">
+        <div class="bottom-sheet-handle"></div>
+        <div class="modal-header" id="sub-sheet-title">افزایش اعتبار</div>
+        <p id="sub-sheet-desc" style="text-align: center; color: #666; font-size: 0.88rem; margin: 0 0 10px 0;">برای ارسال پیام‌های بیشتر، اعتبار خود را فعال کنید.</p>
+        
+        <div class="subscription-box">
+            <div class="sub-box-right">
+                <svg class="sub-box-icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z"/>
+                </svg>
+                <div class="sub-box-title" id="sub-plan-name">۵۰۰ پیام</div>
+            </div>
+            <div class="sub-box-price" id="sub-plan-price">۲۰۰۰ ریال</div>
+        </div>
+
+        <button class="btn-payment" id="btn-sub-action" onclick="navigateToGateway()">خرید</button>
+        <button class="modal-btn btn-cancel cancel-btn-text" style="width:100%; margin-top:10px; padding:12px; border-radius:14px;" onclick="closeSubscriptionSheet()">انصراف</button>
+    </div>
+
     <div class="nav-container">
         <div class="bottom-nav">
             <div class="nav-item active" onclick="showPage('chats', this)">
@@ -528,7 +641,9 @@
                 secChatBg: 'تصویر پس‌زمینه', optChangeBg: 'تغییر پس‌زمینه گفتگو', secChatTheme: 'پوسته ظاهری', optDarkMode: 'تغییر به حالت شب (تم تاریک)',
                 backBtn: 'بازگشت', saveBtn: 'ذخیره تنظیمات', cancelBtn: 'انصراف', allUsers: 'همه کاربران', myContacts: 'مخاطبان من',
                 nobody: 'هیچ‌کس', all: 'همه', contacts: 'مخاطبان من', none: 'هیچ‌کس', headEditName: 'تغییر نام اصلی',
-                headEditUser: 'تنظیم نام کاربری', headEditPhone: 'تنظیم شماره تلفن', headEditBio: 'ویرایش بیوگرافی'
+                headEditUser: 'تنظیم نام کاربری', headEditPhone: 'تنظیم شماره تلفن', headEditBio: 'ویرایش بیوگرافی',
+                subSheetTitle: 'افزایش اعتبار', subSheetDesc: 'برای ارسال پیام‌های بیشتر، اعتبار خود را فعال کنید.',
+                subPlanName: '۵۰۰ پیام', subPlanPrice: '۲۰۰۰ ریال', btnSubAction: 'خرید'
             },
             'English': {
                 dir: 'ltr', mainHeader: 'Dating App', noChats: 'You haven\'t chatted with anyone yet. Message online users and see your chat list here.',
@@ -545,9 +660,32 @@
                 secChatBg: 'Background Image', optChangeBg: 'Change Chat Background', secChatTheme: 'Visual Theme', optDarkMode: 'Switch to Night Mode (Dark)',
                 backBtn: 'Back', saveBtn: 'Save Settings', cancelBtn: 'Cancel', allUsers: 'Everybody', myContacts: 'My Contacts',
                 nobody: 'Nobody', all: 'Everybody', contacts: 'My Contacts', none: 'Nobody', headEditName: 'Change Main Name',
-                headEditUser: 'Set Username', headEditPhone: 'Set Phone Number', headEditBio: 'Edit Biography'
+                headEditUser: 'Set Username', headEditPhone: 'Set Phone Number', headEditBio: 'Edit Biography',
+                subSheetTitle: 'Increase Balance', subSheetDesc: 'Activate your credit to send more messages.',
+                subPlanName: '500 Messages', subPlanPrice: '2000 Rials', btnSubAction: 'Buy Now'
             }
         };
+
+        // توابع مدیریت صفحه خرید اشتراک کشویی (Bottom Sheet)
+        function openSubscriptionSheet() {
+            document.getElementById('subscription-backdrop').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('subscription-sheet').classList.add('open');
+            }, 10);
+        }
+
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+
+        function closeSubscriptionSheet() {
+            document.getElementById('subscription-sheet').classList.remove('open');
+            setTimeout(() => {
+                document.getElementById('subscription-backdrop').style.display = 'none';
+            }, 400);
+        }
+
+        function navigateToGateway() {
+            alert(currentLanguage === 'فارسی' ? 'در حال انتقال به درگاه پرداخت بانک...' : 'Redirecting to secure payment gateway...');
+        }
 
         function setLanguage(lang) {
             currentLanguage = lang;
@@ -613,6 +751,12 @@
             document.getElementById('head-edit-phone').innerText = data.headEditPhone;
             document.getElementById('head-edit-bio').innerText = data.headEditBio;
 
+            document.getElementById('sub-sheet-title').innerText = data.subSheetTitle;
+            document.getElementById('sub-sheet-desc').innerText = data.subSheetDesc;
+            document.getElementById('sub-plan-name').innerText = data.subPlanName;
+            document.getElementById('sub-plan-price').innerText = data.subPlanPrice;
+            document.getElementById('btn-sub-action').innerText = data.btnSubAction;
+
             document.querySelectorAll('.back-btn-text').forEach(b => b.innerText = data.backBtn);
             document.querySelectorAll('.save-btn-text').forEach(b => b.innerText = data.saveBtn);
             document.querySelectorAll('.cancel-btn-text').forEach(b => b.innerText = data.cancelBtn);
@@ -668,8 +812,11 @@
             const reader = new FileReader();
             reader.onload = function() {
                 const output = document.getElementById('profileImg');
+                const headerOutput = document.getElementById('headerProfileImg');
                 output.src = reader.result;
+                headerOutput.src = reader.result;
                 output.style.backgroundColor = "transparent";
+                headerOutput.style.backgroundColor = "transparent";
             };
             if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
         }
@@ -701,8 +848,6 @@
                 document.getElementById('input-name').value = document.getElementById('display-name').innerText;
             }
         }
-
-        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
 
         function openPrivacySetting(privacyKey, titleText, type) {
             activePrivacyKey = privacyKey;
