@@ -3,28 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه دوست یابی</title>
+    <title>صفحه دوستیابی</title>
     <style>
-        body { font-family: Tahoma, sans-serif; background-color: #A4BCE0; margin: 0; padding: 20px; color: #111; transition: 0.4s; }
+        /* تنظیمات کلی و تم ها */
+        body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding: 20px; color: #111; transition: 0.4s; }
         body.dark-mode { background-color: #1a1a1a; color: #f1f1f1; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 10px 0; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 10px 0; border-bottom: 1px solid #ccc; }
         
-        /* آیکون‌های هدر با قابلیت تغییر رنگ */
-        .icon-btn { font-size: 1.5rem; cursor: pointer; color: #111; transition: 0.3s; }
+        /* هماهنگی آیکون ها با تم */
+        .icon-btn { font-size: 1.6rem; cursor: pointer; color: #111; transition: 0.3s; }
         body.dark-mode .icon-btn { color: #fff; }
 
         .user-list { display: flex; flex-direction: row; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
-        .user-item { flex: 0 0 auto; text-align: center; cursor: pointer; width: 65px; }
-        .avatar { width: 65px; height: 65px; border-radius: 50%; background-color: #ddd; object-fit: cover; border: 2px solid white; }
+        .user-item { flex: 0 0 auto; text-align: center; cursor: pointer; width: 70px; }
+        .avatar { width: 70px; height: 70px; border-radius: 50%; background-color: #ddd; object-fit: cover; border: 2px solid #555; }
         
-        /* منوی تنظیمات کشویی */
+        /* منوی کشویی سمت راست */
         .side-menu { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; right: 0; background-color: #fff; overflow-x: hidden; transition: 0.5s; padding-top: 60px; box-shadow: -2px 0 5px rgba(0,0,0,0.2); }
         body.dark-mode .side-menu { background-color: #333; }
-        .side-menu button { display: block; width: 80%; margin: 10px auto; padding: 10px; cursor: pointer; }
+        .side-menu a { display: block; padding: 15px 20px; text-decoration: none; color: #333; cursor: pointer; border-bottom: 1px solid #eee; }
+        body.dark-mode .side-menu a { color: #fff; border-bottom: 1px solid #444; }
+        .close-btn { position: absolute; top: 10px; left: 20px; font-size: 25px; cursor: pointer; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
-        .box { background: white; width: 80%; max-width: 300px; padding: 20px; border-radius: 20px; text-align: center; color: #333; }
+        /* صفحه چت */
+        .chat-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 2000; flex-direction: column; }
+        body.dark-mode .chat-container { background: #1a1a1a; }
+        .chat-header { padding: 15px; background: #eee; display: flex; justify-content: space-between; align-items: center; }
+        body.dark-mode .chat-header { background: #333; }
     </style>
 </head>
 <body>
@@ -32,45 +38,52 @@
     <div class="header">
         <div class="icon-btn" onclick="openNav()">⚙️</div>
         <div style="font-weight:bold;">دوست یابی</div>
-        <div class="icon-btn" onclick="alert('خرید اشتراک')">🛒</div>
+        <div class="icon-btn" onclick="alert('سبد خرید')">🛒</div>
     </div>
 
     <div id="sideMenu" class="side-menu">
-        <button onclick="closeNav()">بستن منو</button>
-        <button onclick="document.body.classList.toggle('dark-mode')">تغییر تم (روز/شب)</button>
+        <span class="close-btn" onclick="closeNav()">✖️</span>
+        <a onclick="document.body.classList.toggle('dark-mode')">تغییر تم (روز/شب)</a>
+        <a>ویرایش پروفایل</a>
+        <a>تنظیمات اعلان‌ها</a>
+        <a>حریم خصوصی</a>
+        <a>امنیت و تغییر رمز</a>
     </div>
 
     <div class="user-list">
-        <div class="user-item" onclick="checkChat('نیکا')"><img class="avatar" src="user1.jpg"><div class="name">نیکا</div></div>
-        <div class="user-item" onclick="checkChat('نازنین')"><img class="avatar" src="user2.jpg"><div class="name">نازنین</div></div>
-        <div class="user-item" onclick="checkChat('علی رضا')"><img class="avatar" src="user3.jpg"><div class="name">علی رضا</div></div>
-        <div class="user-item" onclick="checkChat('بهناز')"><img class="avatar" src="user4.jpg"><div class="name">بهناز</div></div>
-        <div class="user-item" onclick="checkChat('رضا')"><img class="avatar" src="user5.jpg"><div class="name">رضا</div></div>
-        <div class="user-item" onclick="checkChat('سارا')"><img class="avatar" src="user6.jpg"><div class="name">سارا</div></div>
-        <div class="user-item" onclick="checkChat('امیر')"><img class="avatar" src="user7.jpg"><div class="name">امیر</div></div>
+        <div class="user-item" onclick="openChat('نیکا')"><img class="avatar" src="user1.jpg"><div class="name">نیکا</div></div>
+        <div class="user-item" onclick="openChat('نازنین')"><img class="avatar" src="user2.jpg"><div class="name">نازنین</div></div>
+        <div class="user-item" onclick="openChat('علی رضا')"><img class="avatar" src="user3.jpg"><div class="name">علی رضا</div></div>
+        <div class="user-item" onclick="openChat('بهناز')"><img class="avatar" src="user4.jpg"><div class="name">بهناز</div></div>
+        <div class="user-item" onclick="openChat('رضا')"><img class="avatar" src="user5.jpg"><div class="name">رضا</div></div>
+        <div class="user-item" onclick="openChat('سارا')"><img class="avatar" src="user6.jpg"><div class="name">سارا</div></div>
+        <div class="user-item" onclick="openChat('امیر')"><img class="avatar" src="user7.jpg"><div class="name">امیر</div></div>
     </div>
 
-    <div id="chatModal" class="modal">
-        <div class="box">
-            <h2 id="chatName">چت</h2>
-            <button onclick="document.getElementById('chatModal').style.display='none'">بستن</button>
+    <div id="chatPage" class="chat-container">
+        <div class="chat-header">
+            <span id="chatTitle"></span>
+            <button onclick="closeChat()">بستن چت</button>
         </div>
+        <div style="padding: 20px;">اینجا محیط چت شماست...</div>
     </div>
 
     <script>
-        let hasSubscription = true; // برای تست روی true تنظیم شد
+        let hasSubscription = true; // برای تست صفحه چت (روی true باقی مانده است)
 
-        function checkChat(name) {
+        function openNav() { document.getElementById("sideMenu").style.width = "260px"; }
+        function closeNav() { document.getElementById("sideMenu").style.width = "0"; }
+
+        function openChat(name) {
             if (hasSubscription) {
-                document.getElementById('chatName').innerText = 'گفتگو با ' + name;
-                document.getElementById('chatModal').style.display = 'flex';
+                document.getElementById('chatTitle').innerText = 'گفتگو با ' + name;
+                document.getElementById('chatPage').style.display = 'flex';
             } else {
                 alert("لطفاً ابتدا اشتراک خود را خریداری کنید.");
             }
         }
 
-        function openNav() { document.getElementById("sideMenu").style.width = "250px"; }
-        function closeNav() { document.getElementById("sideMenu").style.width = "0"; }
+        function closeChat() { document.getElementById('chatPage').style.display = 'none'; }
     </script>
 </body>
 </html>
