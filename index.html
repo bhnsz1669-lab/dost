@@ -8,7 +8,6 @@
     :root {
       --bg: #121212;
       --card: #1e1e1e;
-      --card-2: rgba(30, 30, 30, 0.6); /* Slightly transparent for glass effect */
       --text: #ffffff;
       --muted: #9a9a9a;
       --line: #3a3a3a;
@@ -19,244 +18,33 @@
       --focus: #7093d8;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font-family: Tahoma, Arial, sans-serif; display: flex; justify-content: center; padding: 24px 16px 100px; }
+    .container { width: 100%; max-width: 420px; }
+    
+    /* استایل‌های هدر و پروفایل */
+    .header-box { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+    .logo { width: 58px; height: 58px; object-fit: contain; }
+    .app-name-small { font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
+    .main-header { font-size: 1.7rem; font-weight: 700; }
+    .profile-circle { width: 100px; height: 100px; border-radius: 50%; background: var(--card); border: 2px dashed #333; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; cursor: pointer; }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Tahoma, Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      padding: 24px 16px 100px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .header-box {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 28px;
-    }
-
-    .logo {
-      width: 58px;
-      height: 58px;
-      object-fit: contain;
-    }
-
-    .app-name-small {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .main-header {
-      font-size: 1.7rem;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .profile-circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: var(--card);
-      border: 2px dashed #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 28px;
-      cursor: pointer;
-      overflow: hidden;
-      transition: 0.2s ease;
-    }
-
-    .profile-circle:hover {
-      transform: scale(1.02);
-      border-color: #555;
-    }
-
-    .profile-circle span {
-      font-size: 0.8rem;
-      color: #b0b0b0;
-    }
-
-    .input-group {
-      margin-bottom: 20px;
-    }
-
-    .label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .input-field {
-      width: 100%;
-      border: none;
-      border-bottom: 1px solid var(--line);
-      background: transparent;
-      color: var(--text);
-      outline: none;
-      font-size: 1.05rem;
-      padding: 10px 0;
-      transition: border-color 0.25s ease;
-    }
-
-    .input-field:focus {
-      border-bottom-color: var(--focus);
-    }
-
-    .error-message {
-      display: none;
-      margin-top: 6px;
-      font-size: 0.78rem;
-      color: var(--err);
-    }
-
-    .phone-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 6px;
-      transition: border-color 0.25s ease;
-      direction: ltr;
-    }
-
-    .country-box {
-      position: relative;
-      flex: 0 0 auto;
-    }
-
-    .country-display {
-      width: 72px;
-      height: 72px;
-      background: var(--card-2); /* Glass effect */
-      backdrop-filter: blur(10px); /* Blur effect */
-      -webkit-backdrop-filter: blur(10px); /* For Safari */
-      border: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border for glass */
-      border-radius: 16px; /* Even softer corners */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-      padding: 6px 4px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Softer shadow */
-      transition: all 0.3s ease;
-    }
-
-    .country-display:hover {
-      transform: translateY(-1px);
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-    }
-
-    .country-code {
-      font-size: 1.1rem; /* Slightly larger */
-      font-weight: 600; /* Medium weight */
-      color: #ffffff;
-    }
-
-    .country-name {
-      margin-top: 4px;
-      font-size: 0.7rem; /* Smaller name */
-      color: var(--muted);
-      line-height: 1.1;
-      text-align: center;
-      text-transform: uppercase; /* Uppercase for a modern look */
-      letter-spacing: 0.5px;
-    }
-
-    .country-dropdown {
-      display: none;
-      position: absolute;
-      top: 82px;
-      right: 0;
-      width: 220px;
-      max-height: 220px;
-      overflow-y: auto;
-      background: rgba(30, 30, 30, 0.85); /* Slightly darker and more opaque dropdown */
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-      z-index: 50;
-      padding: 6px 0;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
-    }
-
-    .country-option {
-      padding: 10px 14px;
-      cursor: pointer;
-      color: var(--text);
-      font-size: 0.95rem;
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      transition: background 0.2s ease;
-    }
-
-    .country-option:hover {
-      background: rgba(50, 50, 50, 0.6); /* Darker hover for dropdown */
-    }
-
-    .phone-input {
-      flex: 1;
-      min-width: 0;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 1.05rem;
-      direction: ltr;
-      text-align: left;
-      padding: 10px 0 8px;
-    }
-
-    .phone-wrapper:focus-within {
-      border-bottom-color: var(--focus);
-    }
-
-    .submit-btn-wide {
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      width: min(420px, calc(100% - 32px));
-      height: 52px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: white;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(216, 112, 147, 0.35);
-      transition: all 0.2s ease;
-    }
-
-    .submit-btn-wide:hover {
-      box-shadow: 0 10px 30px rgba(216, 112, 147, 0.45);
-    }
-    .submit-btn-wide:active {
-      transform: translateX(-50%) scale(0.99);
-      box-shadow: 0 5px 15px rgba(216, 112, 147, 0.3);
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    /* استایل اینپوت‌ها */
+    .input-group { margin-bottom: 20px; }
+    .label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 0.9rem; }
+    .input-field { width: 100%; border: none; border-bottom: 1px solid var(--line); background: transparent; color: var(--text); padding: 10px 0; outline: none; font-size: 1.05rem; }
+    .error-message { display: none; margin-top: 6px; font-size: 0.78rem; color: var(--err); }
+    
+    /* کادر تلفن هماهنگ شده */
+    .phone-wrapper { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 6px; direction: ltr; }
+    .phone-input { flex: 1; border: none; outline: none; background: transparent; color: var(--text); font-size: 1.05rem; }
+    
+    /* لودینگ و دکمه */
+    .submit-btn-wide { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(420px, calc(100% - 32px)); height: 52px; border: none; border-radius: 14px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: white; font-weight: 700; cursor: pointer; z-index: 100; }
+    #loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: #121212; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
+    .spin-logo { width: 80px; height: 80px; animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -271,55 +59,22 @@
     </div>
 
     <div class="profile-circle" onclick="document.getElementById('fileInput').click()">
-      <span>انتخاب تصویر</span>
+      <span id="imgPlaceholder">انتخاب تصویر</span>
+      <img id="profilePreview" style="width:100%; height:100%; border-radius:50%; display:none; object-fit:cover;">
     </div>
-    <input type="file" id="fileInput" class="hidden" accept="image/*">
+    <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="previewImage(this)">
 
     <div class="input-group">
       <label class="label">نام شما</label>
-      <input type="text" id="nameInput" class="input-field" placeholder="نام خود را وارد کنید">
+      <input type="text" id="nameInput" class="input-field" dir="auto" placeholder="نام خود را وارد کنید">
       <div id="nameError" class="error-message">لطفاً نام خود را وارد کنید</div>
     </div>
 
     <div class="input-group">
       <label class="label">شماره تلفن</label>
-
       <div class="phone-wrapper" id="phoneWrapper">
-        <div class="country-box">
-          <div class="country-display" id="countryDisplay" onclick="toggleCountryDropdown()">
-            <div class="country-code" id="selectedCountryCode">+98</div>
-            <div class="country-name" id="selectedCountryName">Iran</div>
-          </div>
-
-          <div class="country-dropdown" id="countryDropdown">
-            <div class="country-option" onclick="selectCountry('+98', 'Iran')">
-              <span>Iran</span><span>+98</span>
-            </div>
-            <div class="country-option" onclick="selectCountry('+1', 'USA')">
-              <span>USA</span><span>+1</span>
-            </div>
-            <div class="country-option" onclick="selectCountry('+44', 'UK')">
-              <span>UK</span><span>+44</span>
-            </div>
-            <div class="country-option" onclick="selectCountry('+49', 'Germany')">
-              <span>Germany</span><span>+49</span>
-            </div>
-            <div class="country-option" onclick="selectCountry('+33', 'France')">
-              <span>France</span><span>+33</span>
-            </div>
-            <div class="country-option" onclick="selectCountry('+91', 'India')">
-              <span>India</span><span>+91</span>
-            </div>
-          </div>
-        </div>
-
-        <input
-          type="tel"
-          id="phoneInput"
-          class="phone-input"
-          placeholder="9xxxxxxxxx"
-          oninput="validatePhoneInput()"
-        >
+        <span id="countryCode" style="color:var(--muted)">+98</span>
+        <input type="tel" id="phoneInput" class="phone-input" placeholder="9xxxxxxxxx" oninput="validatePhoneUI()">
       </div>
       <div id="phoneError" class="error-message">شماره تلفن معتبر نیست</div>
     </div>
@@ -327,108 +82,59 @@
 
   <button class="submit-btn-wide" onclick="validateForm()">ثبت نام</button>
 
+  <div id="loading-overlay">
+    <img src="1000012320.png" class="spin-logo" alt="Loading...">
+  </div>
+
   <script>
-    const nameInput = document.getElementById('nameInput');
-    const nameError = document.getElementById('nameError');
-    const phoneInput = document.getElementById('phoneInput');
-    const phoneWrapper = document.getElementById('phoneWrapper');
-    const phoneError = document.getElementById('phoneError');
-    const countryDropdown = document.getElementById('countryDropdown');
-    const countryDisplay = document.getElementById('countryDisplay');
-    const selectedCountryCode = document.getElementById('selectedCountryCode');
-    const selectedCountryName = document.getElementById('selectedCountryName');
-
-    function toggleCountryDropdown() {
-      countryDropdown.style.display = countryDropdown.style.display === 'block' ? 'none' : 'block';
+    function previewImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById('profilePreview').src = e.target.result;
+          document.getElementById('profilePreview').style.display = 'block';
+          document.getElementById('imgPlaceholder').style.display = 'none';
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
     }
 
-    function selectCountry(code, name) {
-      selectedCountryCode.textContent = code;
-      selectedCountryName.textContent = name;
-      countryDropdown.style.display = 'none';
-      validatePhoneInput(); // Re-validate phone after country selection
-    }
-
-    function validatePhoneInput() {
-      const value = phoneInput.value.trim();
-      const phoneNumberRegex = /^\d{10}$/; // Basic 10-digit check
-
-      if (value === '') {
-        phoneWrapper.style.borderBottomColor = 'var(--line)'; // Reset to default line color
-        phoneError.style.display = 'none';
-      } else if (phoneNumberRegex.test(value)) {
-        phoneWrapper.style.borderBottomColor = 'var(--ok)'; // Green for valid
-        phoneError.style.display = 'none';
+    function validatePhoneUI() {
+      const val = document.getElementById('phoneInput').value.trim();
+      const phoneRegex = /^(0?9)\d{9}$/;
+      const wrapper = document.getElementById('phoneWrapper');
+      
+      if (phoneRegex.test(val)) {
+        wrapper.style.borderBottomColor = 'var(--ok)';
+        document.getElementById('phoneError').style.display = 'none';
       } else {
-        phoneWrapper.style.borderBottomColor = 'var(--err)'; // Red for invalid
-        phoneError.style.display = 'block';
+        wrapper.style.borderBottomColor = 'var(--err)';
+        document.getElementById('phoneError').style.display = 'block';
       }
     }
 
     function validateForm() {
-      let isFormValid = true;
+      const name = document.getElementById('nameInput').value;
+      const phone = document.getElementById('phoneInput').value;
+      const phoneRegex = /^(0?9)\d{9}$/;
 
-      // Validate Name
-      if (nameInput.value.trim() === '') {
-        nameError.style.display = 'block';
-        nameInput.style.borderBottomColor = 'var(--err)';
-        isFormValid = false;
-      } else {
-        nameError.style.display = 'none';
-        nameInput.style.borderBottomColor = 'var(--ok)'; // Indicate valid state
+      if(name.trim() === "" || !phoneRegex.test(phone)) {
+        alert("لطفاً تمامی اطلاعات را به درستی وارد کنید");
+        return;
       }
 
-      // Validate Phone Number
-      validatePhoneInput(); // Ensure phone input state is updated
-      if (phoneError.style.display === 'block') {
-        isFormValid = false;
-      }
+      // ذخیره اطلاعات
+      localStorage.setItem('userData_name', name);
+      localStorage.setItem('userData_phone', phone);
+      const img = document.getElementById('profilePreview').src;
+      if(img.startsWith('data:image')) localStorage.setItem('userData_img', img);
 
-      if (isFormValid) {
-        alert('اطلاعات با موفقیت ارسال شد!');
-        // In a real app, you would submit the form here
-      }
+      // نمایش لودینگ و هدایت
+      document.getElementById('loading-overlay').style.display = 'flex';
+      setTimeout(() => {
+        window.location.href = 'main.html';
+      }, 2000);
     }
-
-    // Event listeners for focus/blur to manage border colors
-    nameInput.addEventListener('focus', () => {
-      nameInput.style.borderBottomColor = 'var(--focus)';
-    });
-    nameInput.addEventListener('blur', () => {
-      if (nameInput.value.trim() === '') {
-        nameInput.style.borderBottomColor = 'var(--line)';
-      } else {
-        nameInput.style.borderBottomColor = 'var(--ok)';
-      }
-    });
-
-    phoneInput.addEventListener('focus', () => {
-      // Only change focus color if not currently in an error state
-      if (phoneError.style.display !== 'block') {
-        phoneWrapper.style.borderBottomColor = 'var(--focus)';
-      }
-    });
-    phoneInput.addEventListener('blur', () => {
-      if (phoneInput.value.trim() === '') {
-        phoneWrapper.style.borderBottomColor = 'var(--line)';
-        phoneError.style.display = 'none'; // Hide error if empty on blur
-      } else {
-        validatePhoneInput(); // Re-validate and set color
-      }
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (event) => {
-      if (!countryDisplay.contains(event.target) && !countryDropdown.contains(event.target)) {
-        countryDropdown.style.display = 'none';
-      }
-    });
-
-    // Set default country on load
-    window.addEventListener('load', () => {
-      selectCountry('+98', 'Iran');
-    });
   </script>
-
 </body>
 </html>
