@@ -34,12 +34,12 @@
         
         .profile-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
         
-        /* سه دکمه مربعی مرتب و کوچک در یک ردیف افقی */
-        .profile-buttons { display: flex; gap: 10px; width: 100%; margin-bottom: 20px; }
-        .square-btn { flex: 1; aspect-ratio: 1; border: 1px solid #ccc; border-radius: 10px; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.2s; }
+        /* اصلاح ابعاد دکمه‌ها: بسیار کوچک، ظریف و مرتب در یک ردیف */
+        .profile-buttons { display: flex; gap: 8px; width: 100%; max-width: 320px; margin-bottom: 20px; justify-content: center; }
+        .square-btn { width: 75px; height: 75px; border: 1px solid #ccc; border-radius: 8px; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; font-weight: bold; font-size: 0.72rem; transition: 0.2s; box-sizing: border-box; }
         body.dark-mode .square-btn { background: #2a2a2a; border-color: #444; color: #fff; }
         .square-btn:active { transform: scale(0.95); }
-        .square-btn span { font-size: 1.2rem; }
+        .square-btn span { font-size: 1.1rem; }
 
         /* کادرهای اطلاعات کاربری ظریف و تمیز */
         .info-box { width: 100%; background: #f1f3f5; border-radius: 10px; padding: 12px 15px; margin-bottom: 10px; text-align: right; box-sizing: border-box; cursor: pointer; transition: 0.2s; }
