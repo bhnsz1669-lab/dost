@@ -3,31 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه دوستیابی</title>
+    <title>اپلیکیشن دوستیابی</title>
     <style>
-        /* تنظیمات کلی و تم ها */
-        body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding: 20px; color: #111; transition: 0.4s; }
+        /* تنظیمات پایه */
+        body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 90px; color: #111; transition: 0.4s; }
         body.dark-mode { background-color: #1a1a1a; color: #f1f1f1; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 10px 0; border-bottom: 1px solid #ccc; }
+        /* مدیریت صفحات */
+        .page { display: none; padding: 20px; }
+        #page-settings { display: block; } /* صفحه پیش‌فرض */
         
-        /* هماهنگی آیکون ها با تم */
-        .icon-btn { font-size: 1.6rem; cursor: pointer; color: #111; transition: 0.3s; }
-        body.dark-mode .icon-btn { color: #fff; }
+        /* نوار پایین صفحه */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 75px; background-color: #f8f9fa; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 999; }
+        body.dark-mode .bottom-nav { background-color: #222; border-top: 1px solid #444; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 12px; color: #555; }
+        body.dark-mode .nav-item { color: #bbb; }
+        .nav-item.active { color: #007bff; }
 
-        .user-list { display: flex; flex-direction: row; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
-        .user-item { flex: 0 0 auto; text-align: center; cursor: pointer; width: 70px; }
-        .avatar { width: 70px; height: 70px; border-radius: 50%; background-color: #ddd; object-fit: cover; border: 2px solid #555; }
-        
-        /* منوی کشویی سمت راست */
-        .side-menu { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; right: 0; background-color: #fff; overflow-x: hidden; transition: 0.5s; padding-top: 60px; box-shadow: -2px 0 5px rgba(0,0,0,0.2); }
-        body.dark-mode .side-menu { background-color: #333; }
-        .side-menu a { display: block; padding: 15px 20px; text-decoration: none; color: #333; cursor: pointer; border-bottom: 1px solid #eee; }
-        body.dark-mode .side-menu a { color: #fff; border-bottom: 1px solid #444; }
-        .close-btn { position: absolute; top: 10px; left: 20px; font-size: 25px; cursor: pointer; }
+        /* لیست‌های منو */
+        .menu-item { padding: 20px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.3s; }
+        body.dark-mode .menu-item { border-bottom: 1px solid #333; }
+        .menu-item:hover { background-color: rgba(0,0,0,0.05); }
 
         /* صفحه چت */
-        .chat-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 2000; flex-direction: column; }
+        .chat-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; flex-direction: column; }
         body.dark-mode .chat-container { background: #1a1a1a; }
         .chat-header { padding: 15px; background: #eee; display: flex; justify-content: space-between; align-items: center; }
         body.dark-mode .chat-header { background: #333; }
@@ -35,44 +34,45 @@
 </head>
 <body>
 
-    <div class="header">
-        <div class="icon-btn" onclick="openNav()">⚙️</div>
-        <div style="font-weight:bold;">دوست یابی</div>
-        <div class="icon-btn" onclick="alert('سبد خرید')">🛒</div>
+    <div id="page-chats" class="page">
+        <h1>گفتگوها</h1>
+        <div onclick="openChat('نیکا')" class="menu-item">گفتگو با نیکا</div>
+        <div onclick="openChat('علیرضا')" class="menu-item">گفتگو با علیرضا</div>
     </div>
-
-    <div id="sideMenu" class="side-menu">
-        <span class="close-btn" onclick="closeNav()">✖️</span>
-        <a onclick="document.body.classList.toggle('dark-mode')">تغییر تم (روز/شب)</a>
-        <a>ویرایش پروفایل</a>
-        <a>تنظیمات اعلان‌ها</a>
-        <a>حریم خصوصی</a>
-        <a>امنیت و تغییر رمز</a>
+    <div id="page-contacts" class="page"><h1>مخاطبین</h1><p>لیست دوستان شما در اینجا نمایش داده می‌شود.</p></div>
+    <div id="page-settings" class="page">
+        <h1>تنظیمات</h1>
+        <div class="menu-item" onclick="document.body.classList.toggle('dark-mode')">🌙 تغییر تم (روز/شب)</div>
+        <div class="menu-item">👤 ویرایش پروفایل</div>
+        <div class="menu-item">📢 تنظیمات اعلان‌ها</div>
+        <div class="menu-item">🔒 حریم خصوصی و امنیت</div>
     </div>
+    <div id="page-profile" class="page"><h1>پروفایل</h1><p>اطلاعات کاربری شما.</p></div>
 
-    <div class="user-list">
-        <div class="user-item" onclick="openChat('نیکا')"><img class="avatar" src="user1.jpg"><div class="name">نیکا</div></div>
-        <div class="user-item" onclick="openChat('نازنین')"><img class="avatar" src="user2.jpg"><div class="name">نازنین</div></div>
-        <div class="user-item" onclick="openChat('علی رضا')"><img class="avatar" src="user3.jpg"><div class="name">علی رضا</div></div>
-        <div class="user-item" onclick="openChat('بهناز')"><img class="avatar" src="user4.jpg"><div class="name">بهناز</div></div>
-        <div class="user-item" onclick="openChat('رضا')"><img class="avatar" src="user5.jpg"><div class="name">رضا</div></div>
-        <div class="user-item" onclick="openChat('سارا')"><img class="avatar" src="user6.jpg"><div class="name">سارا</div></div>
-        <div class="user-item" onclick="openChat('امیر')"><img class="avatar" src="user7.jpg"><div class="name">امیر</div></div>
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="showPage('chats', this)"><span>💬</span>گفتگوها</div>
+        <div class="nav-item" onclick="showPage('contacts', this)"><span>👥</span>مخاطبین</div>
+        <div class="nav-item active" onclick="showPage('settings', this)"><span>⚙️</span>تنظیمات</div>
+        <div class="nav-item" onclick="showPage('profile', this)"><span>👤</span>پروفایل</div>
     </div>
 
     <div id="chatPage" class="chat-container">
         <div class="chat-header">
             <span id="chatTitle"></span>
-            <button onclick="closeChat()">بستن چت</button>
+            <button onclick="closeChat()">بستن</button>
         </div>
-        <div style="padding: 20px;">اینجا محیط چت شماست...</div>
+        <div style="padding: 20px;">محیط چت...</div>
     </div>
 
     <script>
-        let hasSubscription = true; // برای تست صفحه چت (روی true باقی مانده است)
+        let hasSubscription = true; // وضعیت اشتراک
 
-        function openNav() { document.getElementById("sideMenu").style.width = "260px"; }
-        function closeNav() { document.getElementById("sideMenu").style.width = "0"; }
+        function showPage(pageId, element) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById('page-' + pageId).style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+        }
 
         function openChat(name) {
             if (hasSubscription) {
@@ -82,7 +82,6 @@
                 alert("لطفاً ابتدا اشتراک خود را خریداری کنید.");
             }
         }
-
         function closeChat() { document.getElementById('chatPage').style.display = 'none'; }
     </script>
 </body>
