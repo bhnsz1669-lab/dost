@@ -6,14 +6,15 @@
     <title>اپلیکیشن دوستیابی</title>
     <style>
         /* استایل‌های پایه و سیستم تم روز/شب */
-        body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 90px; color: #111; transition: 0.4s; }
+        body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 90px; color: #111; transition: 0.4s; overflow-x: hidden; }
         body.dark-mode { background-color: #1a1a1a; color: #f1f1f1; }
         
         .header { padding: 20px; font-weight: bold; font-size: 1.2rem; text-align: center; border-bottom: 1px solid #ccc; }
         body.dark-mode .header { border-bottom: 1px solid #333; }
 
-        .page { display: none; padding: 20px; box-sizing: border-box; }
-        #page-chats { display: block; } /* صفحه پیش‌فرض */
+        /* سیستم انیمیشن نرم برای جابجایی صفحه‌ها دقیقاً مطابق ویدیو */
+        .page { display: none; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.25s ease-in-out; }
+        .page.active-page { display: block; opacity: 1; }
 
         /* بخش گفتگوها */
         .user-list { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; white-space: nowrap; -webkit-overflow-scrolling: touch; }
@@ -33,6 +34,11 @@
         .menu-item:active { background-color: #f1f1f1; }
         body.dark-mode .menu-item:active { background-color: #2a2a2a; }
         
+        /* استایل آیکون‌های داخلی منوهای تنظیمات */
+        .menu-item-title { display: flex; align-items: center; gap: 12px; }
+        .menu-icon { width: 20px; height: 20px; fill: none; stroke: #555; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        body.dark-mode .menu-icon { stroke: #ccc; }
+        
         .menu-right-side { display: flex; align-items: center; gap: 12px; }
         .menu-left-info { font-size: 0.85rem; color: #777; }
         body.dark-mode .menu-left-info { color: #aaa; }
@@ -47,6 +53,10 @@
         .action-btn { flex: 1; padding: 10px 6px; border: none; border-radius: 20px; background: #f0f2f5; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; color: #333; transition: 0.2s; box-sizing: border-box; }
         body.dark-mode .action-btn { background: #2a2a2a; color: #eee; }
         .action-btn:active { transform: scale(0.97); }
+        
+        /* آیکون‌های دکمه‌های پروفایل */
+        .btn-svg-icon { width: 16px; height: 16px; fill: none; stroke: #333; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        body.dark-mode .btn-svg-icon { stroke: #eee; }
 
         /* کادرهای اطلاعات کاربری استایل تلگرامی */
         .info-group { width: 100%; background: #f8f9fa; border-radius: 12px; border: 1px solid #eaeaea; overflow: hidden; margin-top: 15px; }
@@ -60,13 +70,29 @@
         body.dark-mode .info-label { color: #52a4ff; }
         .info-value { font-size: 0.95rem; min-height: 20px; word-break: break-all; }
 
-        /* نوار ناوبری ثابت پایین صفحه */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background-color: #f8f9fa; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 999; }
-        body.dark-mode .bottom-nav { background-color: #222; border-top: 1px solid #444; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 12px; color: #555; gap: 4px; }
-        body.dark-mode .nav-item { color: #bbb; }
+        /* نوار ناوبری ثابت پایین صفحه کاملاً شبیه به نمونه ویدیویی تلگرام */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 74px; background-color: #ffffff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #e5e5e5; z-index: 999; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        body.dark-mode .bottom-nav { background-color: #1e1e1e; border-top: 1px solid #2d2d2d; }
+        
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; color: #707579; gap: 4px; flex: 1; height: 100%; transition: color 0.2s ease; position: relative; }
+        body.dark-mode .nav-item { color: #aaaaaa; }
+        
+        /* کپسول بیضی شکل دور آیکون فعال مشابه ویدیو ارسالی */
+        .nav-icon-wrapper { display: flex; align-items: center; justify-content: center; width: 56px; height: 32px; border-radius: 16px; transition: background-color 0.2s ease, color 0.2s ease; }
+        
+        /* استایل رنگ آیکون‌های خطی SVG نوار ناوبری */
+        .nav-icon-wrapper svg { width: 22px; height: 22px; fill: none; stroke: #707579; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.2s ease, fill 0.2s ease; }
+        body.dark-mode .nav-icon-wrapper svg { stroke: #aaaaaa; }
+
+        /* افکت‌های فعال شدن نوار ناوبری متصل به SVG ها */
+        .nav-item.active .nav-icon-wrapper { background-color: #e8f2ff; }
+        body.dark-mode .nav-item.active .nav-icon-wrapper { background-color: #26384e; }
+        
+        .nav-item.active .nav-icon-wrapper svg { stroke: #007bff; fill: rgba(0, 123, 255, 0.1); }
+        body.dark-mode .nav-item.active .nav-icon-wrapper svg { stroke: #52a4ff; fill: rgba(82, 164, 255, 0.1); }
+        
         .nav-item.active { color: #007bff; font-weight: bold; }
-        .nav-item span { font-size: 1.4rem; }
+        body.dark-mode .nav-item.active { color: #52a4ff; }
 
         /* استایل مودال‌های تمام صفحه اختصاصی */
         .edit-page-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 3000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
@@ -81,14 +107,13 @@
         .btn-save { background: #007bff; color: white; }
         .btn-cancel { background: #dc3545; color: white; }
 
-        /* اصلاح کامل ساختار سوئیچ دکمه روشن/خاموش دقیق و بدون نقص */
+        /* سوئیچ دکمه روشن/خاموش */
         .switch { position: relative; display: inline-block; width: 46px; height: 24px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px; }
         .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
         input:checked + .slider { background-color: #007bff; }
         
-        /* جهت جابجایی دکمه بر اساس حالت راست‌چین و چپ‌چین استاندارد */
         html[dir="rtl"] input:checked + .slider:before { transform: translateX(-20px); }
         html[dir="ltr"] input:checked + .slider:before { transform: translateX(20px); }
         body.dark-mode .slider { background-color: #444; }
@@ -103,7 +128,6 @@
         body.dark-mode .radio-option { border-bottom: 1px solid #2d2d2d; }
         .radio-option input { width: 18px; height: 18px; cursor: pointer; margin: 0; }
 
-        /* استایل‌های جهت زبان انگلیسی تغییر کل جهت قالب */
         html[dir="ltr"] body { text-align: left; }
         html[dir="ltr"] .info-box, html[dir="ltr"] .preview-box, html[dir="ltr"] .section-title { text-align: left; }
     </style>
@@ -115,7 +139,7 @@
     <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="loadPhoto(event)">
     <input type="file" id="chatBgInput" accept="image/*" style="display: none;" onchange="loadChatBackground(event)">
 
-    <div id="page-chats" class="page">
+    <div id="page-chats" class="page active-page">
         <div class="user-list">
             <div class="user-item" onclick="openChat('نیکا')"><div class="avatar"></div><div>نیکا</div></div>
             <div class="user-item" onclick="openChat('نازنین')"><div class="avatar"></div><div>نازنین</div></div>
@@ -136,7 +160,10 @@
         <div class="section-title" id="sec-account">تنظیمات کاربری</div>
         <div class="menu-group">
             <div class="menu-item" onclick="openModal('sub-account')">
-                <span id="opt-account">👤 حساب کاربری</span>
+                <div class="menu-item-title">
+                    <svg class="menu-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span id="opt-account">حساب کاربری</span>
+                </div>
                 <span class="menu-left-info" id="settings-acc-name">مشاهده</span>
             </div>
         </div>
@@ -144,22 +171,34 @@
         <div class="section-title" id="sec-app-settings">تنظیمات اپلیکیشن</div>
         <div class="menu-group">
             <div class="menu-item" onclick="openModal('sub-privacy')">
-                <span id="opt-privacy">🔒 حریم خصوصی و امنیت</span>
+                <div class="menu-item-title">
+                    <svg class="menu-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span id="opt-privacy">حریم خصوصی و امنیت</span>
+                </div>
                 <span class="menu-left-info" id="lbl-privacy-sub">تنظیمات اصلی</span>
             </div>
             
             <div class="menu-item" onclick="openModal('sub-notifications')">
-                <span id="opt-notif">🔔 اعلان‌ها و صداها</span>
+                <div class="menu-item-title">
+                    <svg class="menu-icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <span id="opt-notif">اعلان‌ها و صداها</span>
+                </div>
                 <span class="menu-left-info" id="lbl-notif-sub">گفتگوها، گروه‌ها...</span>
             </div>
 
             <div class="menu-item" onclick="openModal('sub-chat-settings')">
-                <span id="opt-chat-settings">💬 تنظیمات گفتگو</span>
+                <div class="menu-item-title">
+                    <svg class="menu-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <span id="opt-chat-settings">تنظیمات گفتگو</span>
+                </div>
                 <span class="menu-left-info" id="lbl-chat-sub">پوسته، متن، پس‌زمینه</span>
             </div>
 
             <div class="menu-item" onclick="openModal('sub-language')">
-                <span id="opt-lang">🌐 زبان / Language</span>
+                <div class="menu-item-title">
+                    <svg class="menu-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    <span id="opt-lang">زبان / Language</span>
+                </div>
                 <span class="menu-left-info" id="display-current-lang">فارسی</span>
             </div>
         </div>
@@ -175,13 +214,16 @@
             
             <div class="profile-buttons">
                 <button class="action-btn" onclick="triggerPhotoUpload()">
-                    <span id="btn-lbl-photo-icon">📷</span><span id="btn-lbl-photo">تنظیم عکس</span>
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    <span id="btn-lbl-photo">تنظیم عکس</span>
                 </button>
                 <button class="action-btn" onclick="openModal('modal-name-edit')">
-                    <span id="btn-lbl-edit-icon">✏️</span><span id="btn-lbl-edit">ویرایش اطلاعات</span>
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    <span id="btn-lbl-edit">ویرایش اطلاعات</span>
                 </button>
-                <button class="action-btn" onclick="showPage('settings', document.querySelector('.bottom-nav .nav-item:nth-child(2)'))">
-                    <span id="btn-lbl-set-icon">⚙️</span><span id="btn-lbl-set">تنظیمات</span>
+                <button class="action-btn" onclick="showPage('settings', document.getElementById('nav-item-settings'))">
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <span id="btn-lbl-set">تنظیمات</span>
                 </button>
             </div>
 
@@ -331,7 +373,10 @@
         <div class="section-title" id="sec-chat-bg">تصویر پس‌زمینه</div>
         <div class="menu-group">
             <div class="menu-item" onclick="triggerChatBgUpload()">
-                <span id="opt-change-bg">🖼️ تغییر پس‌زمینه گفتگو</span>
+                <div class="menu-item-title">
+                    <svg class="menu-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <span id="opt-change-bg">تغییر پس‌زمینه گفتگو</span>
+                </div>
                 <span class="menu-left-info" id="bg-status-label">پیش‌فرض</span>
             </div>
         </div>
@@ -339,7 +384,10 @@
         <div class="section-title" id="sec-chat-theme">پوسته ظاهری</div>
         <div class="menu-group">
             <div class="menu-item" style="padding: 14px 20px;">
-                <span id="opt-dark-mode">🌙 تغییر به حالت شب (تم تاریک)</span>
+                <div class="menu-item-title">
+                    <svg class="menu-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span id="opt-dark-mode">تغییر به حالت شب (تم تاریک)</span>
+                </div>
                 <label class="switch">
                     <input type="checkbox" id="dark-mode-toggle" onchange="toggleGlobalDarkMode(this)">
                     <span class="slider"></span>
@@ -406,9 +454,34 @@
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('chats', this)"><span id="nav-idx-chats">💬</span><span id="nav-lbl-chats">گفتگوها</span></div>
-        <div class="nav-item" onclick="showPage('settings', this)"><span id="nav-idx-set">⚙️</span><span id="nav-lbl-set">تنظیمات</span></div>
-        <div class="nav-item" onclick="showPage('profile', this)"><span id="nav-idx-prof">👤</span><span id="nav-lbl-prof">پروفایل</span></div>
+        <div class="nav-item active" onclick="showPage('chats', this)">
+            <div class="nav-icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <span id="nav-lbl-chats">گفتگوها</span>
+        </div>
+        
+        <div class="nav-item" id="nav-item-settings" onclick="showPage('settings', this)">
+            <div class="nav-icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </div>
+            <span id="nav-lbl-set">تنظیمات</span>
+        </div>
+        
+        <div class="nav-item" onclick="showPage('profile', this)">
+            <div class="nav-icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <span id="nav-lbl-prof">پروفایل</span>
+        </div>
     </div>
 
     <script>
@@ -416,7 +489,6 @@
         let activePrivacyType = '';
         let currentLanguage = 'فارسی';
 
-        // دیکشنری کامل ترجمه برنامه برای سوئیچ کامل زبان
         const translations = {
             'فارسی': {
                 dir: 'rtl',
@@ -424,15 +496,15 @@
                 noChats: 'هنوز با کسی چت نکردی. به کاربران آنلاین پیام بده و لیست گفتگوهای خودت رو اینجا ببین.',
                 titleSettings: 'تنظیمات',
                 secAccount: 'تنظیمات کاربری',
-                optAccount: '👤 حساب کاربری',
+                optAccount: 'حساب کاربری',
                 secAppSettings: 'تنظیمات اپلیکیشن',
-                optPrivacy: '🔒 حریم خصوصی و امنیت',
+                optPrivacy: 'حریم خصوصی و امنیت',
                 lblPrivacySub: 'تنظیمات اصلی',
-                optNotif: '🔔 اعلان‌ها و صداها',
+                optNotif: 'اعلان‌ها و صداها',
                 lblNotifSub: 'گفتگوها، گروه‌ها...',
-                optChatSettings: '💬 تنظیمات گفتگو',
+                optChatSettings: 'تنظیمات گفتگو',
                 lblChatSub: 'پوسته، متن، پس‌زمینه',
-                optLang: '🌐 زبان / Language',
+                optLang: 'زبان / Language',
                 btnLblPhoto: 'تنظیم عکس',
                 btnLblEdit: 'ویرایش اطلاعات',
                 btnLblSet: 'تنظیمات',
@@ -463,9 +535,9 @@
                 secTextSize: 'اندازه متن پیام‌ها',
                 previewText: 'پیام پیش‌فرض: متن گفتگوها به این اندازه نمایش داده می‌شود.',
                 secChatBg: 'تصویر پس‌زمینه',
-                optChangeBg: '🖼️ تغییر پس‌زمینه گفتگو',
+                optChangeBg: 'تغییر پس‌زمینه گفتگو',
                 secChatTheme: 'پوسته ظاهری',
-                optDarkMode: '🌙 تغییر به حالت شب (تم تاریک)',
+                optDarkMode: 'تغییر به حالت شب (تم تاریک)',
                 backBtn: 'بازگشت',
                 saveBtn: 'ذخیره تنظیمات',
                 cancelBtn: 'انصراف',
@@ -486,15 +558,15 @@
                 noChats: 'You haven\'t chatted with anyone yet. Message online users and see your chat list here.',
                 titleSettings: 'Settings',
                 secAccount: 'User Settings',
-                optAccount: '👤 Account',
+                optAccount: 'Account',
                 secAppSettings: 'App Settings',
-                optPrivacy: '🔒 Privacy and Security',
+                optPrivacy: 'Privacy and Security',
                 lblPrivacySub: 'Main settings',
-                optNotif: '🔔 Notifications and Sounds',
+                optNotif: 'Notifications and Sounds',
                 lblNotifSub: 'Chats, groups...',
-                optChatSettings: '💬 Chat Settings',
+                optChatSettings: 'Chat Settings',
                 lblChatSub: 'Theme, text, background',
-                optLang: '🌐 Language / زبان',
+                optLang: 'Language / زبان',
                 btnLblPhoto: 'Set Photo',
                 btnLblEdit: 'Edit Info',
                 btnLblSet: 'Settings',
@@ -525,9 +597,9 @@
                 secTextSize: 'Message Text Size',
                 previewText: 'Default message: Chat text will look like this.',
                 secChatBg: 'Background Image',
-                optChangeBg: '🖼️ Change Chat Background',
+                optChangeBg: 'Change Chat Background',
                 secChatTheme: 'Visual Theme',
-                optDarkMode: '🌙 Switch to Night Mode (Dark)',
+                optDarkMode: 'Switch to Night Mode (Dark)',
                 backBtn: 'Back',
                 saveBtn: 'Save Settings',
                 cancelBtn: 'Cancel',
@@ -544,7 +616,6 @@
             }
         };
 
-        // تغییر کامل زبان برنامه با بازنویسی متن‌ها
         function setLanguage(lang) {
             currentLanguage = lang;
             document.getElementById('display-current-lang').innerText = lang;
@@ -558,7 +629,6 @@
                 document.getElementById('lang-en').checked = true;
             }
 
-            // اعمال لغات به‌روز شده به تمام تگ‌های شناسه دار برنامه
             document.getElementById('main-header').innerText = data.mainHeader;
             document.getElementById('no-chats-msg').innerText = data.noChats;
             document.getElementById('title-settings').innerText = data.titleSettings;
@@ -622,9 +692,7 @@
             document.querySelector('.rad-lbl-contacts').innerText = data.myContacts;
             document.querySelector('.rad-lbl-nobody').innerText = data.nobody;
 
-            // به‌روزرسانی فیلدهای خالی بر اساس زبان جدید
             checkEmptyFieldsDefaultTexts(data);
-
             closeModal('sub-language');
         }
 
@@ -639,7 +707,6 @@
                 document.getElementById('sub-acc-display-bio').innerText = data.noBio;
             }
             
-            // بازگرداندن وضعیت حریم خصوصی ترجمه شده
             document.querySelectorAll('.privacy-status-value').forEach(s => {
                 if(s.innerText === 'همه' || s.innerText === 'Everybody') s.innerText = data.all;
                 if(s.innerText === 'مخاطبان من' || s.innerText === 'My Contacts') s.innerText = data.contacts;
@@ -647,10 +714,30 @@
             });
         }
 
-        // حرکت راحت و بی نقص بین صفحات اصلی
+        // سیستم انیمیشنی جابجایی بین ۳ صفحه اصلی دقیقاً بر اساس ویدیو ارسالی
         function showPage(pageId, element) {
-            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById('page-' + pageId).style.display = 'block';
+            const activePage = document.querySelector('.page.active-page');
+            const targetPage = document.getElementById('page-' + pageId);
+            
+            if (activePage === targetPage) return;
+
+            // محو کردن صفحه فعلی
+            if (activePage) {
+                activePage.style.opacity = '0';
+                setTimeout(() => {
+                    activePage.classList.remove('active-page');
+                    // ظاهر کردن صفحه جدید با افکت نرم
+                    targetPage.classList.add('active-page');
+                    setTimeout(() => {
+                        targetPage.style.opacity = '1';
+                    }, 50);
+                }, 150);
+            } else {
+                targetPage.classList.add('active-page');
+                targetPage.style.opacity = '1';
+            }
+
+            // به‌روزرسانی منوی پایین صفحه
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
         }
@@ -686,17 +773,14 @@
             }
         }
 
-        // اسلایدر تغییر سایز پیش‌نمایش گفتگو
         function changeTextSize(size) {
             document.getElementById('text-preview').style.fontSize = size + 'px';
         }
 
-        // عملکرد کلیدهای روشن/خاموش اعلان به درخواست شما
         function handleNotificationToggle(type, isEnabled) {
             console.log("Notification trigger for: " + type + " -> Enabled: " + isEnabled);
         }
 
-        // عملکرد کامل کلید تم روز و شب با قابلیت سینک کامل دکمه
         function toggleGlobalDarkMode(checkbox) {
             if(checkbox.checked) {
                 document.body.classList.add('dark-mode');
@@ -705,7 +789,6 @@
             }
         }
 
-        // مدیریت باز و بسته شدن مودال‌ها
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
             if(modalId === 'modal-name-edit') {
@@ -717,7 +800,6 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // تنظیمات فیلدهای فرعی حریم خصوصی
         function openPrivacySetting(privacyKey, titleText, type) {
             activePrivacyKey = privacyKey;
             activePrivacyType = type;
@@ -753,7 +835,6 @@
             closeModal('modal-privacy-options');
         }
 
-        // ذخیره فیلدهای متنی پروفایل بدون هیچ افت کیفیت یا خرابی کدها
         function saveField(type) {
             const data = translations[currentLanguage];
             if (type === 'name') {
