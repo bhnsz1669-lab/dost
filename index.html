@@ -9,32 +9,28 @@
         body.dark-mode { background-color: #1a1a1a; color: #f1f1f1; }
         
         .header { padding: 20px; font-weight: bold; font-size: 1.2rem; text-align: center; border-bottom: 1px solid #ccc; }
-        
-        /* مدیریت صفحات */
         .page { display: none; padding: 20px; }
-        #page-chats { display: block; } /* صفحه پیش‌فرض گفتگو */
+        #page-chats { display: block; }
+
+        /* لیست کاربران در گفتگو */
+        .user-list { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; }
+        .user-item { text-align: center; cursor: pointer; width: 70px; }
+        .avatar { width: 70px; height: 70px; border-radius: 50%; background-color: #ddd; border: 2px solid #555; }
         
-        /* لیست کشویی کاربران */
-        .user-list { display: flex; flex-direction: row; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
-        .user-item { flex: 0 0 auto; text-align: center; cursor: pointer; width: 70px; }
-        .avatar { width: 70px; height: 70px; border-radius: 50%; background-color: #ddd; object-fit: cover; border: 2px solid #555; }
+        /* استایل پروفایل */
+        .profile-header { text-align: center; padding: 20px; }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; background-color: #ccc; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+        .profile-info { padding: 10px; border-bottom: 1px solid #eee; }
         
-        /* نوار پایین صفحه */
+        /* نوار پایین */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 75px; background-color: #f8f9fa; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 999; }
-        body.dark-mode .bottom-nav { background-color: #222; border-top: 1px solid #444; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 12px; color: #555; }
+        body.dark-mode .bottom-nav { background-color: #222; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: #555; }
         body.dark-mode .nav-item { color: #bbb; }
         .nav-item.active { color: #007bff; }
 
-        /* صفحات تنظیمات و پروفایل */
-        .menu-item { padding: 20px; border-bottom: 1px solid #eee; cursor: pointer; }
-        body.dark-mode .menu-item { border-bottom: 1px solid #333; }
-        
-        /* صفحه چت */
-        .chat-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; flex-direction: column; }
-        body.dark-mode .chat-container { background: #1a1a1a; }
-        .chat-header { padding: 15px; background: #eee; display: flex; justify-content: space-between; align-items: center; }
-        body.dark-mode .chat-header { background: #333; }
+        .menu-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; }
+        .chat-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; }
     </style>
 </head>
 <body>
@@ -43,44 +39,39 @@
 
     <div id="page-chats" class="page">
         <div class="user-list">
-            <div class="user-item" onclick="openChat('نیکا')"><div class="avatar"></div><div>نیکا</div></div>
-            <div class="user-item" onclick="openChat('نازنین')"><div class="avatar"></div><div>نازنین</div></div>
-            <div class="user-item" onclick="openChat('علیرضا')"><div class="avatar"></div><div>علیرضا</div></div>
-            <div class="user-item" onclick="openChat('بهناز')"><div class="avatar"></div><div>بهناز</div></div>
-            <div class="user-item" onclick="openChat('رضا')"><div class="avatar"></div><div>رضا</div></div>
+            <script>
+                ['نیکا', 'نازنین', 'علیرضا', 'بهناز', 'رضا', 'سارا', 'امیر'].forEach(name => {
+                    document.write(`<div class="user-item" onclick="openChat('${name}')"><div class="avatar"></div><div>${name}</div></div>`);
+                });
+            </script>
         </div>
-        <p>لیست گفتگوهای اخیر...</p>
+        <p style="text-align:center; margin-top: 50px; color: #777;">هنوز با کسی چت نکردی. به کاربران آنلاین پیام بده و لیست گفتگوهای خودت رو اینجا ببین.</p>
     </div>
 
     <div id="page-settings" class="page">
         <h1>تنظیمات</h1>
         <div class="menu-item" onclick="document.body.classList.toggle('dark-mode')">🌙 تغییر تم (روز/شب)</div>
-        <div class="menu-item">📢 تنظیمات اعلان‌ها</div>
-        <div class="menu-item">🔒 حریم خصوصی</div>
     </div>
 
     <div id="page-profile" class="page">
-        <h1>پروفایل</h1>
-        <p>اطلاعات کاربری شما در اینجا قرار دارد.</p>
+        <div class="profile-header">
+            <div class="profile-avatar" onclick="alert('تغییر عکس فعال شد')">📷</div>
+            <h2 id="p-name">نام کاربر</h2>
+            <p id="p-user">@username</p>
+        </div>
+        <div class="profile-info"><strong>شماره:</strong> 09300000000</div>
+        <div class="profile-info"><strong>بیو:</strong> سلام! به پروفایل من خوش آمدید.</div>
+        <div class="menu-item" onclick="editProfile()">✏️ ویرایش اطلاعات</div>
+        <div class="menu-item" onclick="showPage('settings', document.querySelector('[onclick*=\'settings\']'))">⚙️ تنظیمات</div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('chats', this)"><span>💬</span>گفتگوها</div>
-        <div class="nav-item" onclick="showPage('settings', this)"><span>⚙️</span>تنظیمات</div>
-        <div class="nav-item" onclick="showPage('profile', this)"><span>👤</span>پروفایل</div>
-    </div>
-
-    <div id="chatPage" class="chat-container">
-        <div class="chat-header">
-            <span id="chatTitle"></span>
-            <button onclick="closeChat()">بستن</button>
-        </div>
-        <div style="padding: 20px;">شروع گفتگو...</div>
+        <div class="nav-item active" onclick="showPage('chats', this)">💬 گفتگوها</div>
+        <div class="nav-item" onclick="showPage('settings', this)">⚙️ تنظیمات</div>
+        <div class="nav-item" onclick="showPage('profile', this)">👤 پروفایل</div>
     </div>
 
     <script>
-        let hasSubscription = true;
-
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
             document.getElementById('page-' + pageId).style.display = 'block';
@@ -88,15 +79,16 @@
             element.classList.add('active');
         }
 
-        function openChat(name) {
-            if (hasSubscription) {
-                document.getElementById('chatTitle').innerText = 'گفتگو با ' + name;
-                document.getElementById('chatPage').style.display = 'flex';
-            } else {
-                alert("لطفاً ابتدا اشتراک خود را خریداری کنید.");
-            }
+        function editProfile() {
+            let newName = prompt("نام جدید را وارد کنید:");
+            if(newName) document.getElementById('p-name').innerText = newName;
+            let newBio = prompt("بیوگرافی جدید را وارد کنید:");
+            if(newBio) alert("بیوگرافی ذخیره شد: " + newBio);
         }
-        function closeChat() { document.getElementById('chatPage').style.display = 'none'; }
+
+        function openChat(name) {
+            alert('گفتگو با ' + name);
+        }
     </script>
 </body>
 </html>
