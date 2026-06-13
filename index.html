@@ -3,52 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ورود به اپلیکیشن</title>
+    <title>پیش ثبت نام - دوست‌یابی</title>
     <style>
         body { font-family: Tahoma, sans-serif; background-color: #1a1a1a; color: #fff; margin: 0; display: flex; flex-direction: column; height: 100vh; }
         
-        /* لوگو یا عنوان بالا */
-        .header-logo { text-align: center; padding: 40px 0; font-size: 1.5rem; font-weight: bold; }
+        /* هدر اختصاصی با آیکون و اسم */
+        .app-header { background-color: #1a1a1a; padding: 40px 20px 20px 20px; text-align: center; border-bottom: 1px solid #333; }
+        .app-icon { width: 90px; height: 90px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); margin-bottom: 10px; }
+        .main-title { margin: 0; font-size: 1.8rem; color: #fff; }
+        .sub-title { font-size: 0.9rem; color: #d87093; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* بدنه فرم */
+        .register-box { padding: 40px 30px; flex-grow: 1; display: flex; flex-direction: column; align-items: center; }
+        .profile-pic { width: 110px; height: 110px; background: #333; border-radius: 50%; margin-bottom: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px dashed #555; overflow: hidden; position: relative; }
+        .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
+        .input-wrapper { width: 100%; border-bottom: 2px solid #555; padding: 15px 0; margin-bottom: 20px; }
+        .input-wrapper input { background: transparent; border: none; color: #fff; width: 100%; font-size: 1.1rem; outline: none; }
         
-        /* بدنه اصلی فرم */
-        .register-box { padding: 0 30px; flex-grow: 1; }
-        
-        /* بخش پروفایل */
-        .profile-pic { width: 100px; height: 100px; background: #333; border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px dashed #555; }
-        
-        /* اینپوت‌ها */
-        .input-wrapper { border-bottom: 2px solid #555; padding: 10px 0; margin-bottom: 20px; display: flex; align-items: center; }
-        .input-wrapper input { background: transparent; border: none; color: #fff; padding: 5px; width: 100%; font-size: 1rem; text-align: left; }
-        .prefix { color: #888; margin-left: 10px; }
-        
-        /* دکمه ارسال */
-        .fab-btn { width: 60px; height: 60px; background: #d87093; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: fixed; bottom: 30px; left: 30px; cursor: pointer; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .fab-btn svg { fill: white; width: 30px; }
+        /* دکمه ارسال (FAB) */
+        .fab-btn { width: 60px; height: 60px; background: #d87093; border-radius: 50%; border: none; position: fixed; bottom: 30px; left: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .spinner { width: 25px; height: 25px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; animation: spin 1s linear infinite; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="header-logo">دوست یابی</div>
-
-    <div class="register-box">
-        <div class="profile-pic" onclick="document.getElementById('fileInput').click()">👤</div>
-        <input type="file" id="fileInput" hidden>
-
-        <div class="input-wrapper">
-            <input type="text" placeholder="نام و نام خانوادگی">
-        </div>
-
-        <div class="input-wrapper">
-            <span class="prefix">+98</span>
-            <input type="tel" placeholder="---- ---- ----">
-        </div>
-        
-        <p style="color: #666; font-size: 0.8rem; margin-top: 10px;">لطفاً کشور خود را تأیید کرده و شماره تلفن خود را وارد کنید.</p>
+    <div class="app-header">
+        <img src="1000012320.png" alt="آیکون" class="app-icon">
+        <h1 class="main-title">دوست‌یابی</h1>
+        <span class="sub-title">اپلیکیشن</span>
     </div>
 
-    <button class="fab-btn" onclick="alert('در حال ورود...')">
-        <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+    <div class="register-box">
+        <div class="profile-pic" onclick="document.getElementById('fileInput').click()">
+            <span id="avatarIcon" style="font-size: 3rem;">👤</span>
+            <img id="avatarImg" src="" style="display:none;">
+        </div>
+        <input type="file" id="fileInput" hidden onchange="previewImage(this)">
+
+        <div class="input-wrapper">
+            <input type="text" id="userName" placeholder="نام و نام خانوادگی">
+        </div>
+        <div class="input-wrapper">
+            <input type="tel" id="userPhone" placeholder="شماره موبایل (09...)" maxlength="11">
+        </div>
+    </div>
+
+    <button class="fab-btn" onclick="submitForm()">
+        <svg id="btnIcon" viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+        <div id="loading" class="spinner"></div>
     </button>
 
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarImg').src = e.target.result;
+                    document.getElementById('avatarImg').style.display = 'block';
+                    document.getElementById('avatarIcon').style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function submitForm() {
+            let phone = document.getElementById('userPhone').value;
+            if (phone.length < 11 || !phone.startsWith('09')) {
+                alert("لطفاً شماره موبایل را صحیح وارد کنید.");
+                return;
+            }
+            
+            document.getElementById('btnIcon').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            setTimeout(() => {
+                window.location.href = "main.html";
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
