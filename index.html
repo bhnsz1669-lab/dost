@@ -3,25 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پیش ثبت نام - دوست‌یابی</title>
+    <title>پیش ثبت‌نام - دوست‌یابی</title>
     <style>
-        body { font-family: Tahoma, sans-serif; background-color: #1a1a1a; color: #fff; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap');
         
-        /* هدر اختصاصی با آیکون و اسم */
-        .app-header { background-color: #1a1a1a; padding: 40px 20px 20px 20px; text-align: center; border-bottom: 1px solid #333; }
-        .app-icon { width: 90px; height: 90px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); margin-bottom: 10px; }
-        .main-title { margin: 0; font-size: 1.8rem; color: #fff; }
-        .sub-title { font-size: 0.9rem; color: #d87093; letter-spacing: 2px; text-transform: uppercase; }
+        body { font-family: 'Vazirmatn', sans-serif; background-color: #f8f9fa; color: #333; margin: 0; height: 100vh; display: flex; flex-direction: column; }
 
-        /* بدنه فرم */
-        .register-box { padding: 40px 30px; flex-grow: 1; display: flex; flex-direction: column; align-items: center; }
-        .profile-pic { width: 110px; height: 110px; background: #333; border-radius: 50%; margin-bottom: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px dashed #555; overflow: hidden; position: relative; }
+        /* هدر حرفه‌ای */
+        .app-header { background: #fff; padding: 40px 20px 20px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .app-icon { width: 80px; height: 80px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        .main-title { margin: 0; font-size: 1.6rem; color: #222; font-weight: 700; }
+        .sub-title { font-size: 0.85rem; color: #007bff; letter-spacing: 1px; }
+
+        /* باکس فرم */
+        .register-box { padding: 30px; flex-grow: 1; }
+        .profile-pic { width: 100px; height: 100px; background: #eee; border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
         .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
-        .input-wrapper { width: 100%; border-bottom: 2px solid #555; padding: 15px 0; margin-bottom: 20px; }
-        .input-wrapper input { background: transparent; border: none; color: #fff; width: 100%; font-size: 1.1rem; outline: none; }
         
-        /* دکمه ارسال (FAB) */
-        .fab-btn { width: 60px; height: 60px; background: #d87093; border-radius: 50%; border: none; position: fixed; bottom: 30px; left: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .input-group { background: #fff; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        .input-group input { width: 100%; border: none; font-size: 1rem; outline: none; background: transparent; font-family: 'Vazirmatn'; }
+
+        /* دکمه شناور آبی در سمت راست پایین */
+        .fab-btn { width: 60px; height: 60px; background: #007bff; color: white; border-radius: 50%; border: none; position: fixed; bottom: 30px; right: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(0,123,255,0.4); transition: 0.3s; }
+        .fab-btn:hover { transform: scale(1.1); }
+
         .spinner { width: 25px; height: 25px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -29,28 +34,28 @@
 <body>
 
     <div class="app-header">
-        <img src="1000012320.png" alt="آیکون" class="app-icon">
+        <img src="1000012320.png" alt="Icon" class="app-icon">
         <h1 class="main-title">دوست‌یابی</h1>
         <span class="sub-title">اپلیکیشن</span>
     </div>
 
     <div class="register-box">
         <div class="profile-pic" onclick="document.getElementById('fileInput').click()">
-            <span id="avatarIcon" style="font-size: 3rem;">👤</span>
+            <span id="avatarIcon" style="font-size: 2rem; color: #aaa;">👤</span>
             <img id="avatarImg" src="" style="display:none;">
         </div>
         <input type="file" id="fileInput" hidden onchange="previewImage(this)">
 
-        <div class="input-wrapper">
+        <div class="input-group">
             <input type="text" id="userName" placeholder="نام و نام خانوادگی">
         </div>
-        <div class="input-wrapper">
-            <input type="tel" id="userPhone" placeholder="شماره موبایل (09...)" maxlength="11">
+        <div class="input-group">
+            <input type="tel" id="userPhone" placeholder="شماره موبایل" maxlength="11">
         </div>
     </div>
 
     <button class="fab-btn" onclick="submitForm()">
-        <svg id="btnIcon" viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+        <span id="btnIcon" style="font-size: 20px;">➔</span>
         <div id="loading" class="spinner"></div>
     </button>
 
@@ -70,16 +75,12 @@
         function submitForm() {
             let phone = document.getElementById('userPhone').value;
             if (phone.length < 11 || !phone.startsWith('09')) {
-                alert("لطفاً شماره موبایل را صحیح وارد کنید.");
+                alert("لطفاً شماره موبایل معتبر وارد کنید.");
                 return;
             }
-            
             document.getElementById('btnIcon').style.display = 'none';
             document.getElementById('loading').style.display = 'block';
-
-            setTimeout(() => {
-                window.location.href = "main.html";
-            }, 2000);
+            setTimeout(() => { window.location.href = "main.html"; }, 2000);
         }
     </script>
 </body>
