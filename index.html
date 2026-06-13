@@ -6,7 +6,7 @@
     <title>اپلیکیشن دوستیابی</title>
     <style>
         /* استایل‌های پایه و سیستم تم روز/شب */
-        body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 100px; color: #111; transition: 0.4s; overflow-x: hidden; }
+        body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 110px; color: #111; transition: 0.4s; overflow-x: hidden; }
         body.dark-mode { background-color: #1a1a1a; color: #f1f1f1; }
         
         .header { padding: 20px; font-weight: bold; font-size: 1.2rem; text-align: center; border-bottom: 1px solid #ccc; }
@@ -66,25 +66,31 @@
         body.dark-mode .info-label { color: #52a4ff; }
         .info-value { font-size: 0.95rem; min-height: 20px; word-break: break-all; }
 
-        /* 👑 نوار ناوبری لوزی/کپسولی شناور کاملاً مطابق تصویر ارسالی شما 👑 */
-        .nav-container { position: fixed; bottom: 20px; left: 5%; width: 90%; max-width: 500px; height: 74px; z-index: 9999; left: 50%; transform: translateX(-50%); }
-        .bottom-nav { width: 100%; height: 100%; background-color: rgba(28, 28, 30, 0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-radius: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); box-sizing: border-box; padding: 0 10px; }
-        body.dark-mode .bottom-nav { background-color: rgba(20, 20, 22, 0.96); border: 1px solid rgba(255,255,255,0.05); }
+        /* سیستم ناوبری هوشمند و هماهنگ با تم روز و شب */
+        .nav-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; height: 74px; z-index: 9999; }
         
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; color: #aaaaaa; gap: 4px; flex: 1; height: 100%; transition: all 0.3s ease; position: relative; }
+        /* حالت پیش‌فرض (تم روشن): پس‌زمینه روشن و کپسولی واش‌اوت با سایه نرم */
+        .bottom-nav { width: 100%; height: 100%; background-color: rgba(245, 245, 247, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-radius: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.06); box-sizing: border-box; padding: 0 10px; transition: background-color 0.4s, border-color 0.4s, box-shadow 0.4s; }
         
-        /* کپسول بیضی شکل پس‌زمینه برای آیتم فعال (دقیقاً مثل تصویر) */
+        /* حالت فعال (تم تاریک): تغییر رنگ نوار به تیره متالیک تلگرامی */
+        body.dark-mode .bottom-nav { background-color: rgba(28, 28, 30, 0.94); border: 1px solid rgba(255,255,255,0.07); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+        
+        /* استایل متون ناوبری هماهنگ با تم */
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; color: #666666; gap: 4px; flex: 1; height: 100%; transition: color 0.3s ease; position: relative; }
+        body.dark-mode .nav-item { color: #aaaaaa; }
+        
+        /* کپسول بیضی شکل پس‌زمینه برای آیتم فعال */
         .nav-icon-wrapper { display: flex; align-items: center; justify-content: center; width: 64px; height: 36px; border-radius: 20px; transition: background-color 0.3s ease; position: relative; }
         .nav-icon-wrapper svg { width: 24px; height: 24px; transition: transform 0.3s ease; }
 
-        /* حالت فعال بودن منو */
-        .nav-item.active .nav-icon-wrapper { background-color: rgba(255, 255, 255, 0.12); }
-        body.dark-mode .nav-item.active .nav-icon-wrapper { background-color: rgba(255, 255, 255, 0.08); }
+        /* استایل‌های هماهنگ با وضعیت فعال (Active) منو در تم روز و شب */
+        .nav-item.active { color: #007bff; font-weight: bold; } /* رنگ متن فعال در روز */
+        body.dark-mode .nav-item.active { color: #ffffff; } /* رنگ متن فعال در شب */
+        
+        .nav-item.active .nav-icon-wrapper { background-color: rgba(0, 123, 255, 0.15); } /* رنگ کپسول فعال در روز */
+        body.dark-mode .nav-item.active .nav-icon-wrapper { background-color: rgba(255, 255, 255, 0.12); } /* رنگ کپسول فعال در شب */
+        
         .nav-item.active .nav-icon-wrapper svg { transform: scale(1.1); }
-        .nav-item.active { color: #ffffff; font-weight: bold; }
-
-        /* پدج اعلان چت‌ها (تعداد پیام‌های خوانده نشده روی گفتگوها) */
-        .badge { position: absolute; top: -2px; right: -2px; background-color: #007bff; color: white; font-size: 10px; font-weight: bold; border-radius: 10px; padding: 2px 6px; min-width: 14px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
         /* استایل مودال‌ها */
         .edit-page-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 3000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
@@ -474,7 +480,6 @@
                         <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="#4285F4"/>
                         <path d="M6 7H18M6 11H14" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
                     </svg>
-                    <span class="badge">۳۲</span>
                 </div>
                 <span id="nav-lbl-chats">گفتگوها</span>
             </div>
@@ -683,8 +688,10 @@
         function toggleGlobalDarkMode(checkbox) {
             if(checkbox.checked) {
                 document.body.classList.add('dark-mode');
+                document.getElementById('dark-mode-toggle').checked = true;
             } else {
                 document.body.classList.remove('dark-mode');
+                document.getElementById('dark-mode-toggle').checked = false;
             }
         }
 
