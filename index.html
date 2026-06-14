@@ -1,292 +1,472 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه ورود</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ورود به برنامه دوستیابی</title>
 
-        /* قفل کردن صفحه برای جلوگیری از تکان خوردن و جابجایی */
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; 
-            background: #0f0c20;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
-        .wrapper {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #1f1a3a, #0f0c20);
-            perspective: 1000px; /* برای ایجاد عمق انیمیشن اندروید/آی‌او‌اس */
-        }
+  <style>
+    :root {
+      --bg1: #0f1020;
+      --bg2: #151a3d;
+      --card: rgba(255,255,255,0.10);
+      --card-border: rgba(255,255,255,0.18);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.72);
+      --accent: #ff4d8d;
+      --accent2: #7c5cff;
+      --shadow: 0 24px 80px rgba(0,0,0,0.35);
+      --glass: blur(16px);
+      --err: #ff5c7a;
+    }
 
-        .container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 35px 30px;
-            border-radius: 24px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* انیمیشن نرم خروج */
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Vazirmatn', sans-serif;
+    }
 
-        /* کلاسی که هنگام خروج و انتقال به دایره اعمال می‌شود */
-        .container.exit-active {
-            opacity: 0;
-            transform: scale(0.9) translateY(30px);
-            filter: blur(8px);
-        }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      color: var(--text);
+    }
 
-        .header-title {
-            color: #ffffff;
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
-        }
+    .wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
 
-        /* بخش آیکون برنامه - دایره‌ای، درخشان و چندلایه */
-        .app-icon-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
+    /* دکوراسیون‌های درخشان پس‌زمینه */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 1;
+      opacity: 0.5;
+    }
+    .circle-1 {
+      width: 150px;
+      height: 150px;
+      background: var(--accent);
+      top: -30px;
+      right: -30px;
+    }
+    .circle-2 {
+      width: 180px;
+      height: 180px;
+      background: var(--accent2);
+      bottom: -40px;
+      left: -40px;
+    }
 
-        .app-icon {
-            width: 95px;
-            height: 95px;
-            background: radial-gradient(circle, rgba(255, 51, 102, 0.2) 0%, rgba(255, 255, 255, 0.05) 70%);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ff3366;
-            font-size: 45px;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 3px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 20px rgba(255, 51, 102, 0.7), 
-                        0 0 40px rgba(255, 174, 0, 0.5), 
-                        0 0 60px rgba(255, 51, 102, 0.3),
-                        inset 0 0 20px rgba(255, 255, 255, 0.4),
-                        inset 0 0 10px rgba(255, 174, 0, 0.4);
-            animation: crystal-glow 2s infinite alternate ease-in-out;
-        }
+    .card {
+      position: relative;
+      z-index: 2;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      border-radius: 30px;
+      padding: 30px 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
 
-        @keyframes crystal-glow {
-            0% {
-                box-shadow: 0 0 15px rgba(255, 51, 102, 0.6), 0 0 30px rgba(255, 174, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.3);
-                border-color: rgba(255, 255, 255, 0.4);
-                transform: scale(1);
-            }
-            100% {
-                box-shadow: 0 0 30px rgba(255, 51, 102, 0.9), 0 0 55px rgba(255, 174, 0, 0.7), inset 0 0 25px rgba(255, 255, 255, 0.5);
-                border-color: rgba(255, 255, 255, 0.7);
-                transform: scale(1.02);
-            }
-        }
+    /* بخش اختصاصی آیکون برنامه متحرک و بدون کادر سبک iOS */
+    .app-logo-container {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        /* بخش پروفایل و انتخاب عکس بدون آیکون دوربین بنفش */
-        .profile-upload-section {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
+    .app-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 20px rgba(124, 92, 255, 0.4));
+      animation: iosIntro 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+                smoothFloat 4s ease-in-out infinite 1.2s;
+      transform: scale(0);
+    }
 
-        .profile-avatar-wrapper {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            cursor: pointer;
-        }
+    @keyframes iosIntro {
+      0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
 
-        .profile-preview {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #ff3366;
-            background: #333;
-        }
+    @keyframes smoothFloat {
+      0% { transform: translateY(0px); filter: drop-shadow(0 12px 20px rgba(124, 92, 255, 0.4)); }
+      50% { transform: translateY(-8px); filter: drop-shadow(0 20px 28px rgba(255, 77, 141, 0.5)); }
+      100% { transform: translateY(0px); filter: drop-shadow(0 12px 20px rgba(124, 92, 255, 0.4)); }
+    }
 
-        /* فیلدهای ورودی */
-        .input-group {
-            margin-bottom: 20px;
-            text-align: right;
-        }
+    /* تایپوگرافی جدید، انیمیشنی و خیره‌کننده "دوستیابی" هماهنگ با آیکون */
+    h2.brand-title {
+      font-size: 34px;
+      font-weight: 800; /* بیشترین ضخامت برای استایل لوکس موبایلی */
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 10%, #ff4d8d 60%, #7c5cff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      
+      /* انیمیشن ورود کشسانی اندروید/آی‌او‌اس + انیمیشن درخشش رنگی ملایم در پس‌زمینه متن */
+      animation: textPopIn 1.1s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards,
+                 shinyText 6s linear infinite;
+      opacity: 0;
+      transform: translateY(20px);
+    }
 
-        .input-group label {
-            display: block;
-            color: #b3b3b3;
-            font-size: 14px;
-            margin-bottom: 8px;
-            padding-right: 5px;
-        }
+    @keyframes textPopIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
 
-        .input-field {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-            text-align: right;
-        }
+    @keyframes shinyText {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        .input-field:focus {
-            border-color: #ff3366;
-            background: rgba(255, 255, 255, 0.12);
-            box-shadow: 0 0 10px rgba(255, 51, 102, 0.2);
-        }
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      animation: textPopIn 1.3s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    }
 
-        /* دکمه ارسال */
-        .submit-btn {
-            position: relative;
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(90deg, #ff3366, #ff5e62);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.3);
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    /* بخش انتخاب و آپلود عکس پروفایل */
+    .avatar-picker {
+      position: relative;
+      width: 95px;
+      height: 95px;
+      margin: 0 auto 20px;
+      cursor: pointer;
+    }
+    .avatar-preview {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px dashed var(--accent);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px;
+      transition: all 0.3s ease;
+    }
+    .avatar-picker:hover .avatar-preview {
+      border-color: var(--accent2);
+      transform: scale(1.04);
+    }
+    .avatar-hint {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: var(--accent2);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
 
-        .submit-btn:hover {
-            opacity: 0.9;
-            box-shadow: 0 7px 20px rgba(255, 51, 102, 0.5);
-        }
+    .input-group {
+      text-align: right;
+      margin-bottom: 20px;
+    }
 
-        /* استایل انیمیشن لودینگ چرخشی اندروید/آی‌او‌اس */
-        .spinner {
-            display: none;
-            width: 22px;
-            height: 22px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 0.8s linear infinite;
-        }
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--muted);
+      padding-right: 4px;
+    }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+    .input-wrapper {
+      position: relative;
+    }
 
-        #file-input {
-            display: none;
-        }
-    </style>
+    .input-wrapper input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s;
+      text-align: right;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 15px rgba(255, 77, 141, 0.25);
+    }
+
+    /* پیام خطای شماره موبایل */
+    .phone-error {
+      font-size: 11px;
+      color: var(--err);
+      margin-top: 5px;
+      display: none;
+      padding-right: 4px;
+    }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 14px;
+      padding: 15px;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 8px 25px rgba(255, 77, 141, 0.3);
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(255, 77, 141, 0.45);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    /* پاپ آپ اعلان وضعیت (Toast) */
+    .toast {
+      position: fixed;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      color: #111;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      bottom: 30px;
+    }
+
+    /* صفحه انیمیشن بارگذاری */
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 16, 32, 0.96);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      display: none;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
 
-    <div class="wrapper">
-        <div class="container" id="main-card">
-            
-            <div class="app-icon-container">
-                <div class="app-icon">❤️</div>
-            </div>
+  <div class="wrapper">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
 
-            <h2 class="header-title">دوست یابی</h2>
+    <div class="card">
+      <div class="app-logo-container">
+        <img class="app-logo" src="1000012320.png" alt="لوگوی برنامه" />
+      </div>
+      
+      <h2 class="brand-title">دوستیابی</h2>
+      <div class="subtitle">زیباترین مسیر برای پیدا کردن همدم شما</div>
 
-            <div class="profile-upload-section">
-                <div class="profile-avatar-wrapper" onclick="document.getElementById('file-input').click()">
-                    <img id="avatar-img" class="profile-preview" src="default-avatar.png" alt="پروفایل">
-                </div>
-                <input type="file" id="file-input" accept="image/*" onchange="handleProfileUpload(event)">
-            </div>
-
-            <form id="main-form">
-                
-                <div class="input-group">
-                    <label for="username">نام و نام خانوادگی</label>
-                    <input type="text" id="username" class="input-field" placeholder="نام خود را وارد کنید" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="phone">شماره تلفن</label>
-                    <input type="tel" id="phone" class="input-field" placeholder="0912XXXXXXX" style="direction: ltr; text-align: right;" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="userid">آیدی و پروفایل</label>
-                    <input type="text" id="userid" class="input-field" placeholder="آیدی مورد نظر خود را وارد کنید" required>
-                </div>
-
-                <button type="submit" class="submit-btn" id="submit-btn">
-                    <span id="btn-text">ثبت نام و ورود</span>
-                    <div class="spinner" id="btn-spinner"></div>
-                </button>
-            </form>
-
+      <form id="loginForm">
+        <div class="avatar-picker" onclick="document.getElementById('fileInput').click()">
+          <img id="profilePreview" class="avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff4d8d'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/></svg>" alt="پروفایل" />
+          <div class="avatar-hint">📷</div>
+          <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(this)" />
         </div>
+
+        <div class="input-group">
+          <label for="name">نام و نام خانوادگی</label>
+          <div class="input-wrapper">
+            <input type="text" id="name" required placeholder="مثلاً: یاسین" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="phone">شماره موبایل</label>
+          <div class="input-wrapper">
+            <input type="tel" id="phone" required placeholder="مثلاً: 09123456789" oninput="validatePhoneUI()" />
+          </div>
+          <div class="phone-error" id="phoneError">لطفاً شماره موبایل معتبر وارد کنید (مثل: 09123456789)</div>
+        </div>
+
+        <div class="input-group">
+          <label for="profileId">آیدی پروفایل (اختیاری)</label>
+          <div class="input-wrapper">
+            <input type="text" id="profileId" placeholder="مثلاً: yasin_25" />
+          </div>
+        </div>
+
+        <button class="btn" type="submit">ورود به برنامه</button>
+      </form>
+
+      <div class="note">
+        با زدن دکمه ورود، اطلاعات شما در حافظه مرورگر ذخیره می‌شود.
+      </div>
     </div>
+  </div>
 
-    <script>
-        // اسکریپت مدیریت آپلود عکس
-        function handleProfileUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('avatar-img').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
+  <div class="toast" id="toast"></div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p style="margin-top:20px; font-size:14px; color:var(--muted); font-weight:500;">در حال ورود به برنامه...</p>
+  </div>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const toast = document.getElementById("toast");
+
+    window.onload = function() {
+      const savedName = localStorage.getItem('userData_name');
+      const savedPhone = localStorage.getItem('userData_phone');
+      const savedImg = localStorage.getItem('userData_img');
+      
+      if(savedName) document.getElementById("name").value = savedName;
+      if(savedPhone) document.getElementById("phone").value = savedPhone;
+      
+      if(savedImg && savedImg.startsWith('data:image')) {
+        document.getElementById("profilePreview").src = savedImg;
+        
+        const avatarEl = document.querySelector('.header-avatar');
+        if (avatarEl) avatarEl.src = savedImg;
+      }
+    };
+
+    function previewImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const base64Img = e.target.result;
+          document.getElementById('profilePreview').src = base64Img;
+          
+          const avatarEl = document.querySelector('.header-avatar');
+          if (avatarEl) avatarEl.src = base64Img;
         }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
 
-        // انیمیشن حرفه‌ای انتقال به صفحه اصلی سایت پس از ثبت‌نام موفقیت‌آمیز
-        document.getElementById('main-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const btnText = document.getElementById('btn-text');
-            const btnSpinner = document.getElementById('btn-spinner');
-            const mainCard = document.getElementById('main-card');
-            
-            // ۱. تبدیل دکمه به لودینگ چرخشی شیک (Android/iOS Style)
-            btnText.style.display = 'none';
-            btnSpinner.style.display = 'block';
-            
-            // ۲. اجرای افکت محو شدن و جابجایی کارت پس از یک مکث کوتاه واقعی
-            setTimeout(() => {
-                mainCard.classList.add('exit-active');
-                
-                // ۳. انتقال نهایی کاربر به صفحه اصلی سایت شما پس از اتمام انیمیشن خروج
-                setTimeout(() => {
-                    // آدرس صفحه اصلی خودت رو جایگزین '/' کن (مثلا index.html یا آدرس سایتت)
-                    window.location.href = 'index.html'; 
-                }, 800); // زمان هماهنگ با انیمیشن CSS
-                
-            }, 1200); // زمان لودینگ اولیه دکمه
-        });
-    </script>
+    function validatePhoneUI() {
+      const val = document.getElementById('phone').value.trim();
+      const phoneRegex = /^(0?9)\d{9}$/;
+      const inputEl = document.getElementById('phone');
+      const errorEl = document.getElementById('phoneError');
+      
+      if (val === "" || phoneRegex.test(val)) {
+        inputEl.style.borderColor = "rgba(255, 255, 255, 0.15)";
+        errorEl.style.display = 'none';
+        return true;
+      } else {
+        inputEl.style.borderColor = "var(--err)";
+        errorEl.style.display = 'block';
+        return false;
+      }
+    }
 
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2200);
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const nameVal = document.getElementById("name").value.trim();
+      const phoneVal = document.getElementById("phone").value.trim();
+      const profileIdVal = document.getElementById("profileId").value.trim();
+      const imgSrc = document.getElementById("profilePreview").src;
+
+      if (!/^(0?9)\d{9}$/.test(phoneVal)) {
+        showToast("لطفاً شماره موبایل را اصلاح کنید ❌");
+        return;
+      }
+
+      const data = {
+        name: nameVal,
+        phone: phoneVal,
+        profileId: profileIdVal,
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem("datingAppUser", JSON.stringify(data));
+
+      localStorage.setItem('userData_name', nameVal);
+      localStorage.setItem('userData_phone', phoneVal);
+      localStorage.setItem('userData_img', imgSrc);
+
+      showToast("اطلاعات با موفقیت ذخیره شد ✨");
+
+      setTimeout(() => {
+        document.getElementById("loadingOverlay").style.display = "flex";
+        setTimeout(() => {
+          window.location.href = 'main.html';
+        }, 1200);
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
