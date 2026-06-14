@@ -3,138 +3,299 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>پیش ثبت نام</title>
+  <title>ورود به برنامه دوستیابی</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lottie-web/build/player/lottie.min.js"></script>
+
   <style>
     :root {
-      --bg: #121212;
-      --card: #1e1e1e;
+      --bg1: #0f1020;
+      --bg2: #151a3d;
+      --card: rgba(255,255,255,0.10);
+      --card-border: rgba(255,255,255,0.18);
       --text: #ffffff;
-      --muted: #9a9a9a;
-      --line: #3a3a3a;
-      --accent: #d87093;
-      --accent-2: #a13d61;
-      --ok: #4caf50;
-      --err: #ff5c7a;
-      --focus: #7093d8;
+      --muted: rgba(255,255,255,0.72);
+      --accent: #ff4d8d;
+      --accent2: #7c5cff;
+      --shadow: 0 24px 80px rgba(0,0,0,0.35);
+      --glass: blur(16px);
     }
 
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font-family: Tahoma, Arial, sans-serif; display: flex; justify-content: center; padding: 24px 16px 100px; }
-    .container { width: 100%; max-width: 420px; }
-    
-    /* استایل‌های هدر و پروفایل */
-    .header-box { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
-    .logo { width: 58px; height: 58px; object-fit: contain; }
-    .app-name-small { font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
-    .main-header { font-size: 1.7rem; font-weight: 700; }
-    .profile-circle { width: 100px; height: 100px; border-radius: 50%; background: var(--card); border: 2px dashed #333; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; cursor: pointer; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Vazirmatn', sans-serif;
+    }
 
-    /* استایل اینپوت‌ها */
-    .input-group { margin-bottom: 20px; }
-    .label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 0.9rem; }
-    .input-field { width: 100%; border: none; border-bottom: 1px solid var(--line); background: transparent; color: var(--text); padding: 10px 0; outline: none; font-size: 1.05rem; }
-    .error-message { display: none; margin-top: 6px; font-size: 0.78rem; color: var(--err); }
-    
-    /* کادر تلفن هماهنگ شده */
-    .phone-wrapper { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 6px; direction: ltr; }
-    .phone-input { flex: 1; border: none; outline: none; background: transparent; color: var(--text); font-size: 1.05rem; }
-    
-    /* لودینگ و دکمه */
-    .submit-btn-wide { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(420px, calc(100% - 32px)); height: 52px; border: none; border-radius: 14px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: white; font-weight: 700; cursor: pointer; z-index: 100; }
-    #loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: #121212; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
-    .spin-logo { width: 80px; height: 80px; animation: spin 1s linear infinite; }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    .hidden { display: none !important; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+
+    .wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* Background glow decorations */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 1;
+      opacity: 0.5;
+    }
+    .circle-1 {
+      width: 150px;
+      height: 150px;
+      background: var(--accent);
+      top: -30px;
+      right: -30px;
+    }
+    .circle-2 {
+      width: 180px;
+      height: 180px;
+      background: var(--accent2);
+      bottom: -40px;
+      left: -40px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      border-radius: 30px;
+      padding: 30px 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .lottie-container {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      background: linear-gradient(to left, #fff, #ffcbdc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .input-group {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--muted);
+      padding-right: 4px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s;
+      text-align: right;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 15px rgba(255, 77, 141, 0.25);
+    }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 14px;
+      padding: 15px;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 8px 25px rgba(255, 77, 141, 0.3);
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(255, 77, 141, 0.45);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      color: #111;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      bottom: 30px;
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="header-box">
-      <img src="1000012320.png" alt="Logo" class="logo">
-      <div>
-        <div class="app-name-small">اپلیکیشن</div>
-        <div class="main-header">دوست‌یابی</div>
+  <div class="wrapper">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+
+    <div class="card">
+      <div class="lottie-container" id="lottie"></div>
+      
+      <h2>خوش آمدید</h2>
+      <div class="subtitle">برای ورود به برنامه، مشخصات خود را وارد کنید</div>
+
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="name">نام و نام خانوادگی</label>
+          <div class="input-wrapper">
+            <input type="text" id="name" required placeholder="مثلاً: یاسین" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="phone">شماره موبایل</label>
+          <div class="input-wrapper">
+            <input type="tel" id="phone" required placeholder="مثلاً: 09123456789" pattern="^(0?9)\d{9}$" title="لطفاً شماره موبایل معتبر وارد کنید" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="profileId">آیدی پروفایل (اختیاری)</label>
+          <div class="input-wrapper">
+            <input type="text" id="profileId" placeholder="مثلاً: yasin_25" />
+          </div>
+        </div>
+
+        <button class="btn" type="submit">ورود به برنامه</button>
+      </form>
+
+      <div class="note">
+        با زدن دکمه ورود، اطلاعات شما در حافظه مرورگر ذخیره می‌شود.
       </div>
-    </div>
-
-    <div class="profile-circle" onclick="document.getElementById('fileInput').click()">
-      <span id="imgPlaceholder">انتخاب تصویر</span>
-      <img id="profilePreview" style="width:100%; height:100%; border-radius:50%; display:none; object-fit:cover;">
-    </div>
-    <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="previewImage(this)">
-
-    <div class="input-group">
-      <label class="label">نام شما</label>
-      <input type="text" id="nameInput" class="input-field" dir="auto" placeholder="نام خود را وارد کنید">
-      <div id="nameError" class="error-message">لطفاً نام خود را وارد کنید</div>
-    </div>
-
-    <div class="input-group">
-      <label class="label">شماره تلفن</label>
-      <div class="phone-wrapper" id="phoneWrapper">
-        <span id="countryCode" style="color:var(--muted)">+98</span>
-        <input type="tel" id="phoneInput" class="phone-input" placeholder="9xxxxxxxxx" oninput="validatePhoneUI()">
-      </div>
-      <div id="phoneError" class="error-message">شماره تلفن معتبر نیست</div>
     </div>
   </div>
 
-  <button class="submit-btn-wide" onclick="validateForm()">ثبت نام</button>
-
-  <div id="loading-overlay">
-    <img src="1000012320.png" class="spin-logo" alt="Loading...">
-  </div>
+  <div class="toast" id="toast"></div>
 
   <script>
-    function previewImage(input) {
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          document.getElementById('profilePreview').src = e.target.result;
-          document.getElementById('profilePreview').style.display = 'block';
-          document.getElementById('imgPlaceholder').style.display = 'none';
-        }
-        reader.readAsDataURL(input.files[0]);
-      }
+    // بارگذاری انیمیشن لاتی
+    lottie.loadAnimation({
+      container: document.getElementById("lottie"),
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      path: "https://assets10.lottiefiles.com/packages/lf20_touohxv0.json"
+    });
+
+    const form = document.getElementById("loginForm");
+    const toast = document.getElementById("toast");
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2200);
     }
 
-    function validatePhoneUI() {
-      const val = document.getElementById('phoneInput').value.trim();
-      const phoneRegex = /^(0?9)\d{9}$/;
-      const wrapper = document.getElementById('phoneWrapper');
-      
-      if (phoneRegex.test(val)) {
-        wrapper.style.borderBottomColor = 'var(--ok)';
-        document.getElementById('phoneError').style.display = 'none';
-      } else {
-        wrapper.style.borderBottomColor = 'var(--err)';
-        document.getElementById('phoneError').style.display = 'block';
-      }
-    }
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    function validateForm() {
-      const name = document.getElementById('nameInput').value;
-      const phone = document.getElementById('phoneInput').value;
-      const phoneRegex = /^(0?9)\d{9}$/;
+      const nameVal = document.getElementById("name").value.trim();
+      const phoneVal = document.getElementById("phone").value.trim();
+      const profileIdVal = document.getElementById("profileId").value.trim();
 
-      if(name.trim() === "" || !phoneRegex.test(phone)) {
-        alert("لطفاً تمامی اطلاعات را به درستی وارد کنید");
-        return;
-      }
+      // ۱. ذخیره به صورت شیء تکی جهت هماهنگی با کدهای جدید شما
+      const data = {
+        name: nameVal,
+        phone: phoneVal,
+        profileId: profileIdVal,
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem("datingAppUser", JSON.stringify(data));
 
-      // ذخیره اطلاعات
-      localStorage.setItem('userData_name', name);
-      localStorage.setItem('userData_phone', phone);
-      const img = document.getElementById('profilePreview').src;
-      if(img.startsWith('data:image')) localStorage.setItem('userData_img', img);
+      // ۲. ذخیره به صورت کلیدهای مجزا جهت هماهنگی کامل با صفحه اصلی (main.html)
+      localStorage.setItem('userData_name', nameVal);
+      localStorage.setItem('userData_phone', phoneVal);
 
-      // نمایش لودینگ و هدایت
-      document.getElementById('loading-overlay').style.display = 'flex';
+      // نمایش پیام موفقیت
+      showToast("اطلاعات با موفقیت ذخیره شد ✨");
+
+      // هدایت خودکار کاربر به صفحه اصلی (main.html) بعد از ۱.۵ ثانیه
       setTimeout(() => {
         window.location.href = 'main.html';
-      }, 2000);
-    }
+      }, 1500);
+    });
   </script>
 </body>
 </html>
