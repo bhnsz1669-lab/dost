@@ -23,6 +23,7 @@
       --accent2: #7c5cff;
       --shadow: 0 24px 80px rgba(0,0,0,0.35);
       --glass: blur(16px);
+      --err: #ff5c7a;
     }
 
     * {
@@ -49,7 +50,7 @@
       max-width: 400px;
     }
 
-    /* Background glow decorations */
+    /* دکوراسیون‌های درخشان پس‌زمینه */
     .circle {
       position: absolute;
       border-radius: 50%;
@@ -89,6 +90,43 @@
       width: 120px;
       height: 120px;
       margin: 0 auto 10px;
+    }
+
+    /* بخش جدید انتخاب و آپلود عکس پروفایل */
+    .avatar-picker {
+      position: relative;
+      width: 95px;
+      height: 95px;
+      margin: 0 auto 20px;
+      cursor: pointer;
+    }
+    .avatar-preview {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px dashed var(--accent);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px;
+      transition: all 0.3s ease;
+    }
+    .avatar-picker:hover .avatar-preview {
+      border-color: var(--accent2);
+      transform: scale(1.04);
+    }
+    .avatar-hint {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: var(--accent2);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
     h2 {
@@ -143,6 +181,15 @@
       box-shadow: 0 0 15px rgba(255, 77, 141, 0.25);
     }
 
+    /* پیام خطای شماره موبایل */
+    .phone-error {
+      font-size: 11px;
+      color: var(--err);
+      margin-top: 5px;
+      display: none;
+      padding-right: 4px;
+    }
+
     .btn {
       width: 100%;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
@@ -174,7 +221,7 @@
       line-height: 1.6;
     }
 
-    /* Toast notification */
+    /* پاپ آپ اعلان وضعیت (Toast) */
     .toast {
       position: fixed;
       bottom: -60px;
@@ -199,6 +246,28 @@
     .toast.show {
       bottom: 30px;
     }
+
+    /* صفحه انیمیشن بارگذاری برای خروجی حرفه‌ای تر */
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 16, 32, 0.96);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      display: none;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -214,6 +283,12 @@
       <div class="subtitle">برای ورود به برنامه، مشخصات خود را وارد کنید</div>
 
       <form id="loginForm">
+        <div class="avatar-picker" onclick="document.getElementById('fileInput').click()">
+          <img id="profilePreview" class="avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff4d8d'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/></svg>" alt="پروفایل" />
+          <div class="avatar-hint">📷</div>
+          <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(this)" />
+        </div>
+
         <div class="input-group">
           <label for="name">نام و نام خانوادگی</label>
           <div class="input-wrapper">
@@ -224,8 +299,9 @@
         <div class="input-group">
           <label for="phone">شماره موبایل</label>
           <div class="input-wrapper">
-            <input type="tel" id="phone" required placeholder="مثلاً: 09123456789" pattern="^(0?9)\d{9}$" title="لطفاً شماره موبایل معتبر وارد کنید" />
+            <input type="tel" id="phone" required placeholder="مثلاً: 09123456789" oninput="validatePhoneUI()" />
           </div>
+          <div class="phone-error" id="phoneError">لطفاً شماره موبایل معتبر وارد کنید (مثل: 09123456789)</div>
         </div>
 
         <div class="input-group">
@@ -246,18 +322,70 @@
 
   <div class="toast" id="toast"></div>
 
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p style="margin-top:20px; font-size:14px; color:var(--muted); font-weight:500;">در حال ورود به برنامه...</p>
+  </div>
+
   <script>
-    // بارگذاری انیمیشن لاتی
+    // بارگذاری انیمیشن لاتی با استفاده از یک آدرس CDN معتبر و پایدار
     lottie.loadAnimation({
       container: document.getElementById("lottie"),
       renderer: "svg",
       loop: true,
       autoplay: true,
-      path: "https://assets10.lottiefiles.com/packages/lf20_touohxv0.json"
+      path: "https://labs.nearpod.com/bodymovin/demo/markus/octahedron.json"
     });
 
     const form = document.getElementById("loginForm");
     const toast = document.getElementById("toast");
+
+    // بررسی و لود خودکار داده‌های قبلی به همراه جایگذاری عکس در المان هدر به دستور شما
+    window.onload = function() {
+      const savedName = localStorage.getItem('userData_name');
+      const savedPhone = localStorage.getItem('userData_phone');
+      const savedImg = localStorage.getItem('userData_img');
+      
+      if(savedName) document.getElementById("name").value = savedName;
+      if(savedPhone) document.getElementById("phone").value = savedPhone;
+      
+      if(savedImg && savedImg.startsWith('data:image')) {
+        document.getElementById("profilePreview").src = savedImg;
+        
+        // کدی که ارسال کردید برای اعمال خودکار روی تگ تصویر هدر در صورت وجود در این ساختار
+        const avatarEl = document.querySelector('.header-avatar');
+        if (avatarEl) avatarEl.src = savedImg;
+      }
+    };
+
+    // پیش‌نمایش زنده تصویر پروفایل و تبدیل به Base64 جهت ذخیره‌سازی
+    function previewImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('profilePreview').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    // اعتبارسنجی زنده ساختار شماره موبایل
+    function validatePhoneUI() {
+      const val = document.getElementById('phone').value.trim();
+      const phoneRegex = /^(0?9)\d{9}$/;
+      const inputEl = document.getElementById('phone');
+      const errorEl = document.getElementById('phoneError');
+      
+      if (val === "" || phoneRegex.test(val)) {
+        inputEl.style.borderColor = "rgba(255, 255, 255, 0.15)";
+        errorEl.style.display = 'none';
+        return true;
+      } else {
+        inputEl.style.borderColor = "var(--err)";
+        errorEl.style.display = 'block';
+        return false;
+      }
+    }
 
     function showToast(msg) {
       toast.textContent = msg;
@@ -274,6 +402,13 @@
       const nameVal = document.getElementById("name").value.trim();
       const phoneVal = document.getElementById("phone").value.trim();
       const profileIdVal = document.getElementById("profileId").value.trim();
+      const imgSrc = document.getElementById("profilePreview").src;
+
+      // بررسی نهایی فیلد شماره موبایل قبل از ثبت کامپوننت
+      if (!/^(0?9)\d{9}$/.test(phoneVal)) {
+        showToast("لطفاً شماره موبایل را اصلاح کنید ❌");
+        return;
+      }
 
       // ۱. ذخیره به صورت شیء تکی جهت هماهنگی با کدهای جدید شما
       const data = {
@@ -287,14 +422,19 @@
       // ۲. ذخیره به صورت کلیدهای مجزا جهت هماهنگی کامل با صفحه اصلی (main.html)
       localStorage.setItem('userData_name', nameVal);
       localStorage.setItem('userData_phone', phoneVal);
+      localStorage.setItem('userData_img', imgSrc);
 
       // نمایش پیام موفقیت
       showToast("اطلاعات با موفقیت ذخیره شد ✨");
 
-      // هدایت خودکار کاربر به صفحه اصلی (main.html) بعد از ۱.۵ ثانیه
+      // هدایت خودکار کاربر به صفحه اصلی (main.html) بعد از اعمال انیمیشن بارگذاری
       setTimeout(() => {
-        window.location.href = 'main.html';
-      }, 1500);
+        document.getElementById("loadingOverlay").style.with = "flex";
+        document.getElementById("loadingOverlay").style.display = "flex";
+        setTimeout(() => {
+          window.location.href = 'main.html';
+        }, 1200);
+      }, 1000);
     });
   </script>
 </body>
