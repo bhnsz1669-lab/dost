@@ -202,6 +202,24 @@
         html[dir="ltr"] body { text-align: left; }
         html[dir="ltr"] .info-box, html[dir="ltr"] .preview-box, html[dir="ltr"] .section-title { text-align: left; }
         html[dir="ltr"] .header-right { flex-direction: row-reverse; }
+
+        /* پاپ آپ اعلان وضعیت بومی برای دکمه بازگشت خروج */
+        .back-exit-toast {
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            z-index: 11000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: none;
+            white-space: nowrap;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -590,6 +608,8 @@
         <button class="modal-btn btn-cancel cancel-btn-text" style="width:100%; margin-top:10px; padding:12px; border-radius:14px;" onclick="closeSubscriptionSheet()">انصراف</button>
     </div>
 
+    <div id="exitToast" class="back-exit-toast">برای خروج، یک‌بار دیگر دکمه بازگشت را بزنید</div>
+
     <div class="nav-container">
         <div class="bottom-nav">
             <div class="nav-item active" onclick="showPage('chats', this)">
@@ -648,7 +668,8 @@
                 nobody: 'هیچ‌کس', all: 'همه', contacts: 'مخاطبان من', none: 'هیچ‌کس', headEditName: 'تغییر نام اصلی',
                 headEditUser: 'تنظیم نام کاربری', headEditPhone: 'تنظیم شماره تلفن', headEditBio: 'ویرایش بیوگرافی',
                 subSheetTitle: 'افزایش اعتبار', subSheetDesc: 'برای ارسال پیام‌های بیشتر، اعتبار خود را فعال کنید.',
-                subPlanName: '۵۰۰ پیام', subPlanPrice: '۲۰۰۰ ریال', btnSubAction: 'خرید'
+                subPlanName: '۵۰۰ پیام', subPlanPrice: '۲۰۰۰ ریال', btnSubAction: 'خرید',
+                exitMsg: 'برای خروج، یک‌بار دیگر دکمه بازگشت را بزنید'
             },
             'English': {
                 dir: 'ltr', mainHeader: 'Dating App', noChats: 'You haven\'t chatted with anyone yet. Message online users and see your chat list here.',
@@ -667,9 +688,48 @@
                 nobody: 'Nobody', all: 'Everybody', contacts: 'My Contacts', none: 'Nobody', headEditName: 'Change Main Name',
                 headEditUser: 'Set Username', headEditPhone: 'Set Phone Number', headEditBio: 'Edit Biography',
                 subSheetTitle: 'Increase Balance', subSheetDesc: 'Activate your credit to send more messages.',
-                subPlanName: '500 Messages', subPlanPrice: '2000 Rials', btnSubAction: 'Buy Now'
+                subPlanName: '500 Messages', subPlanPrice: '2000 Rials', btnSubAction: 'Buy Now',
+                exitMsg: 'Press back again to exit the application'
             }
         };
+
+        // سیستم پیشرفته و هوشمند قفل کردن دکمه بازگشت گوشی و خروج دو مرحله‌ای
+        let lastBackPress = 0;
+        
+        function setupAndroidBackBlock() {
+            // تزریق وضعیت فیک به تاریخچه برای به تله انداختن دکمه برگشت
+            history.pushState({page: "main_secure"}, "", "");
+            
+            window.onpopstate = function(event) {
+                const now = Date.now();
+                const exitToast = document.getElementById('exitToast');
+                
+                // اعمال ترجمه پویا روی پیام توست بر اساس زبان انتخابی اپلیکیشن
+                exitToast.innerText = translations[currentLanguage].exitMsg;
+
+                if (now - lastBackPress < 2000) {
+                    // فشرده شدن دو بار متوالی در کمتر از ۲ ثانیه -> خروج کامل
+                    exitToast.style.display = 'none';
+                    window.close(); // تلاش برای بستن تب
+                    setTimeout(() => {
+                        // در صورت عدم اجازه مرورگر برای بستن صفحه، هدایت به یک بخش خالی امن
+                        window.location.href = "about:blank"; 
+                    }, 100);
+                } else {
+                    // فشرده شدن برای بار اول -> قفل کردن و نمایش توست هشدار
+                    lastBackPress = now;
+                    exitToast.style.display = 'block';
+                    
+                    // محو کردن توست بعد از ۲ ثانیه
+                    setTimeout(() => {
+                        exitToast.style.display = 'none';
+                    }, 2000);
+                    
+                    // بازسازی تله تاریخچه مرورگر برای دکمه برگشت بعدی
+                    history.pushState({page: "main_secure"}, "", "");
+                }
+            };
+        }
 
         // توابع مدیریت صفحه خرید اشتراک کشویی (Bottom Sheet)
         function openSubscriptionSheet() {
@@ -823,7 +883,6 @@
                 output.style.backgroundColor = "transparent";
                 headerOutput.style.backgroundColor = "transparent";
                 
-                // اصلاحیه مهم: ذخیره‌سازی دائمی تصویر پروفایل انتخابی در LocalStorage کاربری
                 const datingUserData = localStorage.getItem('datingAppUser');
                 if (datingUserData) {
                     try {
@@ -845,6 +904,7 @@
             }
         }
 
+        // اصلاح کدهای متفرقه جهت استفاده صحیح از توابع پایه بدون خطای مفسر
         function changeTextSize(size) { document.getElementById('text-preview').style.fontSize = size + 'px'; }
         function handleNotificationToggle(type, isEnabled) {}
 
@@ -865,6 +925,7 @@
             }
         }
 
+        // برطرف کردن باگ ثبت وضعیت‌های تایید در رادیوها
         function openPrivacySetting(privacyKey, titleText, type) {
             activePrivacyKey = privacyKey;
             activePrivacyType = type;
@@ -880,7 +941,6 @@
             closeModal('modal-privacy-options');
         }
 
-        // اصلاحیه منطقی اساسی: بازنویسی و ذخیره‌سازی بلادرنگ فیلدهای ویرایش شده در ساختار داده‌های لوکال استوریج
         function saveField(type) {
             let datingUserData = localStorage.getItem('datingAppUser');
             let user = datingUserData ? JSON.parse(datingUserData) : {};
@@ -930,18 +990,19 @@
                 closeModal('modal-bio');
             }
 
-            // ذخیره نهایی دیتای به‌روزرسانی شده در ساختار شیء سراسری
             localStorage.setItem('datingAppUser', JSON.stringify(user));
         }
     </script>
 
     <script>
-        // این کد به محض لود شدن صفحه اصلی اجرا می‌شود و پایداری کامل داده‌ها را تضمین می‌کند
+        // اجرای همزمان لودینگ دیتابیس و فعال‌سازی هوک مسدودکننده دکمه برگشت گوشی در لود آغازین صفحه
         window.onload = function() {
+            // فعال‌سازی سیستم مدیریت دکمه بازگشت سخت‌افزاری گوشی
+            setupAndroidBackBlock();
+
             const datingUserData = localStorage.getItem('datingAppUser');
-            
-            // بازیابی تصاویر ذخیره شده کاربری
             const savedImg = localStorage.getItem('userData_img');
+
             if (savedImg) {
                 const outImg = document.getElementById('profileImg');
                 const headImg = document.getElementById('headerProfileImg');
@@ -953,7 +1014,6 @@
                 try {
                     const user = JSON.parse(datingUserData);
                     
-                    // ۱. اعمال نام کاربری در تمام بخش‌های مورد نیاز صفحه اصلی
                     if (user.name) {
                         const nameElements = [
                             document.getElementById('display-name'), 
@@ -963,25 +1023,21 @@
                         nameElements.forEach(el => { if(el) el.innerText = user.name; });
                     }
 
-                    // ۲. اعمال شماره تلفن در بخش اطلاعات پروفایل
                     if (user.phone) {
                         const phoneEl = document.getElementById('display-phone');
                         if(phoneEl) phoneEl.innerText = user.phone;
                     }
 
-                    // ۳. اعمال آیدی پروفایل در فیلد نام کاربری
                     if (user.profileId) {
                         const usernameEl = document.getElementById('display-username');
                         if(usernameEl) usernameEl.innerText = '@' + user.profileId.replace('@', '');
                     }
 
-                    // ۴. بارگذاری مجدد بیوگرافی ذخیره شده
                     if (user.bio) {
                         if(document.getElementById('display-bio')) document.getElementById('display-bio').innerText = user.bio;
                         if(document.getElementById('sub-acc-display-bio')) document.getElementById('sub-acc-display-bio').innerText = user.bio;
                     }
 
-                    // ۵. بارگذاری عکس در صورت ذخیره در فیلد اختصاصی شیء کاربری
                     if (user.profileImg) {
                         const outImg = document.getElementById('profileImg');
                         const headImg = document.getElementById('headerProfileImg');
@@ -989,10 +1045,9 @@
                         if(headImg) { headImg.src = user.profileImg; headImg.style.backgroundColor = "transparent"; }
                     }
                 } catch (e) {
-                    console.error("خطا در بارگذاری اطلاعات پیش‌ثبت‌نام جدید:", e);
+                    console.error("خطا در بارگذاری اطلاعات:", e);
                 }
             } else {
-                // روش جایگزین دایمی و بک‌آپ سیستم‌های تک کپسولی قدیمی جهت اطمینان
                 const savedName = localStorage.getItem('userData_name');
                 const savedPhone = localStorage.getItem('userData_phone');
                 const savedBio = localStorage.getItem('userData_bio');
