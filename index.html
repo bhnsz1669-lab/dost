@@ -9,8 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
-  <script src="https://unpkg.com/lottie-web/build/player/lottie.min.js"></script>
-
   <style>
     :root {
       --bg1: #0f1020;
@@ -86,13 +84,74 @@
       text-align: center;
     }
 
-    .lottie-container {
-      width: 120px;
-      height: 120px;
+    /* بخش اختصاصی آیکون برنامه متحرک و بدون کادر سبک iOS */
+    .app-logo-container {
+      width: 110px;
+      height: 110px;
       margin: 0 auto 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    /* بخش جدید انتخاب و آپلود عکس پروفایل */
+    .app-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 20px rgba(124, 92, 255, 0.4));
+      animation: iosIntro 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+                smoothFloat 4s ease-in-out infinite 1.2s;
+      transform: scale(0);
+    }
+
+    @keyframes iosIntro {
+      0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes smoothFloat {
+      0% { transform: translateY(0px); filter: drop-shadow(0 12px 20px rgba(124, 92, 255, 0.4)); }
+      50% { transform: translateY(-8px); filter: drop-shadow(0 20px 28px rgba(255, 77, 141, 0.5)); }
+      100% { transform: translateY(0px); filter: drop-shadow(0 12px 20px rgba(124, 92, 255, 0.4)); }
+    }
+
+    /* تایپوگرافی جدید، انیمیشنی و خیره‌کننده "دوستیابی" هماهنگ با آیکون */
+    h2.brand-title {
+      font-size: 34px;
+      font-weight: 800; /* بیشترین ضخامت برای استایل لوکس موبایلی */
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 10%, #ff4d8d 60%, #7c5cff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      
+      /* انیمیشن ورود کشسانی اندروید/آی‌او‌اس + انیمیشن درخشش رنگی ملایم در پس‌زمینه متن */
+      animation: textPopIn 1.1s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards,
+                 shinyText 6s linear infinite;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes textPopIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shinyText {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      animation: textPopIn 1.3s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    }
+
+    /* بخش انتخاب و آپلود عکس پروفایل */
     .avatar-picker {
       position: relative;
       width: 95px;
@@ -127,21 +186,6 @@
       align-items: center;
       font-size: 13px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-
-    h2 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      background: linear-gradient(to left, #fff, #ffcbdc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 28px;
     }
 
     .input-group {
@@ -247,7 +291,7 @@
       bottom: 30px;
     }
 
-    /* صفحه انیمیشن بارگذاری برای خروجی حرفه‌ای تر */
+    /* صفحه انیمیشن بارگذاری */
     .loading-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -277,10 +321,12 @@
     <div class="circle circle-2"></div>
 
     <div class="card">
-      <div class="lottie-container" id="lottie"></div>
+      <div class="app-logo-container">
+        <img class="app-logo" src="1000012320.png" alt="لوگوی برنامه" />
+      </div>
       
-      <h2>خوش آمدید</h2>
-      <div class="subtitle">برای ورود به برنامه، مشخصات خود را وارد کنید</div>
+      <h2 class="brand-title">دوستیابی</h2>
+      <div class="subtitle">زیباترین مسیر برای پیدا کردن همدم شما</div>
 
       <form id="loginForm">
         <div class="avatar-picker" onclick="document.getElementById('fileInput').click()">
@@ -328,19 +374,9 @@
   </div>
 
   <script>
-    // بارگذاری انیمیشن لاتی با استفاده از یک آدرس CDN معتبر و پایدار
-    lottie.loadAnimation({
-      container: document.getElementById("lottie"),
-      renderer: "svg",
-      loop: true,
-      autoplay: true,
-      path: "https://labs.nearpod.com/bodymovin/demo/markus/octahedron.json"
-    });
-
     const form = document.getElementById("loginForm");
     const toast = document.getElementById("toast");
 
-    // بررسی و لود خودکار داده‌های قبلی به همراه جایگذاری عکس در المان هدر به دستور شما
     window.onload = function() {
       const savedName = localStorage.getItem('userData_name');
       const savedPhone = localStorage.getItem('userData_phone');
@@ -352,24 +388,25 @@
       if(savedImg && savedImg.startsWith('data:image')) {
         document.getElementById("profilePreview").src = savedImg;
         
-        // کدی که ارسال کردید برای اعمال خودکار روی تگ تصویر هدر در صورت وجود در این ساختار
         const avatarEl = document.querySelector('.header-avatar');
         if (avatarEl) avatarEl.src = savedImg;
       }
     };
 
-    // پیش‌نمایش زنده تصویر پروفایل و تبدیل به Base64 جهت ذخیره‌سازی
     function previewImage(input) {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
-          document.getElementById('profilePreview').src = e.target.result;
+          const base64Img = e.target.result;
+          document.getElementById('profilePreview').src = base64Img;
+          
+          const avatarEl = document.querySelector('.header-avatar');
+          if (avatarEl) avatarEl.src = base64Img;
         }
         reader.readAsDataURL(input.files[0]);
       }
     }
 
-    // اعتبارسنجی زنده ساختار شماره موبایل
     function validatePhoneUI() {
       const val = document.getElementById('phone').value.trim();
       const phoneRegex = /^(0?9)\d{9}$/;
@@ -404,13 +441,11 @@
       const profileIdVal = document.getElementById("profileId").value.trim();
       const imgSrc = document.getElementById("profilePreview").src;
 
-      // بررسی نهایی فیلد شماره موبایل قبل از ثبت کامپوننت
       if (!/^(0?9)\d{9}$/.test(phoneVal)) {
         showToast("لطفاً شماره موبایل را اصلاح کنید ❌");
         return;
       }
 
-      // ۱. ذخیره به صورت شیء تکی جهت هماهنگی با کدهای جدید شما
       const data = {
         name: nameVal,
         phone: phoneVal,
@@ -419,17 +454,13 @@
       };
       localStorage.setItem("datingAppUser", JSON.stringify(data));
 
-      // ۲. ذخیره به صورت کلیدهای مجزا جهت هماهنگی کامل با صفحه اصلی (main.html)
       localStorage.setItem('userData_name', nameVal);
       localStorage.setItem('userData_phone', phoneVal);
       localStorage.setItem('userData_img', imgSrc);
 
-      // نمایش پیام موفقیت
       showToast("اطلاعات با موفقیت ذخیره شد ✨");
 
-      // هدایت خودکار کاربر به صفحه اصلی (main.html) بعد از اعمال انیمیشن بارگذاری
       setTimeout(() => {
-        document.getElementById("loadingOverlay").style.with = "flex";
         document.getElementById("loadingOverlay").style.display = "flex";
         setTimeout(() => {
           window.location.href = 'main.html';
