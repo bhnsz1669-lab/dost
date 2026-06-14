@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اپلیکیشن دوستیابی</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* استایل‌های پایه و سیستم تم روز/شب */
-        body { font-family: Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 110px; color: #111; transition: 0.4s; overflow-x: hidden; }
+        /* استایل‌های پایه و سیستم تم روز/شب - فونت پایه به Vazirmatn تغییر یافت */
+        body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 110px; color: #111; transition: 0.4s; overflow-x: hidden; }
         body.dark-mode { background-color: #1a1a1a; color: #f1f1f1; }
         
         /* هدر جدید و توسعه‌یافته */
@@ -121,9 +126,9 @@
         .edit-page-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 3000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
         body.dark-mode .edit-page-modal { background: #1a1a1a; }
         .modal-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; text-align: center; }
-        .modal-input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; margin-bottom: 20px; font-family: Tahoma; }
+        .modal-input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; margin-bottom: 20px; font-family: inherit; }
         body.dark-mode .modal-input { background: #2a2a2a; color: #fff; border-color: #444; }
-        .modal-textarea { width: 100%; height: 120px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; margin-bottom: 20px; font-family: Tahoma; resize: none; }
+        .modal-textarea { width: 100%; height: 120px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; margin-bottom: 20px; font-family: inherit; resize: none; }
         body.dark-mode .modal-textarea { background: #2a2a2a; color: #fff; border-color: #444; }
         .modal-btn-group { display: flex; gap: 10px; margin-top: 20px; }
         .modal-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; }
@@ -482,7 +487,7 @@
                     <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="3" y="3" width="18" height="18" rx="3" fill="#EA4335"/>
                         <circle cx="8.5" cy="8.5" r="2.5" fill="#FFFFFF"/>
-                        <path d="M4 19L9 13L13 17L16 12L20 19H4Z" fill="#FFFFFF"/>
+                        <path d="M4 19L9 13 L13 17L16 12L20 19H4Z" fill="#FFFFFF"/>
                     </svg>
                     <span id="opt-change-bg">تغییر پس‌زمینه گفتگو</span>
                 </div>
@@ -817,6 +822,17 @@
                 headerOutput.src = reader.result;
                 output.style.backgroundColor = "transparent";
                 headerOutput.style.backgroundColor = "transparent";
+                
+                // اصلاحیه مهم: ذخیره‌سازی دائمی تصویر پروفایل انتخابی در LocalStorage کاربری
+                const datingUserData = localStorage.getItem('datingAppUser');
+                if (datingUserData) {
+                    try {
+                        let user = JSON.parse(datingUserData);
+                        user.profileImg = reader.result;
+                        localStorage.setItem('datingAppUser', JSON.stringify(user));
+                    } catch(e) { console.error(e); }
+                }
+                localStorage.setItem('userData_img', reader.result);
             };
             if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
         }
@@ -864,26 +880,42 @@
             closeModal('modal-privacy-options');
         }
 
+        // اصلاحیه منطقی اساسی: بازنویسی و ذخیره‌سازی بلادرنگ فیلدهای ویرایش شده در ساختار داده‌های لوکال استوریج
         function saveField(type) {
+            let datingUserData = localStorage.getItem('datingAppUser');
+            let user = datingUserData ? JSON.parse(datingUserData) : {};
+
             if (type === 'name') {
                 let val = document.getElementById('input-name').value;
                 if(val.trim() !== "") {
                     document.getElementById('display-name').innerText = val;
                     document.getElementById('sub-acc-display-name').innerText = val;
                     document.getElementById('settings-acc-name').innerText = val;
+                    
+                    user.name = val.trim();
+                    localStorage.setItem('userData_name', val.trim());
                 }
                 closeModal('modal-name-edit');
             } 
             else if (type === 'username') {
                 let val = document.getElementById('input-username').value;
                 if(val.trim() !== "") {
-                    document.getElementById('display-username').innerText = '@' + val.replace('@', '');
+                    let formattedUser = '@' + val.replace('@', '');
+                    document.getElementById('display-username').innerText = formattedUser;
+                    
+                    user.profileId = val.trim();
+                    localStorage.setItem('userData_profileId', val.trim());
                 }
                 closeModal('modal-username');
             } 
             else if (type === 'phone') {
                 let val = document.getElementById('input-phone').value;
-                if(val.trim() !== "") document.getElementById('display-phone').innerText = val;
+                if(val.trim() !== "") {
+                    document.getElementById('display-phone').innerText = val.trim();
+                    
+                    user.phone = val.trim();
+                    localStorage.setItem('userData_phone', val.trim());
+                }
                 closeModal('modal-phone');
             } 
             else if (type === 'bio') {
@@ -891,38 +923,100 @@
                 if(val.trim() !== "") {
                     document.getElementById('display-bio').innerText = val;
                     document.getElementById('sub-acc-display-bio').innerText = val;
+                    
+                    user.bio = val;
+                    localStorage.setItem('userData_bio', val);
                 }
                 closeModal('modal-bio');
             }
+
+            // ذخیره نهایی دیتای به‌روزرسانی شده در ساختار شیء سراسری
+            localStorage.setItem('datingAppUser', JSON.stringify(user));
         }
+    </script>
+
     <script>
-        // دریافت اطلاعات از پیش‌ثبت‌نام و نمایش در پروفایل
-        window.addEventListener('load', function() {
-            const savedName = localStorage.getItem('userData_name');
-            const savedPhone = localStorage.getItem('userData_phone');
+        // این کد به محض لود شدن صفحه اصلی اجرا می‌شود و پایداری کامل داده‌ها را تضمین می‌کند
+        window.onload = function() {
+            const datingUserData = localStorage.getItem('datingAppUser');
+            
+            // بازیابی تصاویر ذخیره شده کاربری
             const savedImg = localStorage.getItem('userData_img');
-
-            if (savedName) {
-                const nameElements = [
-                    document.getElementById('display-name'), 
-                    document.getElementById('sub-acc-display-name'), 
-                    document.getElementById('settings-acc-name')
-                ];
-                nameElements.forEach(el => { 
-                    if(el) el.innerText = savedName; 
-                });
-            }
-
-            if (savedPhone) {
-                const phoneEl = document.getElementById('display-phone');
-                if(phoneEl) phoneEl.innerText = savedPhone;
-            }
-
             if (savedImg) {
-                const avatarEl = document.getElementById('main-avatar');
-                if(avatarEl) avatarEl.src = savedImg;
+                const outImg = document.getElementById('profileImg');
+                const headImg = document.getElementById('headerProfileImg');
+                if(outImg) { outImg.src = savedImg; outImg.style.backgroundColor = "transparent"; }
+                if(headImg) { headImg.src = savedImg; headImg.style.backgroundColor = "transparent"; }
             }
-        });
+
+            if (datingUserData) {
+                try {
+                    const user = JSON.parse(datingUserData);
+                    
+                    // ۱. اعمال نام کاربری در تمام بخش‌های مورد نیاز صفحه اصلی
+                    if (user.name) {
+                        const nameElements = [
+                            document.getElementById('display-name'), 
+                            document.getElementById('sub-acc-display-name'), 
+                            document.getElementById('settings-acc-name')
+                        ];
+                        nameElements.forEach(el => { if(el) el.innerText = user.name; });
+                    }
+
+                    // ۲. اعمال شماره تلفن در بخش اطلاعات پروفایل
+                    if (user.phone) {
+                        const phoneEl = document.getElementById('display-phone');
+                        if(phoneEl) phoneEl.innerText = user.phone;
+                    }
+
+                    // ۳. اعمال آیدی پروفایل در فیلد نام کاربری
+                    if (user.profileId) {
+                        const usernameEl = document.getElementById('display-username');
+                        if(usernameEl) usernameEl.innerText = '@' + user.profileId.replace('@', '');
+                    }
+
+                    // ۴. بارگذاری مجدد بیوگرافی ذخیره شده
+                    if (user.bio) {
+                        if(document.getElementById('display-bio')) document.getElementById('display-bio').innerText = user.bio;
+                        if(document.getElementById('sub-acc-display-bio')) document.getElementById('sub-acc-display-bio').innerText = user.bio;
+                    }
+
+                    // ۵. بارگذاری عکس در صورت ذخیره در فیلد اختصاصی شیء کاربری
+                    if (user.profileImg) {
+                        const outImg = document.getElementById('profileImg');
+                        const headImg = document.getElementById('headerProfileImg');
+                        if(outImg) { outImg.src = user.profileImg; outImg.style.backgroundColor = "transparent"; }
+                        if(headImg) { headImg.src = user.profileImg; headImg.style.backgroundColor = "transparent"; }
+                    }
+                } catch (e) {
+                    console.error("خطا در بارگذاری اطلاعات پیش‌ثبت‌نام جدید:", e);
+                }
+            } else {
+                // روش جایگزین دایمی و بک‌آپ سیستم‌های تک کپسولی قدیمی جهت اطمینان
+                const savedName = localStorage.getItem('userData_name');
+                const savedPhone = localStorage.getItem('userData_phone');
+                const savedBio = localStorage.getItem('userData_bio');
+
+                if (savedName) {
+                    const nameElements = [
+                        document.getElementById('display-name'), 
+                        document.getElementById('sub-acc-display-name'), 
+                        document.getElementById('settings-acc-name')
+                    ];
+                    nameElements.forEach(el => { if(el) el.innerText = savedName; });
+                }
+
+                if (savedPhone) {
+                    const phoneEl = document.getElementById('display-phone');
+                    if(phoneEl) phoneEl.innerText = savedPhone;
+                }
+
+                if (savedBio) {
+                    if(document.getElementById('display-bio')) document.getElementById('display-bio').innerText = savedBio;
+                    if(document.getElementById('sub-acc-display-bio')) document.getElementById('sub-acc-display-bio').innerText = savedBio;
+                }
+            }
+        };
     </script>
 </body>
 </html>
