@@ -62,28 +62,24 @@
     .input-wrapper input { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; padding: 14px 16px; color: #fff; font-size: 15px; outline: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-align: right; }
     .input-wrapper input:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 18px rgba(255, 77, 141, 0.25); }
     .input-wrapper.has-error input { border-color: var(--err) !important; background: rgba(255, 92, 122, 0.07) !important; box-shadow: 0 0 15px rgba(255, 92, 122, 0.2) !important; }
-
     .field-error { font-size: 11px; color: var(--err); margin-top: 5px; display: none; padding-right: 4px; animation: textPopIn 0.3s ease; }
 
     .btn { width: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; border-radius: 16px; padding: 16px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 6px; box-shadow: 0 8px 25px rgba(255, 77, 141, 0.3); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(255, 77, 141, 0.45); }
 
-    .toast { margin-top: 16px; width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); color: #ffffff; padding: 12px 16px; border-radius: 14px; font-size: 13.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; opacity: 0; max-height: 0; margin-top: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .toast { margin-top: 16px; width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); color: #ffffff; padding: 12px 16px; border-radius: 14px; font-size: 13.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; opacity: 0; max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .toast.show { opacity: 1; max-height: 60px; padding: 12px 16px; margin-top: 16px; }
     .toast-icon { width: 22px; height: 22px; background: linear-gradient(135deg, #ff4d8d, #7c5cff); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .toast.error-toast .toast-icon { background: linear-gradient(135deg, var(--err), #ff3333); }
 
-    /* لودینگ ارتقا یافته با لوگوی ثابت و اسپینر درخشان چرخان */
-    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 11, 23, 0.3); backdrop-filter: blur(30px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+    /* 🎯 اصلاح لودینگ: لوگو ثابت و اسپینر چرخان */
+    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 11, 23, 0.8); backdrop-filter: blur(20px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
     .loading-overlay.show { opacity: 1; pointer-events: auto; }
-    
-    .loading-container { position: relative; width: 130px; height: 130px; display: flex; justify-content: center; align-items: center; animation: floatEffect 3s ease-in-out infinite; }
-    @keyframes floatEffect { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
-    
-    .modern-spinner { position: absolute; width: 130px; height: 130px; border: 4px solid transparent; border-top: 4px solid var(--accent); border-bottom: 4px solid var(--accent2); border-radius: 50%; animation: superSpin 1.5s linear infinite; box-shadow: 0 0 20px rgba(255, 77, 141, 0.3); }
-    @keyframes superSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    
-    .loading-logo { width: 60px; height: 60px; object-fit: contain; z-index: 10; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
-    .loading-text { margin-top: 24px; font-size: 15px; font-weight: 700; color: white; opacity: 0.8; }
+    .loading-container { position: relative; width: 130px; height: 130px; display: flex; justify-content: center; align-items: center; }
+    .modern-spinner { position: absolute; width: 130px; height: 130px; border: 4px solid transparent; border-top: 4px solid var(--accent); border-bottom: 4px solid var(--accent2); border-radius: 50%; animation: spin 1.2s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loading-logo { width: 60px; height: 60px; z-index: 10; position: absolute; }
+    .loading-text { margin-top: 24px; color: white; font-weight: 600; font-size: 15px; }
   </style>
 </head>
 <body>
@@ -92,28 +88,31 @@
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
     <div class="card" id="mainCard">
-      <div class="app-logo-container"><img class="app-logo" src="1000012320.png" /></div>
+      <div class="app-logo-container"><img class="app-logo" src="1000012320.png" alt="لوگوی برنامه" /></div>
       <h2 class="brand-title">دوست یابی</h2>
       <div class="subtitle">زیباترین مسیر برای پیدا کردن همدم شما</div>
       <form id="loginForm" novalidate>
         <div class="avatar-picker" onclick="document.getElementById('fileInput').click()">
-          <div class="avatar-mask" id="avatarMask"><img id="profilePreview" class="avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff4d8d'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/></svg>" /></div>
+          <div class="avatar-mask" id="avatarMask"><img id="profilePreview" class="avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff4d8d'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/></svg>" alt="پروفایل" /></div>
           <div class="avatar-hint">+</div>
           <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(this)" />
         </div>
         <div class="input-group">
-          <label>نام و نام خانوادگی</label>
+          <label for="name">نام و نام خانوادگی</label>
           <div class="input-wrapper" id="nameWrapper"><input type="text" id="name" oninput="checkFieldDirectly('name')" /></div>
-          <div class="field-error" id="nameError">لطفاً نام را وارد کنید</div>
+          <div class="field-error" id="nameError">لطفاً نام و نام خانوادگی خود را وارد کنید</div>
         </div>
         <div class="input-group">
-          <label>شماره موبایل</label>
+          <label for="phone">شماره موبایل</label>
           <div class="input-wrapper" id="phoneWrapper"><input type="tel" id="phone" oninput="checkFieldDirectly('phone')" /></div>
-          <div class="field-error" id="phoneError">شماره نامعتبر است</div>
+          <div class="field-error" id="phoneError">لطفاً شماره موبایل معتبر وارد کنید (مثل: 09123456789)</div>
         </div>
-        <div class="input-group"><label>آیدی پروفایل</label><div class="input-wrapper"><input type="text" id="profileId" /></div></div>
+        <div class="input-group">
+          <label for="profileId">آیدی پروفایل (اختیاری)</label>
+          <div class="input-wrapper"><input type="text" id="profileId" /></div>
+        </div>
         <button class="btn" type="submit">ورود به برنامه</button>
-        <div class="toast" id="toast"><div class="toast-icon"></div><span id="toastText">اطلاعات ذخیره شد</span></div>
+        <div class="toast" id="toast"><div class="toast-icon"></div><span id="toastText">اطلاعات با موفقیت ذخیره شد</span></div>
       </form>
     </div>
   </div>
@@ -121,44 +120,71 @@
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-container">
       <div class="modern-spinner"></div>
-      <img class="loading-logo" src="1000012320.png" />
+      <img class="loading-logo" src="1000012320.png" alt="لوگو" />
     </div>
     <p class="loading-text">در حال ورود به برنامه...</p>
   </div>
 
   <script>
     const form = document.getElementById("loginForm");
-    const loadingOverlay = document.getElementById("loadingOverlay");
+    const toast = document.getElementById("toast");
+    const toastText = document.getElementById("toastText");
     const pageWrapper = document.getElementById("pageWrapper");
+    const mainCard = document.getElementById("mainCard");
+    const loadingOverlay = document.getElementById("loadingOverlay");
+    let isAvatarSelected = false;
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      // منطق بررسی خطاها...
-      let hasError = false;
-      if(document.getElementById("name").value.trim() === "") hasError = true;
-      if(!/^(0?9)\d{9}$/.test(document.getElementById("phone").value.trim())) hasError = true;
-
-      if(hasError) { 
-        document.getElementById("mainCard").classList.add("shake");
-        setTimeout(() => document.getElementById("mainCard").classList.remove("shake"), 400);
-        return; 
-      }
-      
-      // اجرای لودینگ ۵ ثانیه‌ای
-      pageWrapper.classList.add("exit-anim");
-      setTimeout(() => {
-        loadingOverlay.classList.add("show");
-        setTimeout(() => { window.location.href = 'main.html'; }, 5000); 
-      }, 500);
-    });
+    window.onload = function() {
+      const savedName = localStorage.getItem('userData_name');
+      const savedPhone = localStorage.getItem('userData_phone');
+      if(savedName) document.getElementById("name").value = savedName;
+      if(savedPhone) document.getElementById("phone").value = savedPhone;
+    };
 
     function previewImage(input) {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
-        reader.onload = function(e) { document.getElementById('profilePreview').src = e.target.result; }
+        reader.onload = function(e) {
+          document.getElementById('profilePreview').src = e.target.result;
+          isAvatarSelected = true;
+          document.getElementById("avatarMask").style.borderColor = "rgba(255, 255, 255, 0.15)";
+        }
         reader.readAsDataURL(input.files[0]);
       }
     }
+
+    function checkFieldDirectly(field) {
+      if (field === 'name' && document.getElementById("name").value.trim() !== "") {
+        document.getElementById("nameWrapper").classList.remove("has-error");
+        document.getElementById("nameError").style.display = "none";
+      }
+      if (field === 'phone' && /^(0?9)\d{9}$/.test(document.getElementById("phone").value.trim())) {
+        document.getElementById("phoneWrapper").classList.remove("has-error");
+        document.getElementById("phoneError").style.display = "none";
+      }
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      let hasError = false;
+      if (!isAvatarSelected) { document.getElementById("avatarMask").style.borderColor = "var(--err)"; hasError = true; }
+      if (document.getElementById("name").value.trim() === "") { document.getElementById("nameWrapper").classList.add("has-error"); document.getElementById("nameError").style.display = "block"; hasError = true; }
+      if (!/^(0?9)\d{9}$/.test(document.getElementById("phone").value.trim())) { document.getElementById("phoneWrapper").classList.add("has-error"); document.getElementById("phoneError").style.display = "block"; hasError = true; }
+
+      if (hasError) {
+        mainCard.classList.add("shake");
+        toast.classList.add("error-toast", "show");
+        toastText.textContent = "لطفاً موارد مشخص شده را کامل کنید ❌";
+        setTimeout(() => { mainCard.classList.remove("shake"); toast.classList.remove("show"); }, 3000);
+        return;
+      }
+
+      pageWrapper.classList.add("exit-anim");
+      setTimeout(() => {
+        loadingOverlay.classList.add("show");
+        setTimeout(() => { window.location.href = 'main.html'; }, 5000);
+      }, 500);
+    });
   </script>
 </body>
 </html>
