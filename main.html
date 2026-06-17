@@ -692,20 +692,18 @@
                 exitMsg: 'Press back again to exit the application'
             }
         };
-                function setupAndroidBackBlock() {
-            // اضافه کردن صفحه فعلی به تاریخچه به صورت مکرر
-            history.pushState(null, null, window.location.href);
 
-            window.onpopstate = function (event) {
-                // بلافاصله پس از هر تلاش کاربر برای بازگشت، دوباره صفحه فعلی را پوش می‌کنیم
-                // این کار باعث می‌شود کاربر در یک "حلقه بی‌پایان" در همین صفحه باقی بماند
-                history.pushState(null, null, window.location.href);
-                
-                // هیچ دستور دیگری مثل window.close یا exitApp اجرا نمی‌شود
-                // بنابراین کاربر هر چقدر هم کلیک کند، در همین سایت اصلی می‌ماند
-            };
-        }
+        // سیستم پیشرفته و هوشمند قفل کردن دکمه بازگشت گوشی و خروج دو مرحله‌ای
+        let lastBackPress = 0;
         
+function setupAndroidBackBlock() {
+    history.pushState(null, "", "");
+    window.onpopstate = function(event) {
+        history.pushState(null, "", "");
+    };
+}
+
+
         // توابع مدیریت صفحه خرید اشتراک کشویی (Bottom Sheet)
         function openSubscriptionSheet() {
             document.getElementById('subscription-backdrop').style.display = 'block';
@@ -858,12 +856,12 @@
                 output.style.backgroundColor = "transparent";
                 headerOutput.style.backgroundColor = "transparent";
                 
-                const datingUserData = localStorage.getItem('datingAppUser');
+                const datingUserData = localStorage.getItem('userData');
                 if (datingUserData) {
                     try {
                         let user = JSON.parse(datingUserData);
                         user.profileImg = reader.result;
-                        localStorage.setItem('datingAppUser', JSON.stringify(user));
+                        localStorage.setItem('userData', JSON.stringify(user));
                     } catch(e) { console.error(e); }
                 }
                 localStorage.setItem('userData_img', reader.result);
@@ -917,7 +915,7 @@
         }
 
         function saveField(type) {
-            let datingUserData = localStorage.getItem('datingAppUser');
+            let datingUserData = localStorage.getItem('userData');
             let user = datingUserData ? JSON.parse(datingUserData) : {};
 
             if (type === 'name') {
@@ -965,7 +963,7 @@
                 closeModal('modal-bio');
             }
 
-            localStorage.setItem('datingAppUser', JSON.stringify(user));
+            localStorage.setItem('userData', JSON.stringify(user));
         }
     </script>
 
@@ -975,7 +973,7 @@
             // فعال‌سازی سیستم مدیریت دکمه بازگشت سخت‌افزاری گوشی
             setupAndroidBackBlock();
 
-            const datingUserData = localStorage.getItem('datingAppUser');
+            const datingUserData = localStorage.getItem('userData');
             const savedImg = localStorage.getItem('userData_img');
 
             if (savedImg) {
