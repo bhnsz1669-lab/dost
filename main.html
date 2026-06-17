@@ -693,19 +693,19 @@
             }
         };
                 function setupAndroidBackBlock() {
-            // یک وضعیت ثابت برای صفحه اصلی در تاریخچه ایجاد می‌کنیم
-            history.pushState({page: "main_secure"}, "", "");
-            
-            window.onpopstate = function(event) {
-                // هر زمان کاربر دکمه بازگشت را زد، دوباره همان وضعیت را جایگزین می‌کنیم
-                // این کار باعث می‌شود مرورگر در یک حلقه در صفحه اصلی باقی بماند
-                history.pushState({page: "main_secure"}, "", "");
+            // اضافه کردن صفحه فعلی به تاریخچه به صورت مکرر
+            history.pushState(null, null, window.location.href);
+
+            window.onpopstate = function (event) {
+                // بلافاصله پس از هر تلاش کاربر برای بازگشت، دوباره صفحه فعلی را پوش می‌کنیم
+                // این کار باعث می‌شود کاربر در یک "حلقه بی‌پایان" در همین صفحه باقی بماند
+                history.pushState(null, null, window.location.href);
                 
-                // در اینجا هیچ دستور خروجی یا بستن تب قرار نمی‌دهیم
-                // به همین دلیل کاربر در صفحه قفل می‌ماند
+                // هیچ دستور دیگری مثل window.close یا exitApp اجرا نمی‌شود
+                // بنابراین کاربر هر چقدر هم کلیک کند، در همین سایت اصلی می‌ماند
             };
         }
-
+        
         // توابع مدیریت صفحه خرید اشتراک کشویی (Bottom Sheet)
         function openSubscriptionSheet() {
             document.getElementById('subscription-backdrop').style.display = 'block';
