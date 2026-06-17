@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
     <style>
         /* استایل‌های پایه و سیستم تم روز/شب - فونت پایه به Vazirmatn تغییر یافت */
@@ -48,7 +50,6 @@
         .header-left { display: flex; align-items: center; gap: 14px; }
         .header-btn { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
         .header-btn:active { transform: scale(0.9); }
-        .header-btn svg { width: 28px; height: 28px; }
 
         /* سیستم انیمیشن نرم برای جابجایی صفحه‌ها */
         .page { display: none; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.25s ease-in-out; }
@@ -74,7 +75,6 @@
         
         /* استایل آیکون‌های رنگی داخل منوها */
         .menu-item-title { display: flex; align-items: center; gap: 12px; }
-        .menu-icon { width: 24px; height: 24px; }
         
         .menu-right-side { display: flex; align-items: center; gap: 12px; }
         .menu-left-info { font-size: 0.85rem; color: #777; }
@@ -90,7 +90,6 @@
         .action-btn { flex: 1; padding: 10px 6px; border: none; border-radius: 20px; background: #f0f2f5; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; color: #333; transition: 0.2s; box-sizing: border-box; }
         body.dark-mode .action-btn { background: #2a2a2a; color: #eee; }
         .action-btn:active { transform: scale(0.97); }
-        .btn-svg-icon { width: 18px; height: 18px; }
 
         /* کادرهای اطلاعات کاربری */
         .info-group { width: 100%; background: #f8f9fa; border-radius: 12px; border: 1px solid #eaeaea; overflow: hidden; margin-top: 15px; }
@@ -113,14 +112,12 @@
         body.dark-mode .nav-item { color: #aaaaaa; }
         
         .nav-icon-wrapper { display: flex; align-items: center; justify-content: center; width: 64px; height: 36px; border-radius: 20px; transition: background-color 0.3s ease; position: relative; }
-        .nav-icon-wrapper svg { width: 24px; height: 24px; transition: transform 0.3s ease; }
 
         .nav-item.active { color: #007bff; font-weight: bold; }
         body.dark-mode .nav-item.active { color: #ffffff; }
         
         .nav-item.active .nav-icon-wrapper { background-color: rgba(0, 123, 255, 0.15); }
         body.dark-mode .nav-item.active .nav-icon-wrapper { background-color: rgba(255, 255, 255, 0.12); }
-        .nav-item.active .nav-icon-wrapper svg { transform: scale(1.1); }
 
         /* استایل مودال‌ها */
         .edit-page-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 3000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
@@ -172,8 +169,6 @@
         }
         body.dark-mode .subscription-box { border-color: #52a4ff; background: rgba(82, 164, 255, 0.06); }
         .sub-box-right { display: flex; align-items: center; gap: 12px; }
-        .sub-box-icon { width: 32px; height: 32px; fill: #007bff; }
-        body.dark-mode .sub-box-icon { fill: #52a4ff; }
         .sub-box-title { font-weight: bold; font-size: 1.05rem; }
         .sub-box-price { font-weight: bold; color: #28a745; font-size: 1.1rem; }
         body.dark-mode .sub-box-price { color: #2cd155; }
@@ -220,6 +215,16 @@
             white-space: nowrap;
             font-weight: 500;
         }
+
+        /* استایل اختصاصی لردآیکون‌ها برای هماهنگی رنگ در تم شب و روز */
+        lord-icon {
+            --lord-icon-primary-color: #007bff;
+            --lord-icon-secondary-color: #52a4ff;
+        }
+        body.dark-mode lord-icon {
+            --lord-icon-primary-color: #ffffff;
+            --lord-icon-secondary-color: #52a4ff;
+        }
     </style>
 </head>
 <body>
@@ -231,18 +236,11 @@
         </div>
         <div class="header-left">
             <button class="header-btn" onclick="openSubscriptionSheet()" title="خرید اشتراک">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="bagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#4facfe" />
-                            <stop offset="100%" stop-color="#00f2fe" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M12,2 A5,5 0 0,0 7,7 L9,7 A3,3 0 0,1 15,7 L17,7 A5,5 0 0,0 12,2 Z" fill="#4facfe" />
-                    <path d="M6,8 L18,8 C19.5,8 20.5,9.2 20.2,10.7 L18.5,19.2 C18.2,20.8 16.8,22 15.2,22 L8.8,22 C7.2,22 5.8,20.8 5.5,19.2 L3.8,10.7 C3.5,9.2 4.5,8 6,8 Z" fill="url(#bagGrad)" />
-                    <circle cx="12" cy="14" r="2" fill="#ffffff" opacity="0.9" />
-                    <path d="M12,16 L12,19" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9" />
-                </svg>
+                <lord-icon
+                    src="https://cdn.lordicon.com/cllunfud.json"
+                    trigger="hover"
+                    style="width:34px;height:34px">
+                </lord-icon>
             </button>
         </div>
     </div>
@@ -272,10 +270,11 @@
         <div class="menu-group">
             <div class="menu-item" onclick="openModal('sub-account')">
                 <div class="menu-item-title">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="8" r="4" fill="#34A853"/>
-                        <path d="M20 19C20 16.2386 16.4183 14 12 14C7.58172 14 4 16.2386 4 19" stroke="#34A853" stroke-width="2.5" stroke-linecap="round"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/kdduutbo.json"
+                        trigger="hover"
+                        style="width:24px;height:24px">
+                    </lord-icon>
                     <span id="opt-account">حساب کاربری</span>
                 </div>
                 <span class="menu-left-info" id="settings-acc-name">مشاهده</span>
@@ -286,10 +285,11 @@
         <div class="menu-group">
             <div class="menu-item" onclick="openModal('sub-privacy')">
                 <div class="menu-item-title">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="10" width="16" height="11" rx="3" fill="#EA4335"/>
-                        <path d="M7 10V7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7V10" stroke="#EA4335" stroke-width="2.5" stroke-linecap="round"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/xtzomwqp.json"
+                        trigger="hover"
+                        style="width:24px;height:24px">
+                    </lord-icon>
                     <span id="opt-privacy">حریم خصوصی و امنیت</span>
                 </div>
                 <span class="menu-left-info" id="lbl-privacy-sub">تنظیمات اصلی</span>
@@ -297,10 +297,12 @@
             
             <div class="menu-item" onclick="openModal('sub-notifications')">
                 <div class="menu-item-title">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10V14L4 17H20L18 14V10Z" fill="#FBBC05"/>
-                        <path d="M10 19C10 20.1046 10.8954 21 12 21C13.1046 21 14 20.1046 14 19" stroke="#FBBC05" stroke-width="2.5" stroke-linecap="round"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/vspvsyqy.json"
+                        trigger="loop"
+                        delay="2000"
+                        style="width:24px;height:24px">
+                    </lord-icon>
                     <span id="opt-notif">اعلان‌ها و صداها</span>
                 </div>
                 <span class="menu-left-info" id="lbl-notif-sub">گفتگوها، گروه‌ها...</span>
@@ -308,10 +310,11 @@
 
             <div class="menu-item" onclick="openModal('sub-chat-settings')">
                 <div class="menu-item-title">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H16L22 14V6C22 4.9 21.1 4 20 4Z" fill="#4285F4"/>
-                        <path d="M6 9H14M6 13H11" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/hpivxauj.json"
+                        trigger="hover"
+                        style="width:24px;height:24px">
+                    </lord-icon>
                     <span id="opt-chat-settings">تنظیمات گفتگو</span>
                 </div>
                 <span class="menu-left-info" id="lbl-chat-sub">پوسته، متن، پس‌زمینه</span>
@@ -319,10 +322,11 @@
 
             <div class="menu-item" onclick="openModal('sub-language')">
                 <div class="menu-item-title">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="9" fill="#1A73E8"/>
-                        <path d="M3.5 12H20.5M12 3.5C14.5 6 15.5 9 15.5 12C15.5 15 14.5 18 12 20.5C9.5 18 8.5 15 8.5 12C8.5 9 9.5 6 12 3.5Z" stroke="#FFFFFF" stroke-width="1.5"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/rlxvwwun.json"
+                        trigger="hover"
+                        style="width:24px;height:24px">
+                    </lord-icon>
                     <span id="opt-lang">زبان / Language</span>
                 </div>
                 <span class="menu-left-info" id="display-current-lang">فارسی</span>
@@ -340,25 +344,27 @@
             
             <div class="profile-buttons">
                 <button class="action-btn" onclick="triggerPhotoUpload()">
-                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 5H7L9 3H15L17 5H20C21.1 5 22 5.9 22 7V19C22 20.1 21.1 21 20 21H4C2.9 21 2 20.1 2 19V7C2 5.9 2.9 5 4 5Z" fill="#34A853"/>
-                        <circle cx="12" cy="13" r="4" fill="#FFFFFF"/>
-                        <circle cx="12" cy="13" r="2" fill="#34A853"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/stgzzwls.json"
+                        trigger="hover"
+                        style="width:20px;height:20px">
+                    </lord-icon>
                     <span id="btn-lbl-photo">تنظیم عکس</span>
                 </button>
                 <button class="action-btn" onclick="openModal('modal-name-edit')">
-                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 17.25V21H6.75L17.81 9.94L14.06 6.19L3 17.25Z" fill="#4285F4"/>
-                        <path d="M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41z" fill="#1A73E8"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/wkvacjbt.json"
+                        trigger="hover"
+                        style="width:20px;height:20px">
+                    </lord-icon>
                     <span id="btn-lbl-edit">ویرایش اطلاعات</span>
                 </button>
                 <button class="action-btn" onclick="showPage('settings', document.getElementById('nav-item-settings'))">
-                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65z" fill="#757575"/>
-                        <circle cx="12" cy="12" r="3" fill="#FFFFFF"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/lecpriep.json"
+                        trigger="hover"
+                        style="width:20px;height:20px">
+                    </lord-icon>
                     <span id="btn-lbl-set">تنظیمات</span>
                 </button>
             </div>
@@ -502,11 +508,11 @@
         <div class="menu-group">
             <div class="menu-item" onclick="triggerChatBgUpload()">
                 <div class="menu-item-title">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="3" fill="#EA4335"/>
-                        <circle cx="8.5" cy="8.5" r="2.5" fill="#FFFFFF"/>
-                        <path d="M4 19L9 13 L13 17L16 12L20 19H4Z" fill="#FFFFFF"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/fgxwhgfj.json"
+                        trigger="hover"
+                        style="width:24px;height:24px">
+                    </lord-icon>
                     <span id="opt-change-bg">تغییر پس‌زمینه گفتگو</span>
                 </div>
                 <span class="menu-left-info" id="bg-status-label">پیش‌فرض</span>
@@ -516,12 +522,11 @@
         <div class="menu-group">
             <div class="menu-item" style="padding: 14px 20px;">
                 <div class="menu-item-title">
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 3C6.48 3 2 7.48 2 12C2 16.52 5.52 20.25 10.06 20.94C10.61 21.03 11.11 20.6 11.11 20.04V17.94C11.11 17.51 11.38 17.13 11.78 16.98C15.82 15.42 19 12.87 20.84 9.1C21.43 7.89 20.67 6.46 19.33 6.16C17 5.65 14.56 5.5 12 5.5V3Z" fill="#34A853"/>
-                        <circle cx="7" cy="9" r="1" fill="#FFFFFF"/>
-                        <circle cx="10" cy="7" r="1" fill="#FFFFFF"/>
-                        <circle cx="14" cy="8" r="1" fill="#FFFFFF"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/sbnjhyca.json"
+                        trigger="hover"
+                        style="width:24px;height:24px">
+                    </lord-icon>
                     <span id="opt-dark-mode">تغییر به حالت شب (تم تاریک)</span>
                 </div>
                 <label class="switch">
@@ -596,9 +601,11 @@
         
         <div class="subscription-box">
             <div class="sub-box-right">
-                <svg class="sub-box-icon" viewBox="0 0 24 24" fill="#007bff">
-                    <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z"/>
-                </svg>
+                <lord-icon
+                    src="https://cdn.lordicon.com/hpivxauj.json"
+                    trigger="loop"
+                    style="width:32px;height:32px">
+                </lord-icon>
                 <div class="sub-box-title" id="sub-plan-name">۵۰۰ پیام</div>
             </div>
             <div class="sub-box-price" id="sub-plan-price">۲۰۰۰ ریال</div>
@@ -614,31 +621,33 @@
         <div class="bottom-nav">
             <div class="nav-item active" onclick="showPage('chats', this)">
                 <div class="nav-icon-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="#4285F4"/>
-                        <path d="M6 7H18M6 11H14" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/fdxqrdne.json"
+                        trigger="click"
+                        style="width:28px;height:28px">
+                    </lord-icon>
                 </div>
                 <span id="nav-lbl-chats">گفتگوها</span>
             </div>
             
             <div class="nav-item" id="nav-item-settings" onclick="showPage('settings', this)">
                 <div class="nav-icon-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58z" fill="#FBBC05"/>
-                        <circle cx="12" cy="12" r="3" fill="#FFFFFF"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/lecpriep.json"
+                        trigger="click"
+                        style="width:28px;height:28px">
+                    </lord-icon>
                 </div>
                 <span id="nav-lbl-set">تنظیمات</span>
             </div>
             
             <div class="nav-item" onclick="showPage('profile', this)">
                 <div class="nav-icon-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" fill="#34A853"/>
-                        <circle cx="12" cy="8" r="4" fill="#FFFFFF"/>
-                        <path d="M5 19C5 15.5 8.5 14 12 14C15.5 14 19 15.5 19 19" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
-                    </svg>
+                    <lord-icon
+                        src="https://cdn.lordicon.com/kdduutbo.json"
+                        trigger="click"
+                        style="width:28px;height:28px">
+                    </lord-icon>
                 </div>
                 <span id="nav-lbl-prof">پروفایل</span>
             </div>
@@ -696,13 +705,40 @@
         // سیستم پیشرفته و هوشمند قفل کردن دکمه بازگشت گوشی و خروج دو مرحله‌ای
         let lastBackPress = 0;
         
-function setupAndroidBackBlock() {
-    history.pushState(null, "", "");
-    window.onpopstate = function(event) {
-        history.pushState(null, "", "");
-    };
-}
+        function setupAndroidBackBlock() {
+            // تزریق وضعیت فیک به تاریخچه برای به تله انداختن دکمه برگشت
+            history.pushState({page: "main_secure"}, "", "");
+            
+            window.onpopstate = function(event) {
+                const now = Date.now();
+                const exitToast = document.getElementById('exitToast');
+                
+                // اعمال ترجمه پویا روی پیام توست بر اساس زبان انتخابی اپلیکیشن
+                exitToast.innerText = translations[currentLanguage].exitMsg;
 
+                if (now - lastBackPress < 2000) {
+                    // فشرده شدن دو بار متوالی در کمتر از ۲ ثانیه -> خروج کامل
+                    exitToast.style.display = 'none';
+                    window.close(); // تلاش برای بستن تب
+                    setTimeout(() => {
+                        // در صورت عدم اجازه مرورگر برای بستن صفحه، هدایت به یک بخش خالی امن
+                        window.location.href = "about:blank"; 
+                    }, 100);
+                } else {
+                    // فشرده شدن برای بار اول -> قفل کردن و نمایش توست هشدار
+                    lastBackPress = now;
+                    exitToast.style.display = 'block';
+                    
+                    // محو کردن توست بعد از ۲ ثانیه
+                    setTimeout(() => {
+                        exitToast.style.display = 'none';
+                    }, 2000);
+                    
+                    // بازسازی تله تاریخچه مرورگر برای دکمه برگشت بعدی
+                    history.pushState({page: "main_secure"}, "", "");
+                }
+            };
+        }
 
         // توابع مدیریت صفحه خرید اشتراک کشویی (Bottom Sheet)
         function openSubscriptionSheet() {
@@ -844,6 +880,7 @@ function setupAndroidBackBlock() {
             alert(currentLanguage === 'فارسی' ? 'ورود به محیط گفتگو با ' + name : 'Entering chat room with ' + name);
         }
 
+        // فعال‌سازی تریگر کلیک روی فایل آپلودر عکس
         function triggerPhotoUpload() { document.getElementById('fileInput').click(); }
 
         function loadPhoto(event) {
@@ -856,12 +893,12 @@ function setupAndroidBackBlock() {
                 output.style.backgroundColor = "transparent";
                 headerOutput.style.backgroundColor = "transparent";
                 
-                const datingUserData = localStorage.getItem('userData');
+                const datingUserData = localStorage.getItem('datingAppUser');
                 if (datingUserData) {
                     try {
                         let user = JSON.parse(datingUserData);
                         user.profileImg = reader.result;
-                        localStorage.setItem('userData', JSON.stringify(user));
+                        localStorage.setItem('datingAppUser', JSON.stringify(user));
                     } catch(e) { console.error(e); }
                 }
                 localStorage.setItem('userData_img', reader.result);
@@ -877,7 +914,6 @@ function setupAndroidBackBlock() {
             }
         }
 
-        // اصلاح کدهای متفرقه جهت استفاده صحیح از توابع پایه بدون خطای مفسر
         function changeTextSize(size) { document.getElementById('text-preview').style.fontSize = size + 'px'; }
         function handleNotificationToggle(type, isEnabled) {}
 
@@ -898,7 +934,6 @@ function setupAndroidBackBlock() {
             }
         }
 
-        // برطرف کردن باگ ثبت وضعیت‌های تایید در رادیوها
         function openPrivacySetting(privacyKey, titleText, type) {
             activePrivacyKey = privacyKey;
             activePrivacyType = type;
@@ -915,7 +950,7 @@ function setupAndroidBackBlock() {
         }
 
         function saveField(type) {
-            let datingUserData = localStorage.getItem('userData');
+            let datingUserData = localStorage.getItem('datingAppUser');
             let user = datingUserData ? JSON.parse(datingUserData) : {};
 
             if (type === 'name') {
@@ -963,7 +998,7 @@ function setupAndroidBackBlock() {
                 closeModal('modal-bio');
             }
 
-            localStorage.setItem('userData', JSON.stringify(user));
+            localStorage.setItem('datingAppUser', JSON.stringify(user));
         }
     </script>
 
@@ -973,7 +1008,7 @@ function setupAndroidBackBlock() {
             // فعال‌سازی سیستم مدیریت دکمه بازگشت سخت‌افزاری گوشی
             setupAndroidBackBlock();
 
-            const datingUserData = localStorage.getItem('userData');
+            const datingUserData = localStorage.getItem('datingAppUser');
             const savedImg = localStorage.getItem('userData_img');
 
             if (savedImg) {
