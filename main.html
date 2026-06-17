@@ -693,43 +693,32 @@
             }
         };
 
-        // سیستم پیشرفته و هوشمند قفل کردن دکمه بازگشت گوشی و خروج دو مرحله‌ای
-        let lastBackPress = 0;
-        
-        function setupAndroidBackBlock() {
-            // تزریق وضعیت فیک به تاریخچه برای به تله انداختن دکمه برگشت
-            history.pushState({page: "main_secure"}, "", "");
-            
-            window.onpopstate = function(event) {
-                const now = Date.now();
-                const exitToast = document.getElementById('exitToast');
-                
-                // اعمال ترجمه پویا روی پیام توست بر اساس زبان انتخابی اپلیکیشن
-                exitToast.innerText = translations[currentLanguage].exitMsg;
-
                 if (now - lastBackPress < 2000) {
-                    // فشرده شدن دو بار متوالی در کمتر از ۲ ثانیه -> خروج کامل
+                    // فشرده شدن دو بار متوالی در کمتر از ۲ ثانیه -> خروج واقعی از اپلیکیشن
                     exitToast.style.display = 'none';
-                    window.close(); // تلاش برای بستن تب
-                    setTimeout(() => {
-                        // در صورت عدم اجازه مرورگر برای بستن صفحه، هدایت به یک بخش خالی امن
-                        window.location.href = "about:blank"; 
-                    }, 100);
+                    
+                    // برای بستن برنامه در محیط‌های وب‌ویو (WebView) اندروید:
+                    if (navigator.app && navigator.app.exitApp) {
+                        navigator.app.exitApp();
+                    } else {
+                        // در مرورگرهای معمولی، بستن تب
+                        window.close();
+                        // اگر مرورگر اجازه بستن نداد، هدایت به یک صفحه خالی
+                        window.location.href = "about:blank";
+                    }
                 } else {
-                    // فشرده شدن برای بار اول -> قفل کردن و نمایش توست هشدار
+                    // فشرده شدن برای بار اول -> نمایش هشدار
                     lastBackPress = now;
                     exitToast.style.display = 'block';
                     
-                    // محو کردن توست بعد از ۲ ثانیه
                     setTimeout(() => {
                         exitToast.style.display = 'none';
                     }, 2000);
                     
-                    // بازسازی تله تاریخچه مرورگر برای دکمه برگشت بعدی
+                    // نگه‌داشتن کاربر در اپلیکیشن با پوش‌استیت مجدد
                     history.pushState({page: "main_secure"}, "", "");
                 }
-            };
-        }
+
 
         // توابع مدیریت صفحه خرید اشتراک کشویی (Bottom Sheet)
         function openSubscriptionSheet() {
