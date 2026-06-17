@@ -693,32 +693,32 @@
             }
         };
 
+                        function setupAndroidBackBlock() {
+            history.pushState({page: "main_secure"}, "", "");
+            window.onpopstate = function(event) {
+                const now = Date.now();
+                const exitToast = document.getElementById('exitToast');
+                
+                // بررسی اینکه آیا کمتر از ۲ ثانیه گذشته
                 if (now - lastBackPress < 2000) {
-                    // فشرده شدن دو بار متوالی در کمتر از ۲ ثانیه -> خروج واقعی از اپلیکیشن
-                    exitToast.style.display = 'none';
-                    
-                    // برای بستن برنامه در محیط‌های وب‌ویو (WebView) اندروید:
+                    // اگر در اپلیکیشن اندروید هستیم، دستور خروج واقعی
                     if (navigator.app && navigator.app.exitApp) {
                         navigator.app.exitApp();
                     } else {
-                        // در مرورگرهای معمولی، بستن تب
+                        // در غیر این صورت بستن معمول
                         window.close();
-                        // اگر مرورگر اجازه بستن نداد، هدایت به یک صفحه خالی
-                        window.location.href = "about:blank";
                     }
                 } else {
-                    // فشرده شدن برای بار اول -> نمایش هشدار
                     lastBackPress = now;
-                    exitToast.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        exitToast.style.display = 'none';
-                    }, 2000);
-                    
-                    // نگه‌داشتن کاربر در اپلیکیشن با پوش‌استیت مجدد
+                    // نمایش پیام هشدار
+                    if(exitToast) {
+                        exitToast.style.display = 'block';
+                        setTimeout(() => { exitToast.style.display = 'none'; }, 2000);
+                    }
                     history.pushState({page: "main_secure"}, "", "");
                 }
-
+            };
+        }
 
         // توابع مدیریت صفحه خرید اشتراک کشویی (Bottom Sheet)
         function openSubscriptionSheet() {
